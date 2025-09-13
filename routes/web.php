@@ -58,6 +58,11 @@ use App\Http\Controllers\Auth\main\RoleController;
 use App\Http\Controllers\Auth\main\PermissionController;
 use App\Http\Controllers\Auth\main\SystemUserController;
 use App\Http\Controllers\Auth\main\TaskController;
+use App\Http\Controllers\Auth\main\ProposalController;
+use App\Http\Controllers\Auth\main\ContractController;
+use App\Http\Controllers\Auth\main\EstimationController;
+use App\Http\Controllers\Auth\main\InvoiceController;
+use App\Http\Controllers\Auth\main\PaymentController;
 use App\Http\Controllers\Auth\main\OrganizationController;
 
 
@@ -66,6 +71,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'check_permission'])->group(function () {
+    //Menu  
     Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard');
     Route::get('/mydashboard', [DashboardController::class, 'index'])->name('my_dashboard');
 
@@ -132,7 +138,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
 
     //Profile 
-    Route::get('/user_profile', [ProfileController::class, 'user_profile'])->name('user_profile');
+    Route::get('/user_profile_show', [ProfileController::class, 'user_profile'])->name('user_profile_show');
     Route::get('/user_profile_edit', [ProfileController::class, 'user_profile_edit'])->name('user_profile_edit');
     Route::put('/user_profile_update', [ProfileController::class, 'user_profile_update'])->name('user_profile_update');
     //Organization
@@ -178,6 +184,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('pipelines', PipelineController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
+    Route::resource('proposals', ProposalController::class);
+    Route::resource('contracts', ContractController::class);
+    Route::resource('estimations', EstimationController::class);
+    Route::resource('invoices', InvoiceController::class);
+    Route::get('/payments/sync-invoices', [PaymentController::class, 'syncInvoices'])->name('payments.sync');
+    Route::resource('payments', PaymentController::class);
 
     //Campaign
     Route::resource('campaigns', CampaignController::class);

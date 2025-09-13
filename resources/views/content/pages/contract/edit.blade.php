@@ -1,0 +1,124 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', 'Edit Contract')
+
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Edit Contract</h3>
+        <a href="{{ route('contracts.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('contracts.update', $contract->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="row g-3">
+
+                    {{-- Subject --}}
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
+                        <input type="text" name="subject" class="form-control"
+                            value="{{ old('subject', $contract->subject) }}" required>
+                    </div>
+
+                    {{-- Client --}}
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Client</label>
+                        <select name="client_id" class="form-control">
+                            <option value="">Select Client</option>
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}"
+                                    {{ old('client_id', $contract->client_id) == $client->id ? 'selected' : '' }}>
+                                    {{ $client->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Contract Type</label>
+                        <select name="type" class="form-control">
+                            <option value="contracts_under_seal"
+                                {{ old('type', $contract->status) == 'contracts_under_seal' ? 'selected' : '' }}>
+                                Contracts Under Seal</option>
+                            <option value="implied_contracts"
+                                {{ old('type', $contract->status) == 'implied_contracts' ? 'selected' : '' }}>Implied
+                                Contracts
+                            </option>
+                            <option value="executory_contracts"
+                                {{ old('type', $contract->status) == 'executory_contracts' ? 'selected' : '' }}>
+                                Executory Contracts</option>
+                            <option value="voidable_contracts"
+                                {{ old('type', $contract->status) == 'voidable_contracts' ? 'selected' : '' }}>Voidable
+                                Contracts</option>
+                        </select>
+                    </div>
+
+                    {{-- Contract Value --}}
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Contract Value</label>
+                        <input type="number" name="value" class="form-control"
+                            value="{{ old('value', $contract->value) }}" placeholder="Enter contract value">
+                    </div>
+
+                    {{-- Dates --}}
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" name="start_date" class="form-control"
+                            value="{{ old('start_date', $contract->start_date) }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" name="end_date" class="form-control"
+                            value="{{ old('end_date', $contract->end_date) }}">
+                    </div>
+
+                    {{-- Attachment --}}
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Attachment</label>
+                        <input type="file" name="attachment" class="form-control">
+
+                        @if ($contract->attachment)
+                            <div class="mt-1">
+                                <small class="text-muted">Current file:</small>
+                                <a href="{{ asset('uploads/contracts/' . $contract->attachment) }}" target="_blank"
+                                    class="d-block">
+                                    {{ $contract->attachment }}
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Description --}}
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea name="description" class="form-control" rows="4">{{ old('description', $contract->description) }}</textarea>
+                    </div>
+
+                    <div class="col-12 text-end mt-2">
+                        <button type="submit" class="btn btn-success">Update contract</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

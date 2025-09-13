@@ -75,43 +75,68 @@
           "submenu": [
             {
               "url": "organizations",
-              "name": "Organization List",
+              "name": "Organization",
               "slug": "organization-list"
             },
             {
               "url": "customers",
               "name": "Customers",
-              "slug": "customers-list"
+              "slug": "customers"
+            },
+            {
+              "url": "contracts",
+              "name": "Contract",
+              "slug": "contracts"
             },
             {
               "url": "plans",
               "name": "Plans",
-              "slug": "plans-list"
+              "slug": "plans"
             },
             {
               "url": "deals",
               "name": "Deals",
-              "slug": "deals-list"
+              "slug": "deals"
             },
             {
               "url": "leads",
               "name": "Leads",
-              "slug": "leads-list"
+              "slug": "leads"
             },
             {
               "url": "pipelines",
               "name": "Pipelines",
-              "slug": "pipelines-list"
+              "slug": "pipelines"
             },
             {
               "url": "projects",
-              "name": "Project List",
-              "slug": "project-list"
+              "name": "Projects",
+              "slug": "projects"
             },
             {
               "url": "tasks",
               "name": "Tasks",
-              "slug": "task-list"
+              "slug": "tasks"
+            },
+            {
+              "url": "proposals",
+              "name": "Proposal",
+              "slug": "proposals"
+            },
+            {
+              "url": "estimations",
+              "name": "Estimation",
+              "slug": "estimations"
+            },
+            {
+              "url": "invoices",
+              "name": "Invoice",
+              "slug": "invoices"
+            },
+            {
+              "url": "payments",
+              "name": "Payment",
+              "slug": "payments"
             }
           ]
         },

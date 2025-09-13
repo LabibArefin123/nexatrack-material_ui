@@ -125,7 +125,7 @@
                     <div class="dropdown-divider"></div>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('user_profile') }}">
+                    <a class="dropdown-item" href="{{ route('user_profile_show') }}">
                         <i class="ri-user-3-line ri-22px me-2"></i>
                         <span class="align-middle">My Profile</span>
                     </a>

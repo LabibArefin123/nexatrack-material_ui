@@ -9,9 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\Facades\DataTables;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\DB;
-use App\Exports\FilteredplansExport;
 
 class PlanController extends Controller
 {
