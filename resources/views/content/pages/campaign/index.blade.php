@@ -1,56 +1,52 @@
-@extends('adminlte::page')
+@extends('layouts/contentNavbarLayout')
 
 @section('title', 'Campaign List')
 
-@section('content_header')
-    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-        <h1 class="mb-2 fw-bold">Campaign Dashboard</h1>
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h3 class="mb-2 fw-bold">Campaign Dashboard</h3>
         <a href="{{ route('campaigns.create') }}" class="btn btn-success btn-sm d-flex align-items-center gap-2">
+            <i class="fas fa-plus"></i>
             <span>Add New Campaign</span>
         </a>
     </div>
-@stop
 
-@section('content')
-    {{-- Top Summary Boxes --}}
+    {{-- Top Summary Cards --}}
     <div class="row mb-3">
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>{{ $campaigns->count() }}</h3>
-                    <p>Campaign</p>
-                    <small>{{ $campaigns->sum('progress') / ($campaigns->count() ?: 1) }}% Progress</small>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-bullhorn"></i>
+        <div class="col-lg-3 col-md-6 mb-2">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="fw-bold">{{ $campaigns->count() }}</h4>
+                    <p class="mb-1">Campaign</p>
+
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>{{ $campaigns->sum('sent') }}</h3>
-                    <p>Sent</p>
+
+        <div class="col-lg-3 col-md-6 mb-2">
+            <div class="card text-center shadow-sm h-100 bg-success text-white">
+                <div class="card-body">
+                    <h4 class="fw-bold">{{ $campaigns->sum('sent') }}</h4>
+                    <p class="mb-1">Sent</p>
                 </div>
-                <div class="icon"><i class="fas fa-paper-plane"></i></div>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $campaigns->sum('opened') }}</h3>
-                    <p>Opened</p>
+
+        <div class="col-lg-3 col-md-6 mb-2">
+            <div class="card text-center shadow-sm h-100 bg-warning text-dark">
+                <div class="card-body">
+                    <h4 class="fw-bold">{{ $campaigns->sum('opened') }}</h4>
+                    <p class="mb-1">Opened</p>
                 </div>
-                <div class="icon"><i class="fas fa-envelope-open"></i></div>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ $campaigns->sum('closed') }}</h3>
-                    <p>Completed</p>
+
+        <div class="col-lg-3 col-md-6 mb-2">
+            <div class="card text-center shadow-sm h-100 bg-danger text-white">
+                <div class="card-body">
+                    <h4 class="fw-bold">{{ $campaigns->sum('closed') }}</h4>
+                    <p class="mb-1">Completed</p>
                 </div>
-                <div class="icon"><i class="fas fa-check-circle"></i></div>
             </div>
         </div>
     </div>
@@ -72,19 +68,19 @@
 
     <div class="tab-content" id="campaignTabContent">
         <div class="tab-pane fade show active" id="active" role="tabpanel">
-            @include('pages.campaign.partials.table', [
+            @include('content.pages.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Active'),
             ])
         </div>
         <div class="tab-pane fade" id="completed" role="tabpanel">
-            @include('pages.campaign.partials.table', [
+            @include('content.pages.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Completed'),
             ])
         </div>
         <div class="tab-pane fade" id="archived" role="tabpanel">
-            @include('pages.campaign.partials.table', [
+            @include('content.pages.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Archived'),
             ])
         </div>
     </div>
-@stop
+@endsection

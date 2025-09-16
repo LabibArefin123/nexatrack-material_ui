@@ -53,6 +53,7 @@ use App\Http\Controllers\Auth\main\PlanController;
 use App\Http\Controllers\Auth\main\DealController;
 use App\Http\Controllers\Auth\main\LeadController;
 use App\Http\Controllers\Auth\main\PipelineController;
+use App\Http\Controllers\Auth\main\CampaignController;
 use App\Http\Controllers\Auth\main\ProjectController;
 use App\Http\Controllers\Auth\main\RoleController;
 use App\Http\Controllers\Auth\main\PermissionController;
@@ -188,7 +189,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('contracts', ContractController::class);
     Route::resource('estimations', EstimationController::class);
     Route::resource('invoices', InvoiceController::class);
-    Route::get('/payments/sync-invoices', [PaymentController::class, 'syncInvoices'])->name('payments.sync');
     Route::resource('payments', PaymentController::class);
 
     //Campaign

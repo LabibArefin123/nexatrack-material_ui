@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth\main;
 
-use App\Models\Campaign;
+use App\Http\Controllers\Controller;
 use App\Models\Pipeline;
+use App\Models\Campaign;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class CampaignController extends Controller
     {
         $campaigns = Campaign::with(['pipeline'])->get();
 
-        return view('pages.campaign.index', compact('campaigns'));
+        return view('content.pages.campaign.index', compact('campaigns'));
     }
 
     /**
@@ -25,7 +26,7 @@ class CampaignController extends Controller
     public function create()
     {
         $pipelines = Pipeline::all();
-        return view('pages.campaign.create', compact('pipelines'));
+        return view('content.pages.campaign.create', compact('pipelines'));
     }
 
     /**

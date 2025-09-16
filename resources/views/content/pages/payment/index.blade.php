@@ -20,13 +20,14 @@
                         <th>Due Date</th>
                         <th>Payment Method</th>
                         <th>Transaction ID</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($payments as $payment)
                         <tr>
                             <td>{{ \Carbon\Carbon::parse($payment->created_at)->format('d M Y') }}</td>
-                            <td>#{{ $payment->invoice->invoice_id ?? '-' }}</td>
+                            <td>#{{ $payment->invoice_id ?? '-' }}</td>
                             <td>
                                 @if ($payment->client)
                                     <div class="d-flex align-items-center gap-2">
@@ -45,10 +46,24 @@
                                 @endif
                             </td>
                             <td>{{ number_format($payment->amount, 2) }} Tk</td>
-                            <td>{{ $payment->invoice ? \Carbon\Carbon::parse($payment->invoice->due_date)->format('d M Y') : '-' }}
+                            <td>{{ $payment ? \Carbon\Carbon::parse($payment->due_date)->format('d M Y') : '-' }}
                             </td>
                             <td>{{ ucfirst($payment->payment_method ?? '-') }}</td>
                             <td>{{ $payment->transaction_id ?? '-' }}</td>
+                            <td>
+                                <a href="{{ route('payments.show', $payment->id) }}"
+                                    class="btn btn-sm btn-warning">Show</a>
+                                <a href="{{ route('payments.edit', $payment->id) }}"
+                                    class="btn btn-sm btn-primary">Edit</a>
+                                <form action="{{ route('payments.destroy', $payment->id) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Are you sure?')"
+                                        class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>

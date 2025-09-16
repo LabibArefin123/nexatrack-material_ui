@@ -24,16 +24,10 @@
                         <td>{{ $campaign->sent }}</td>
                         <td>{{ $campaign->opened }}</td>
                         <td>{{ $campaign->closed }}</td>
-                        <td>
-                            <span
-                                class="badge {{ $campaign->status == 'Active' ? 'badge-success' : 'badge-secondary' }}">
-                                {{ $campaign->status }}
-                            </span>
-                        </td>
+                        <td> {{ $campaign->status }} </td>
                         <td>
                             <a href="{{ route('campaigns.show', $campaign->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('campaigns.edit', $campaign->id) }}"
-                                class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('campaigns.destroy', $campaign->id) }}" method="POST"
                                 style="display:inline-block;">
                                 @csrf

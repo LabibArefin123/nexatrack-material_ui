@@ -86,12 +86,62 @@
     <!-- /Search -->
     <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-        <!-- Place this tag where you want the button to render. -->
-        <li class="nav-item lh-1 me-4">
+        <!-- Fullscreen Icon -->
+        <li class="nav-item me-3">
+            <a class="nav-link" href="javascript:void(0);" id="fullscreen-toggle">
+                <i class="ri-fullscreen-line ri-22px"></i>
+            </a>
+        </li>
+
+        <!-- Notifications -->
+        <li class="nav-item dropdown me-3">
+            <a class="nav-link position-relative" href="javascript:void(0);" id="notificationDropdown"
+                data-bs-toggle="dropdown">
+                <i class="ri-notification-3-line ri-15px"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    3
+                </span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end mt-3 py-2" aria-labelledby="notificationDropdown"
+                style="width: 300px;">
+                <li class="px-3 py-2 border-bottom">
+                    <h6 class="mb-0">Notifications</h6>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                        <i class="ri-message-3-line me-2 text-primary"></i>
+                        <span>New message from John</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                        <i class="ri-user-follow-line me-2 text-success"></i>
+                        <span>Anna started following you</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                        <i class="ri-calendar-event-line me-2 text-warning"></i>
+                        <span>Meeting at 3 PM</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                    <a class="dropdown-item text-center text-primary" href="#">
+                        View All Notifications
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- GitHub Star Button -->
+        {{-- <li class="nav-item lh-1 me-4">
             <a class="github-button" href="{{ config('variables.repository') }}" data-icon="octicon-star"
                 data-size="large" data-show-count="true"
                 aria-label="Star themeselection/materio-html-laravel-admin-template-free on GitHub">Star</a>
-        </li>
+        </li> --}}
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -130,23 +180,12 @@
                         <span class="align-middle">My Profile</span>
                     </a>
                 </li>
-
                 <li>
                     <a class="dropdown-item" href="javascript:void(0);">
                         <i class='ri-settings-4-line ri-22px me-2'></i>
                         <span class="align-middle">Settings</span>
                     </a>
                 </li>
-                {{-- <li>
-                    <a class="dropdown-item" href="javascript:void(0);">
-                        <span class="d-flex align-items-center align-middle">
-                            <i class="flex-shrink-0 ri-file-text-line ri-22px me-3"></i>
-                            <span class="flex-grow-1 align-middle">Billing</span>
-                            <span
-                                class="flex-shrink-0 badge badge-center rounded-pill bg-danger h-px-20 d-flex align-items-center justify-content-center">4</span>
-                        </span>
-                    </a>
-                </li> --}}
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>
@@ -161,11 +200,24 @@
                         </form>
                     </div>
                 </li>
-
             </ul>
         </li>
         <!--/ User -->
     </ul>
+
+    {{-- JS for fullscreen --}}
+    <script>
+        document.getElementById("fullscreen-toggle").addEventListener("click", function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+    </script>
+
 </div>
 
 @if (!isset($navbarDetached))

@@ -76,67 +76,86 @@
             {
               "url": "organizations",
               "name": "Organization",
-              "slug": "organization-list"
+              "slug": "organization-list",
+              "permission": "organizations.index"
             },
             {
               "url": "customers",
               "name": "Customers",
-              "slug": "customers"
+              "slug": "customers",
+              "permission": "customers.index"
             },
             {
               "url": "contracts",
               "name": "Contract",
-              "slug": "contracts"
+              "slug": "contracts",
+              "permission": "contracts.index"
             },
             {
               "url": "plans",
               "name": "Plans",
-              "slug": "plans"
+              "slug": "plans",
+              "permission": "plans.index"
             },
             {
               "url": "deals",
               "name": "Deals",
-              "slug": "deals"
+              "slug": "deals",
+              "permission": "deals.index"
             },
             {
               "url": "leads",
               "name": "Leads",
-              "slug": "leads"
+              "slug": "leads",
+              "permission": "leads.index"
             },
             {
               "url": "pipelines",
               "name": "Pipelines",
-              "slug": "pipelines"
+              "slug": "pipelines",
+              "permission": "pipelines.index"
+            },
+            {
+              "url": "campaigns",
+              "name": "Campaign",
+              "slug": "campaigns",
+              "permission": "campaigns.index"
             },
             {
               "url": "projects",
               "name": "Projects",
-              "slug": "projects"
+              "slug": "projects",
+              "permission": "projects.index"
             },
             {
               "url": "tasks",
               "name": "Tasks",
-              "slug": "tasks"
+              "slug": "tasks",
+              "permission": "tasks.index"
             },
             {
               "url": "proposals",
               "name": "Proposal",
-              "slug": "proposals"
+              "slug": "proposals",
+              "permission": "proposals.index"
             },
             {
               "url": "estimations",
               "name": "Estimation",
-              "slug": "estimations"
+              "slug": "estimations",
+              "permission": "estimations.index"
             },
             {
               "url": "invoices",
               "name": "Invoice",
-              "slug": "invoices"
+              "slug": "invoices",
+              "permission": "invoices.index"
             },
             {
               "url": "payments",
               "name": "Payment",
-              "slug": "payments"
+              "slug": "payments",
+              "permission": "payments.index"
             }
           ]
         },
@@ -148,17 +167,20 @@
             {
               "url": "roles",
               "name": "Roles",
-              "slug": "roles-list"
+              "slug": "roles-list",
+              "permission": "roles.index"
             },
             {
               "url": "permissions",
               "name": "Permissions",
-              "slug": "permissions-list"
+              "slug": "permissions-list",
+              "permission": "permissions.index"
             },
             {
               "url": "system_users",
               "name": "System Users",
-              "slug": "system-users-list"
+              "slug": "system-users-list",
+              "permission": "system_users.index"
             }
           ]
         }

@@ -1,15 +1,13 @@
-@extends('adminlte::page')
+@extends('layouts/contentNavbarLayout')
 
 @section('title', 'Edit Campaign')
 
-@section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-0">Edit Campaign</h1>
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Edit Campaign</h3>
         <a href="{{ route('campaigns.index') }}" class="btn btn-secondary btn-sm">Back</a>
     </div>
-@stop
 
-@section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -20,7 +18,7 @@
         </div>
     @endif
 
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-header">Edit Campaign Information</div>
         <div class="card-body">
             <form action="{{ route('campaigns.update', $campaign->id) }}" method="POST">
@@ -35,9 +33,33 @@
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label for="type">Type <span class="text-danger">*</span></label>
-                        <input type="text" name="type" id="type" class="form-control"
-                            value="{{ old('type', $campaign->type) }}">
+                        <label for="type">Campaign Type <span class="text-danger">*</span></label>
+                        <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
+                            <option value="">Select type</option>
+                            <option value="public_relations"
+                                {{ old('type', $campaign->type) == 'public_relations' ? 'selected' : '' }}>Public Relations
+                            </option>
+                            <option value="content_marketting"
+                                {{ old('type', $campaign->type) == 'content_marketting' ? 'selected' : '' }}>Content
+                                Marketing</option>
+                            <option value="social_marketing"
+                                {{ old('type', $campaign->type) == 'social_marketing' ? 'selected' : '' }}>Social Marketing
+                            </option>
+                            <option value="brand" {{ old('type', $campaign->type) == 'brand' ? 'selected' : '' }}>Brand
+                            </option>
+                            <option value="sales" {{ old('type', $campaign->type) == 'sales' ? 'selected' : '' }}>Sales
+                            </option>
+                            <option value="media" {{ old('type', $campaign->type) == 'media' ? 'selected' : '' }}>Media
+                            </option>
+                            <option value="rebranding"
+                                {{ old('type', $campaign->type) == 'rebranding' ? 'selected' : '' }}>Rebranding</option>
+                            <option value="product_launch"
+                                {{ old('type', $campaign->type) == 'product_launch' ? 'selected' : '' }}>Product Launch
+                            </option>
+                        </select>
+                        @error('type')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="col-md-6 form-group">
@@ -54,16 +76,23 @@
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label for="plan_id">Plan</label>
-                        <select name="plan_id" id="plan_id" class="form-control">
-                            <option value="">Select Plan</option>
-                            @foreach ($plans as $plan)
-                                <option value="{{ $plan->id }}"
-                                    {{ old('plan_id', $campaign->plan_id) == $plan->id ? 'selected' : '' }}>
-                                    {{ $plan->name }}
-                                </option>
-                            @endforeach
+                        <label for="plan">Plan <span class="text-danger">*</span></label>
+                        <select name="plan" id="plan" class="form-control @error('plan') is-invalid @enderror">
+                            <option value="">Select a Plan</option>
+                            <option value="Standard" {{ old('plan', $campaign->plan) == 'Standard' ? 'selected' : '' }}>
+                                Standard - BDT 10,000 /yr + 20,000 BDT setup cost</option>
+                            <option value="Professional"
+                                {{ old('plan', $campaign->plan) == 'Professional' ? 'selected' : '' }}>Professional - BDT
+                                15,000 /yr + 20,000 BDT setup cost</option>
+                            <option value="Premium" {{ old('plan', $campaign->plan) == 'Premium' ? 'selected' : '' }}>
+                                Premium - BDT 25,000 /yr + 20,000 BDT setup cost</option>
+                            <option value="Premium Plus"
+                                {{ old('plan', $campaign->plan) == 'Premium Plus' ? 'selected' : '' }}>Premium Plus - BDT
+                                50,000 /yr + 20,000 BDT setup cost</option>
                         </select>
+                        @error('plan')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="col-md-6 form-group">
@@ -117,23 +146,23 @@
                     <div class="col-md-6 form-group">
                         <label for="status">Status</label>
                         <select name="status" class="form-control">
-                            <option value="Active" {{ old('status', $campaign->status) == 'Active' ? 'selected' : '' }}>Active
-                            </option>
-                            <option value="Inactive" {{ old('status', $campaign->status) == 'Inactive' ? 'selected' : '' }}>
-                                Inactive</option>
+                            <option value="Active" {{ old('status', $campaign->status) == 'Active' ? 'selected' : '' }}>
+                                Active</option>
+                            <option value="Inactive"
+                                {{ old('status', $campaign->status) == 'Inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label for="start_date">Start Date</label>
                         <input type="date" name="start_date" class="form-control"
-                            value="{{ old('start_date', $campaign->start_date?->format('Y-m-d')) }}">
+                            value="{{ old('start_date', optional($campaign->start_date)->format('Y-m-d')) }}">
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label for="end_date">End Date</label>
                         <input type="date" name="end_date" class="form-control"
-                            value="{{ old('end_date', $campaign->end_date?->format('Y-m-d')) }}">
+                            value="{{ old('end_date', optional($campaign->end_date)->format('Y-m-d')) }}">
                     </div>
 
                 </div>
@@ -142,4 +171,4 @@
             </form>
         </div>
     </div>
-@stop
+@endsection
