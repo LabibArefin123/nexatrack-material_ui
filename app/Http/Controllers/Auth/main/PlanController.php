@@ -20,7 +20,7 @@ class PlanController extends Controller
     {
         $allContacts = $this->getFilteredData($request, true);
 
-        return view('content.pages.plan_management.index', compact('allContacts'));
+        return view('content.pages.business_management.plan.index', compact('allContacts'));
     }
     private function getFilteredData(Request $request, $paginate = false)
     {
@@ -73,7 +73,7 @@ class PlanController extends Controller
 
     public function create()
     {
-        return view('content.pages.plan_management.create');
+        return view('content.pages.business_management.plan.create');
     }
 
     public function store(Request $request)
@@ -120,7 +120,7 @@ class PlanController extends Controller
                 ->make(true);
         }
 
-        return view('content.pages.plan_management.index');
+        return view('content.pages.business_management.plan.index');
     }
 
     public function exportPdf(Request $request)
@@ -207,7 +207,7 @@ class PlanController extends Controller
                 ];
             });
 
-        return view('content.pages.plan_management.show', compact('customer', 'customerMemos'));
+        return view('content.pages.business_management.plan.show', compact('customer', 'customerMemos'));
     }
 
 
@@ -217,7 +217,7 @@ class PlanController extends Controller
     public function edit($id)
     {
         $plan = Plan::findOrFail($id);
-        return view('content.pages.plan_management.edit', compact('plan'));
+        return view('content.pages.business_management.plan.edit', compact('plan'));
     }
 
     public function update(Request $request, $id)
@@ -280,7 +280,7 @@ class PlanController extends Controller
             ->orderByDesc('date') // show latest date first
             ->get();
 
-        return view('content.pages.plan_management.memo.memo', compact('customerMemos', 'id'));
+        return view('content.pages.business_management.plan.memo.memo', compact('customerMemos', 'id'));
     }
 
     public function memoStore(Request $request, $id)
@@ -304,7 +304,7 @@ class PlanController extends Controller
     public function memoEdit($id)
     {
         $editMemo = PlanMemo::findOrFail($id);
-        return view('content.pages.plan_management.memo.memo_edit', compact('editMemo'));
+        return view('content.pages.business_management.plan.memo.memo_edit', compact('editMemo'));
     }
 
     public function memoUpdate(Request $request, $id)

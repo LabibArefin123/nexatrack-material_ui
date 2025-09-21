@@ -104,7 +104,7 @@ class DealController extends Controller
 
         // Default page load
         $deals = Deal::all();
-        return view('content.pages.deal_management.index', compact('deals'));
+        return view('content.pages.business_management.deal.index', compact('deals'));
     }
 
 
@@ -129,7 +129,7 @@ class DealController extends Controller
         $users = User::all();
 
         // 👇 include customers also
-        return view('content.pages.deal_management.create', compact('clients', 'users', 'companiesByClient', 'customers'));
+        return view('content.pages.business_management.deal.create', compact('clients', 'users', 'companiesByClient', 'customers'));
     }
     /**
      * Store a newly created resource in storage.
@@ -198,7 +198,7 @@ class DealController extends Controller
 
         $users = User::all();
 
-        return view('content.pages.deal_management.edit', compact(
+        return view('content.pages.business_management.deal.edit', compact(
             'deal',
             'clients',
             'companiesByClient',

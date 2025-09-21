@@ -12,7 +12,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::latest()->get();
-        return view('content.pages.project.index', compact('projects'));
+        return view('content.pages.workflow_management.project.index', compact('projects'));
     }
 
     public function create()
@@ -20,7 +20,7 @@ class ProjectController extends Controller
         $customers = Customer::orderBy('software', 'asc')
             ->orderBy('name', 'asc')
             ->get();
-        return view('content.pages.project.create', compact('customers'));
+        return view('content.pages.workflow_management.project.create', compact('customers'));
     }
 
     public function store(Request $request)
@@ -89,13 +89,13 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        return view('content.pages.project.show', compact('project'));
+        return view('content.pages.workflow_management.project.show', compact('project'));
     }
 
     public function edit(Project $project)
     {
         $customers = Customer::all(); // Add this
-        return view('content.pages.project.edit', compact('project', 'customers'));
+        return view('content.pages.workflow_management.project.edit', compact('project', 'customers'));
     }
 
 

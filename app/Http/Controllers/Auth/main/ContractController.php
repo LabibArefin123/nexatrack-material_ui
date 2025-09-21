@@ -15,7 +15,7 @@ class ContractController extends Controller
     public function index()
     {
         $contracts = Contract::latest()->get();
-        return view('content.pages.contract.index', compact('contracts'));
+        return view('content.pages.business_management.contract.index', compact('contracts'));
     }
 
     /**
@@ -24,7 +24,7 @@ class ContractController extends Controller
     public function create()
     {
         $clients = Customer::all();
-        return view('content.pages.contract.create', compact('clients'));
+        return view('content.pages.business_management.contract.create', compact('clients'));
     }
 
     /**
@@ -62,7 +62,7 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
-        return view('content.pages.contract.show', compact('contract'));
+        return view('content.pages.business_management.contract.show', compact('contract'));
     }
 
     /**
@@ -71,7 +71,7 @@ class ContractController extends Controller
     public function edit(Contract $contract)
     {
         $clients = Customer::all();
-        return view('content.pages.contract.edit', compact('contract', 'clients'));
+        return view('content.pages.business_management.contract.edit', compact('contract', 'clients'));
     }
 
     /**

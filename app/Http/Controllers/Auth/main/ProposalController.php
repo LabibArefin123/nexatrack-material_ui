@@ -19,7 +19,7 @@ class ProposalController extends Controller
     public function index()
     {
         $proposals = Proposal::latest()->get();
-        return view('content.pages.proposal.index', compact('proposals'));
+        return view('content.pages.finance_management.proposal.index', compact('proposals'));
     }
 
     /**
@@ -31,7 +31,7 @@ class ProposalController extends Controller
         $projects = Project::all();
         $deals = Deal::all();
         $users = User::all();
-        return view('content.pages.proposal.create', compact('clients', 'deals', 'users', 'projects'));
+        return view('content.pages.finance_management.proposal.create', compact('clients', 'deals', 'users', 'projects'));
     }
 
     /**
@@ -73,7 +73,7 @@ class ProposalController extends Controller
      */
     public function show(Proposal $proposal)
     {
-        return view('content.pages.proposal.show', compact('proposal'));
+        return view('content.pages.finance_management.proposal.show', compact('proposal'));
     }
 
     /**
@@ -85,7 +85,7 @@ class ProposalController extends Controller
         $projects = Project::all();
         $deals = Deal::all();
         $users = User::all();
-        return view('content.pages.proposal.edit', compact('proposal', 'clients', 'deals', 'users', 'projects'));
+        return view('content.pages.finance_management.proposal.edit', compact('proposal', 'clients', 'deals', 'users', 'projects'));
     }
 
     /**

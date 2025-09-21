@@ -17,7 +17,7 @@ class CampaignController extends Controller
     {
         $campaigns = Campaign::with(['pipeline'])->get();
 
-        return view('content.pages.campaign.index', compact('campaigns'));
+        return view('content.pages.marketting_management.campaign.index', compact('campaigns'));
     }
 
     /**
@@ -26,7 +26,7 @@ class CampaignController extends Controller
     public function create()
     {
         $pipelines = Pipeline::all();
-        return view('content.pages.campaign.create', compact('pipelines'));
+        return view('content.pages.marketting_management.campaign.create', compact('pipelines'));
     }
 
     /**
@@ -62,7 +62,7 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign)
     {
-        return view('pages.campaign.show', compact('campaign'));
+        return view('content.pages.marketting_management.campaign.show', compact('campaign'));
     }
 
     /**
@@ -73,7 +73,7 @@ class CampaignController extends Controller
         $pipelines = Pipeline::all();
         $plans = Plan::all();
 
-        return view('pages.campaign.edit', compact('campaign', 'pipelines', 'plans'));
+        return view('content.pages.marketting_management.campaign.edit', compact('campaign', 'pipelines', 'plans'));
     }
 
     /**

@@ -119,8 +119,11 @@
                             <td>{{ $plan->plan }}</td>
                             <td>{{ $plan->source }}</td>
                             <td class="text-center">
-                                <a href="{{ route('plans.edit', $plan->id) }}" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ route('plans.edit', $plan->id) }}" class="btn btn-sm btn-outline-warning">
                                     <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Show
                                 </a>
                             </td>
                         </tr>

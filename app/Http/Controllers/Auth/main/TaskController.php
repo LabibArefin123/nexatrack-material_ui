@@ -16,7 +16,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::orderBy('id', 'asc')->get();
-        return view('content.pages.task.index', compact('tasks'));
+        return view('content.pages.workflow_management.task.index', compact('tasks'));
     }
 
     /**
@@ -25,7 +25,7 @@ class TaskController extends Controller
     public function create()
     {
         $users = User::all(); // Responsible persons
-        return view('content.pages.task.create', compact('users'));
+        return view('content.pages.workflow_management.task.create', compact('users'));
     }
 
     /**
@@ -62,7 +62,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $users = User::all();
-        return view('content.pages.task.edit', compact('task', 'users'));
+        return view('content.pages.workflow_management.task.edit', compact('task', 'users'));
     }
 
     /**
@@ -108,6 +108,6 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $users = User::all();
-        return view('content.pages.task.show', compact('task', 'users'));
+        return view('content.pages.workflow_management.task.show', compact('task', 'users'));
     }
 }

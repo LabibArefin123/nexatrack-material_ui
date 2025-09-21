@@ -68,17 +68,17 @@
 
     <div class="tab-content" id="campaignTabContent">
         <div class="tab-pane fade show active" id="active" role="tabpanel">
-            @include('content.pages.campaign.partials.table', [
+            @include('content.pages.marketting_management.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Active'),
             ])
         </div>
         <div class="tab-pane fade" id="completed" role="tabpanel">
-            @include('content.pages.campaign.partials.table', [
+            @include('content.pages.marketting_management.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Completed'),
             ])
         </div>
         <div class="tab-pane fade" id="archived" role="tabpanel">
-            @include('content.pages.campaign.partials.table', [
+            @include('content.pages.marketting_management.campaign.partials.table', [
                 'campaigns' => $campaigns->where('status', 'Archived'),
             ])
         </div>

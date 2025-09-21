@@ -17,7 +17,7 @@ class LeadController extends Controller
     public function index()
     {
         $leads = Lead::all();
-        return view('content.pages.leads.index', compact('leads'));
+        return view('content.pages.business_management.leads.index', compact('leads'));
     }
 
     /**
@@ -29,7 +29,7 @@ class LeadController extends Controller
         $plans = Plan::all();
         $users = User::all();
 
-        return view('content.pages.leads.create', compact('customers', 'plans', 'users'));
+        return view('content.pages.business_management.leads.create', compact('customers', 'plans', 'users'));
     }
 
     /**
@@ -57,7 +57,7 @@ class LeadController extends Controller
      */
     public function show(Lead $lead)
     {
-        return view('content.pages.leads.show', compact('lead'));
+        return view('content.pages.business_management.leads.show', compact('lead'));
     }
 
     /**
@@ -69,7 +69,7 @@ class LeadController extends Controller
         $plans = Plan::all();
         $users = User::all();
 
-        return view('content.pages.leads.edit', compact('lead', 'customers', 'plans', 'users'));
+        return view('content.pages.business_management.leads.edit', compact('lead', 'customers', 'plans', 'users'));
     }
 
     /**

@@ -67,6 +67,7 @@
       "name": "CRM Menu",
       "icon": "menu-icon tf-icons ri-home-smile-line",
       "slug": "dashboard",
+      "active": "dashboard",
       "submenu": [
         {
           "name": "Main Software",
@@ -82,13 +83,15 @@
                   "url": "organizations",
                   "name": "Organization",
                   "slug": "organization-list",
-                  "permission": "organizations.index"
+                  "permission": "organizations.index",
+                  "active": "organizations"
                 },
                 {
                   "url": "customers",
                   "name": "Customers",
                   "slug": "customers",
-                  "permission": "customers.index"
+                  "permission": "customers.index",
+                  "active": "customers"
                 }
               ]
             },
@@ -101,31 +104,36 @@
                   "url": "contracts",
                   "name": "Contract",
                   "slug": "contracts",
-                  "permission": "contracts.index"
+                  "permission": "contracts.index",
+                  "active": "contracts"
                 },
                 {
                   "url": "plans",
                   "name": "Plans",
                   "slug": "plans",
-                  "permission": "plans.index"
+                  "permission": "plans.index",
+                  "active": "plans"
                 },
                 {
                   "url": "deals",
                   "name": "Deals",
                   "slug": "deals",
-                  "permission": "deals.index"
+                  "permission": "deals.index",
+                  "active": "deals"
                 },
                 {
                   "url": "leads",
                   "name": "Leads",
                   "slug": "leads",
-                  "permission": "leads.index"
+                  "permission": "leads.index",
+                  "active": "leads"
                 },
                 {
                   "url": "pipelines",
                   "name": "Pipelines",
                   "slug": "pipelines",
-                  "permission": "pipelines.index"
+                  "permission": "pipelines.index",
+                  "active": "pipelines"
                 }
               ]
             },
@@ -138,7 +146,8 @@
                   "url": "campaigns",
                   "name": "Campaign",
                   "slug": "campaigns",
-                  "permission": "campaigns.index"
+                  "permission": "campaigns.index",
+                  "active": "campaigns"
                 }
               ]
             },
@@ -151,19 +160,22 @@
                   "url": "todos",
                   "name": "Todo List",
                   "slug": "todos",
-                  "permission": "todos.index"
+                  "permission": "todos.index",
+                  "active": "todos"
                 },
                 {
                   "url": "projects",
                   "name": "Projects",
                   "slug": "projects",
-                  "permission": "projects.index"
+                  "permission": "projects.index",
+                  "active": "projects"
                 },
                 {
                   "url": "tasks",
                   "name": "Tasks",
                   "slug": "tasks",
-                  "permission": "tasks.index"
+                  "permission": "tasks.index",
+                  "active": "tasks"
                 }
               ]
             },
@@ -176,25 +188,29 @@
                   "url": "proposals",
                   "name": "Proposal",
                   "slug": "proposals",
-                  "permission": "proposals.index"
+                  "permission": "proposals.index",
+                  "active": "proposals"
                 },
                 {
                   "url": "estimations",
                   "name": "Estimation",
                   "slug": "estimations",
-                  "permission": "estimations.index"
+                  "permission": "estimations.index",
+                  "active": "estimations"
                 },
                 {
                   "url": "invoices",
                   "name": "Invoice",
                   "slug": "invoices",
-                  "permission": "invoices.index"
+                  "permission": "invoices.index",
+                  "active": "invoices"
                 },
                 {
                   "url": "payments",
                   "name": "Payment",
                   "slug": "payments",
-                  "permission": "payments.index"
+                  "permission": "payments.index",
+                  "active": "payments"
                 }
               ]
             }
@@ -209,19 +225,22 @@
               "url": "roles",
               "name": "Roles",
               "slug": "roles-list",
-              "permission": "roles.index"
+              "permission": "roles.index",
+              "active": "roles"
             },
             {
               "url": "permissions",
               "name": "Permissions",
               "slug": "permissions-list",
-              "permission": "permissions.index"
+              "permission": "permissions.index",
+              "active": "permissions"
             },
             {
               "url": "system_users",
               "name": "System Users",
               "slug": "system-users-list",
-              "permission": "system_users.index"
+              "permission": "system_users.index",
+              "active": "system_users"
             }
           ]
         }

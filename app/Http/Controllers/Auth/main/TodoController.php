@@ -33,13 +33,13 @@ class TodoController extends Controller
         $pending = $todos->where('status', 1)->count();
         $completed = $todos->where('status', 3)->count();
 
-        return view('content.pages.todos.index', compact('todos', 'total', 'pending', 'completed'));
+        return view('content.pages.workflow_management.todos.index', compact('todos', 'total', 'pending', 'completed'));
     }
 
     public function create()
     {
         $users = User::all();
-        return view('content.pages.todos.create', compact('users'));
+        return view('content.pages.workflow_management.todos.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -61,13 +61,13 @@ class TodoController extends Controller
     public function show(Todo $todo)
     {
         $todo->load('user'); // eager load assigned user
-        return view('content.pages.todos.show', compact('todo'));
+        return view('content.pages.workflow_management.todos.show', compact('todo'));
     }
 
     public function edit(Todo $todo)
     {
         $users = User::all();
-        return view('content.pages.todos.edit', compact('todo', 'users'));
+        return view('content.pages.workflow_management.todos.edit', compact('todo', 'users'));
     }
 
     public function update(Request $request, Todo $todo)

@@ -12,13 +12,13 @@ class PipelineController extends Controller
     public function index()
     {
         $pipelines = Pipeline::all();
-        return view('content.pages.pipeline.index', compact('pipelines'));
+        return view('content.pages.business_management.pipeline.index', compact('pipelines'));
     }
 
     // Show create form
     public function create()
     {
-        return view('content.pages.pipeline.create');
+        return view('content.pages.business_management.pipeline.create');
     }
 
     // Store new pipeline
@@ -40,13 +40,13 @@ class PipelineController extends Controller
     // Show single pipeline
     public function show(Pipeline $pipeline)
     {
-        return view('content.pages.pipeline.show', compact('pipeline'));
+        return view('content.pages.business_management.pipeline.show', compact('pipeline'));
     }
 
     // Show edit form
     public function edit(Pipeline $pipeline)
     {
-        return view('content.pages.pipeline.edit', compact('pipeline'));
+        return view('content.pages.business_management.pipeline.edit', compact('pipeline'));
     }
 
     // Update existing pipeline
