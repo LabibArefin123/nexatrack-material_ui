@@ -14,7 +14,7 @@ class OrganizationController extends Controller
     public function index()
     {
         $organizations = Organization::latest()->paginate(10);
-        return view('content.pages.organization_management.index', compact('organizations'));
+        return view('content.pages.community_management.organization.index', compact('organizations'));
     }
 
     /**
@@ -22,7 +22,7 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        return view('content.pages.organization_management.create');
+        return view('content.pages.community_management.organization.create');
     }
 
     /**
@@ -78,7 +78,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        return view('content.pages.organization_management.show', compact('organization'));
+        return view('content.pages.community_management.organization.show', compact('organization'));
     }
 
     /**
@@ -86,7 +86,7 @@ class OrganizationController extends Controller
      */
     public function edit(Organization $organization)
     {
-        return view('content.pages.organization_management.edit', compact('organization'));
+        return view('content.pages.community_management.organization.edit', compact('organization'));
     }
 
     /**

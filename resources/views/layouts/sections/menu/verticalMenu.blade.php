@@ -78,6 +78,4 @@
             @endif
         @endforeach
     </ul>
-
-
 </aside>

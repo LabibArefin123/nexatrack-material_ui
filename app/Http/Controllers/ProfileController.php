@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function user_profile()
     {
         $user = Auth::user();
-        return view('content.pages.user_management.profile_page.user_profile', compact('user'));
+        return view('content.pages.user_management.profile_page.user_profile_show', compact('user'));
     }
 
     public function user_profile_edit()

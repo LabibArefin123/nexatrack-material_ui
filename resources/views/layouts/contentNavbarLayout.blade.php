@@ -849,4 +849,59 @@
         });
     </script>
     <!-- end of of image preview section -->
+
+    <!-- start of language conversion (optional) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langSelect = document.querySelector('#language');
+            if (langSelect) {
+                langSelect.addEventListener('change', function() {
+                    const selectedLang = this.value;
+
+                    fetch("{{ route('settings.language.update') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                language: selectedLang
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Reload page to apply new language
+                                window.location.reload();
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+            }
+        });
+    </script>
+    <!-- end of language conversion (optional) -->
+
+    <!-- start of url hide via roles -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (auth()->check())
+                const userRole = "{{ auth()->user()->getRoleNames()->first() ?? '' }}";
+                const currentPath = window.location.pathname;
+
+                if (userRole !== 'superadmin') {
+                    if (currentPath !== '/' && currentPath !== '') {
+                        // Content thakbe, kintu URL bar replace hobe `/`
+                        window.history.replaceState({
+                                originalPath: currentPath
+                            }, // store original path in state
+                            '',
+                            '/'
+                        );
+                    }
+                }
+            @endif
+        });
+    </script>
+    <!-- end of url hide via roles -->
 @endsection

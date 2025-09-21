@@ -15,7 +15,14 @@ class PlanController extends Controller
     /** 
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
+    {
+        $allContacts = $this->getFilteredData($request, true);
+
+        return view('content.pages.plan_management.index', compact('allContacts'));
+    }
+    private function getFilteredData(Request $request, $paginate = false)
     {
         $allowedFields = [
             'software',
@@ -30,33 +37,12 @@ class PlanController extends Controller
             'post_code',
             'plan',
             'source',
-            'created_at'
+            'created_at',
         ];
 
         $query = Plan::query();
 
-        // AJAX: Fetch unique values for filter dropdown
-        if ($request->ajax() && $request->query('ajax') == 1 && $request->filled('filter_field')) {
-            $field = $request->filter_field;
-            if (in_array($field, $allowedFields)) {
-                $values = Plan::whereNotNull($field)
-                    ->distinct()
-                    ->orderBy($field)
-                    ->pluck($field)
-                    ->filter()
-                    ->unique()
-                    ->values();
-
-                if ($field === 'software') {
-                    $values->push('other');
-                }
-
-                return response()->json($values);
-            }
-            return response()->json([], 400);
-        }
-
-        // Apply filter
+        // Filter
         if ($request->filled('filter_field') && $request->filled('filter_value')) {
             $field = $request->filter_field;
             $value = $request->filter_value;
@@ -80,71 +66,9 @@ class PlanController extends Controller
             });
         }
 
-        $allContacts = $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString();
-
-        return view('content.pages.plan_management.index', compact('allContacts'));
-    }
-
-
-    protected function getFilteredData(Request $request)
-    {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'plan',
-            'source',
-            'created_at',
-        ];
-
-        $query = Plan::query();
-
-        /**
-         * Global Search
-         */
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
-
-        /**
-         * Field Filter with 'other' logic
-         */
-        $field = $request->query('filter_field');
-        $value = $request->query('filter_value');
-        if ($field && $value && in_array($field, $allowedFields)) {
-            if ($field === 'software' && $value === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
-            } else {
-                $query->where($field, $value);
-            }
-        }
-
-        /**
-         * Sorting
-         */
-        $sortColumn = $request->query('sort_by', 'created_at');
-        $sortDirection = strtolower($request->query('sort_dir', 'desc'));
-        if (in_array($sortColumn, $allowedFields) && in_array($sortDirection, ['asc', 'desc'])) {
-            $query->orderBy($sortColumn, $sortDirection);
-        } else {
-            $query->latest();
-        }
-
-        return $query->get(); // For export/reports
+        return $paginate
+            ? $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString()
+            : $query->orderBy('created_at', 'desc')->get();
     }
 
     public function create()
@@ -201,57 +125,12 @@ class PlanController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'plan',
-            'source',
-            'created_at',
-        ];
+        $customers = $this->getFilteredData($request);
 
-        $query = Plan::query();
-
-        // Get filter params
-        $field = $request->query('filter_field');
-        $value = $request->query('filter_value');
-
-        if ($field && $value && in_array($field, $allowedFields)) {
-            if ($field === 'software' && $value === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
-            } else {
-                $query->where($field, $value);
-            }
-        }
-
-        // Apply global search if present
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
-
-        // Get filtered customers
-        $customers = $query->get();
-
-        // Generate PDF
         $pdf = Pdf::loadView('pages.plan_management.pdf.customer', compact('customers'));
 
-        return $pdf->stream('customers_plan_report.pdf');
+        return $pdf->download('customers_plan_report.pdf');
     }
-
 
     public function exportExcel(Request $request)
     {

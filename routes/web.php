@@ -51,6 +51,7 @@ use App\Http\Controllers\Auth\main\DashboardController;
 use App\Http\Controllers\Auth\main\CustomerController;
 use App\Http\Controllers\Auth\main\PlanController;
 use App\Http\Controllers\Auth\main\DealController;
+use App\Http\Controllers\Auth\main\TodoController;
 use App\Http\Controllers\Auth\main\LeadController;
 use App\Http\Controllers\Auth\main\PipelineController;
 use App\Http\Controllers\Auth\main\CampaignController;
@@ -65,16 +66,18 @@ use App\Http\Controllers\Auth\main\EstimationController;
 use App\Http\Controllers\Auth\main\InvoiceController;
 use App\Http\Controllers\Auth\main\PaymentController;
 use App\Http\Controllers\Auth\main\OrganizationController;
+use App\Http\Controllers\Auth\main\SettingController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.welcome');
 });
 
 Route::middleware(['auth', 'check_permission'])->group(function () {
     //Menu  
-    Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard');
-    Route::get('/mydashboard', [DashboardController::class, 'index'])->name('my_dashboard');
+    // Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/mydashboard', [DashboardController::class, 'dashboard'])->name('my_dashboard');
 
     // layout
 
@@ -196,6 +199,24 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', SystemUserController::class);
+
+    Route::get('/setting_menu', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/setting_theme', [SettingController::class, 'theme'])->name('settings.theme');
+    Route::post('/setting_theme/update', [SettingController::class, 'updateTheme'])->name('settings.theme.update');
+    Route::get('/setting_logs', [SettingController::class, 'logs'])->name('settings.logs');
+    Route::post('/settings_logs/delete', [SettingController::class, 'deleteLogs'])->name('settings.logs.delete');
+    Route::get('/setting_database', [SettingController::class, 'database'])->name('settings.database');
+    Route::post('/setting_database/database/download', [SettingController::class, 'downloadDatabase'])->name('settings.database.download');
+    Route::post('/setting_database/database/download-table', [SettingController::class, 'downloadTable'])->name('settings.database.downloadTable');
+    Route::get('/setting_language', [SettingController::class, 'language'])->name('settings.language');
+    Route::post('/setting_language/update', [SettingController::class, 'updateLanguage'])->name('settings.language.update');
+
+    //sidebar hide  
+    Route::get('/organization_menu', fn() => abort(403))->name('menu.organization')->middleware(['auth', 'permission:menu.organization']);
+    Route::get('/sales_menu', fn() => abort(403))->name('menu.sales')->middleware(['auth', 'permission:menu.sales']);
+    Route::get('/marketing_menu', fn() => abort(403))->name('menu.market')->middleware(['auth', 'permission:menu.market']);
+    Route::get('/project_menu', fn() => abort(403))->name('menu.project')->middleware(['auth', 'permission:menu.project']);
+    Route::get('/finance_menu', fn() => abort(403))->name('menu.finance')->middleware(['auth', 'permission:menu.finance']);
 });
 
 require __DIR__ . '/auth.php';

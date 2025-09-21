@@ -26,7 +26,7 @@
           "slug": "my-dashboard-analytics"
         },
         {
-          "url": "/",
+          "url": "/dashboard",
           "name": "Analytics",
           "slug": "dashboard-analytics"
         },
@@ -74,88 +74,129 @@
           "slug": "main-software",
           "submenu": [
             {
-              "url": "organizations",
-              "name": "Organization",
-              "slug": "organization-list",
-              "permission": "organizations.index"
+              "name": "Community",
+              "icon": "ri-community-line",
+              "slug": "org-customers",
+              "submenu": [
+                {
+                  "url": "organizations",
+                  "name": "Organization",
+                  "slug": "organization-list",
+                  "permission": "organizations.index"
+                },
+                {
+                  "url": "customers",
+                  "name": "Customers",
+                  "slug": "customers",
+                  "permission": "customers.index"
+                }
+              ]
             },
             {
-              "url": "customers",
-              "name": "Customers",
-              "slug": "customers",
-              "permission": "customers.index"
+              "name": "Sales & Deals",
+              "icon": "ri-hand-coin-line",
+              "slug": "sales-deals",
+              "submenu": [
+                {
+                  "url": "contracts",
+                  "name": "Contract",
+                  "slug": "contracts",
+                  "permission": "contracts.index"
+                },
+                {
+                  "url": "plans",
+                  "name": "Plans",
+                  "slug": "plans",
+                  "permission": "plans.index"
+                },
+                {
+                  "url": "deals",
+                  "name": "Deals",
+                  "slug": "deals",
+                  "permission": "deals.index"
+                },
+                {
+                  "url": "leads",
+                  "name": "Leads",
+                  "slug": "leads",
+                  "permission": "leads.index"
+                },
+                {
+                  "url": "pipelines",
+                  "name": "Pipelines",
+                  "slug": "pipelines",
+                  "permission": "pipelines.index"
+                }
+              ]
             },
             {
-              "url": "contracts",
-              "name": "Contract",
-              "slug": "contracts",
-              "permission": "contracts.index"
+              "name": "Marketing",
+              "icon": "ri-megaphone-line",
+              "slug": "marketing",
+              "submenu": [
+                {
+                  "url": "campaigns",
+                  "name": "Campaign",
+                  "slug": "campaigns",
+                  "permission": "campaigns.index"
+                }
+              ]
             },
             {
-              "url": "plans",
-              "name": "Plans",
-              "slug": "plans",
-              "permission": "plans.index"
+              "name": "Projects & Tasks",
+              "icon": "ri-folder-chart-line",
+              "slug": "projects-tasks",
+              "submenu": [
+                {
+                  "url": "todos",
+                  "name": "Todo List",
+                  "slug": "todos",
+                  "permission": "todos.index"
+                },
+                {
+                  "url": "projects",
+                  "name": "Projects",
+                  "slug": "projects",
+                  "permission": "projects.index"
+                },
+                {
+                  "url": "tasks",
+                  "name": "Tasks",
+                  "slug": "tasks",
+                  "permission": "tasks.index"
+                }
+              ]
             },
             {
-              "url": "deals",
-              "name": "Deals",
-              "slug": "deals",
-              "permission": "deals.index"
-            },
-            {
-              "url": "leads",
-              "name": "Leads",
-              "slug": "leads",
-              "permission": "leads.index"
-            },
-            {
-              "url": "pipelines",
-              "name": "Pipelines",
-              "slug": "pipelines",
-              "permission": "pipelines.index"
-            },
-            {
-              "url": "campaigns",
-              "name": "Campaign",
-              "slug": "campaigns",
-              "permission": "campaigns.index"
-            },
-            {
-              "url": "projects",
-              "name": "Projects",
-              "slug": "projects",
-              "permission": "projects.index"
-            },
-            {
-              "url": "tasks",
-              "name": "Tasks",
-              "slug": "tasks",
-              "permission": "tasks.index"
-            },
-            {
-              "url": "proposals",
-              "name": "Proposal",
-              "slug": "proposals",
-              "permission": "proposals.index"
-            },
-            {
-              "url": "estimations",
-              "name": "Estimation",
-              "slug": "estimations",
-              "permission": "estimations.index"
-            },
-            {
-              "url": "invoices",
-              "name": "Invoice",
-              "slug": "invoices",
-              "permission": "invoices.index"
-            },
-            {
-              "url": "payments",
-              "name": "Payment",
-              "slug": "payments",
-              "permission": "payments.index"
+              "name": "Finance",
+              "icon": "ri-money-dollar-circle-line",
+              "slug": "finance",
+              "submenu": [
+                {
+                  "url": "proposals",
+                  "name": "Proposal",
+                  "slug": "proposals",
+                  "permission": "proposals.index"
+                },
+                {
+                  "url": "estimations",
+                  "name": "Estimation",
+                  "slug": "estimations",
+                  "permission": "estimations.index"
+                },
+                {
+                  "url": "invoices",
+                  "name": "Invoice",
+                  "slug": "invoices",
+                  "permission": "invoices.index"
+                },
+                {
+                  "url": "payments",
+                  "name": "Payment",
+                  "slug": "payments",
+                  "permission": "payments.index"
+                }
+              ]
             }
           ]
         },

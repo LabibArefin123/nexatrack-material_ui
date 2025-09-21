@@ -103,9 +103,8 @@ class CustomerController extends Controller
 
         // Page load
         $allContacts = $query->paginate(10)->withQueryString();
-        return view('content.pages.customer_management.index', compact('allContacts'));
+        return view('content.pages.community_management.customer.index', compact('allContacts'));
     }
-
 
     protected function getFilteredData(Request $request)
     {
@@ -170,7 +169,7 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('content.pages.customer_management.create');
+        return view('content.pages.community_management.customer.create');
     }
 
     public function store(Request $request)
@@ -217,7 +216,7 @@ class CustomerController extends Controller
                 ->make(true);
         }
 
-        return view('content.pages.customer_management.index');
+        return view('content.pages.community_management.customer.index');
     }
 
     public function exportPdf(Request $request)
@@ -268,7 +267,7 @@ class CustomerController extends Controller
         $customers = $query->get();
 
         // Generate PDF
-        $pdf = Pdf::loadView('content.pages.customer_management.pdf.customer', compact('customers'));
+        $pdf = Pdf::loadView('content.pages.community_management.customer.pdf.customer', compact('customers'));
 
         return $pdf->stream('customers_report.pdf');
     }
@@ -349,7 +348,7 @@ class CustomerController extends Controller
                 ];
             });
 
-        return view('content.pages.customer_management.show', compact('customer', 'customerMemos'));
+        return view('content.pages.community_management.customer.show', compact('customer', 'customerMemos'));
     }
 
 
@@ -359,7 +358,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::findOrFail($id);
-        return view('content.pages.customer_management.edit', compact('customer'));
+        return view('content.pages.community_management.customer.edit', compact('customer'));
     }
 
     public function update(Request $request, $id)
@@ -422,7 +421,7 @@ class CustomerController extends Controller
             ->orderByDesc('date') // show latest date first
             ->get();
 
-        return view('content.pages.customer_management.memo.memo', compact('customerMemos', 'id'));
+        return view('content.pages.community_management.customer.memo.memo', compact('customerMemos', 'id'));
     }
 
     public function memoStore(Request $request, $id)
@@ -433,20 +432,26 @@ class CustomerController extends Controller
             'remarks' => 'required|string',
         ]);
 
+        // Create memo
         CustomerMemo::create([
             'customer_id' => $customer->id,
             'remarks'     => $request->remarks,
             'date'        => now()->toDateString(), // store only the date automatically
         ]);
 
+        // ✅ Mark customer as unread again
+        $customer->is_read = 0;
+        $customer->save();
+
         return redirect()->route('customer_memos.memo', $id)
             ->with('success', 'Customer memo uploaded successfully.');
     }
 
+
     public function memoEdit($id)
     {
         $editMemo = CustomerMemo::findOrFail($id);
-        return view('content.pages.customer_management.memo.memo_edit', compact('editMemo'));
+        return view('content.pages.community_management.customer.memo.memo_edit', compact('editMemo'));
     }
 
     public function memoUpdate(Request $request, $id)
@@ -489,13 +494,11 @@ class CustomerController extends Controller
 
     public function markRead(Customer $customer)
     {
-        // Only superadmin can mark as read
         if (auth()->user()->hasRole('superadmin')) {
             $customer->is_read = 1;
             $customer->save();
             return response()->json(['success' => true]);
         }
-
         return response()->json(['success' => false], 403);
     }
 }

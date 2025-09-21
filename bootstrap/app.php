@@ -11,13 +11,20 @@ return Application::configure(basePath: dirname(__DIR__))
     health: '/up',
   )
   ->withMiddleware(function (Middleware $middleware) {
+    // Middleware Aliases
     $middleware->alias([
-      'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-      'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+      'role'               => \Spatie\Permission\Middleware\RoleMiddleware::class,
+      'permission'         => \Spatie\Permission\Middleware\PermissionMiddleware::class,
       'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-      'check_permission' => \App\Http\Middleware\CheckPermission::class, // Register new middleware
+      'check_permission'   => \App\Http\Middleware\CheckPermission::class,
+    ]);
+
+    // Web middleware (append custom ones here)
+    $middleware->web(append: [
+      \App\Http\Middleware\SetLocale::class,
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions) {
-    //
-  })->create();
+    // You can customize exception handling here
+  })
+  ->create();

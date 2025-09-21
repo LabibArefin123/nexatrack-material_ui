@@ -18,12 +18,14 @@ class RoleController extends Controller
 
     public function create()
     {
-        $routes = collect(Route::getRoutes())
+        $routes = collect(\Route::getRoutes())
             ->filter(function ($route) {
                 $middlewares = $route->gatherMiddleware();
-                return $route->getName() &&
-                    $route->getAction('controller') &&
-                    collect($middlewares)->contains('auth');
+
+                return $route->getName() // route name thakte hobe
+                    && $route->getAction('controller') // controller diye define kora hobe
+                    && collect($middlewares)->contains('auth') // auth ache
+                    && collect($middlewares)->contains('check_permission'); // check_permission ache
             })
             ->groupBy(function ($route) {
                 return class_basename(explode('@', $route->getActionName())[0]);
@@ -31,6 +33,7 @@ class RoleController extends Controller
 
         return view('content.pages.role_permission.roles.create', compact('routes'));
     }
+
 
     public function store(Request $request)
     {

@@ -11,6 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        return view('content.dashboard.dashboards-analytics');
+    }
+    
+    public function dashboard()
+    {
         $totalBidTrackUsers = Customer::where('software', 'BidTrack')->count();
         $totalBidTrackPlanUsers = Plan::where('software', 'BidTrack')->count();
         $totalTimeTrackUsers = Customer::where('software', 'Timetrack')->count();

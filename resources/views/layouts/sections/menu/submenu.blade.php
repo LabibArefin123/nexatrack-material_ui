@@ -1,5 +1,6 @@
 @php
     use Illuminate\Support\Facades\Route;
+
 @endphp
 
 <ul class="menu-sub">

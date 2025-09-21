@@ -1,0 +1,93 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', 'Settings')
+
+@section('content')
+    <div class="container-fluid">
+        <h3 class="mb-4">System Settings</h3>
+
+        <div class="row g-4">
+            <!-- Theme Change -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-paint-brush-line fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="mb-2">Theme Change</h5>
+                    <p class="text-muted small">Switch between light & dark mode</p>
+                    <a href="{{ route('settings.theme') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                </div>
+            </div>
+
+            <!-- Software Error / Log -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-bug-line fs-1 text-danger"></i>
+                    </div>
+                    <h5 class="mb-2">Software Error & Logs</h5>
+                    <p class="text-muted small">Check recent system errors & logs</p>
+                    <a href="{{ route('settings.logs') }}" class="btn btn-sm btn-outline-danger">View Logs</a>
+                </div>
+            </div>
+
+            <!-- Database Backup / Download -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-database-2-line fs-1 text-success"></i>
+                    </div>
+                    <h5 class="mb-2">Database Backup</h5>
+                    <p class="text-muted small">Download & restore database backups</p>
+                    <a href="{{ route('settings.database') }}" class="btn btn-sm btn-outline-success">Backup Now</a>
+                </div>
+            </div>
+
+            <!-- Language Conversion -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-translate-2 fs-1 text-info"></i>
+                    </div>
+                    <h5 class="mb-2">Language Conversion</h5>
+                    <p class="text-muted small">Switch English to Multi-language</p>
+                    <a href="{{ route('settings.language') }}" class="btn btn-sm btn-outline-info">Convert</a>
+                </div>
+            </div>
+
+            <!-- Authorized URLs -->
+            {{-- <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-links-line fs-1 text-warning"></i>
+                    </div>
+                    <h5 class="mb-2">Authorized URLs</h5>
+                    <p class="text-muted small">View only URLs allowed for your role</p>
+                    <a href="{{ route('settings.urls') }}" class="btn btn-sm btn-outline-warning">View URLs</a>
+                </div>
+            </div> --}}
+
+        </div>
+    </div>
+@endsection
+
+@section('css')
+    <style>
+        .setting-card {
+            border-radius: 1rem;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .setting-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .setting-icon i {
+            padding: 18px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+@endsection
