@@ -47,4 +47,17 @@ class Contract extends Model
     {
         return $this->belongsTo(Deal::class, 'deal_id');
     }
+
+    // App\Models\Contract.php
+    public function getTypeNameAttribute()
+    {
+        $types = [
+            'contracts_under_seal' => 'Contracts Under Seal',
+            'implied_contracts'    => 'Implied Contracts',
+            'executory_contracts'  => 'Executory Contracts',
+            'voidable_contracts'   => 'Voidable Contracts',
+        ];
+
+        return $types[$this->type] ?? $this->type;
+    }
 }

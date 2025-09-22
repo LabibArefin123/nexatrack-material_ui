@@ -12,11 +12,43 @@ class ContractController extends Controller
     /**
      * Display a listing of the contracts.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contracts = Contract::latest()->get();
-        return view('content.pages.business_management.contract.index', compact('contracts'));
+        $query = Contract::query()->with('customer');
+
+        // Filter by Contract Type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by Customer
+        if ($request->filled('customer_id')) {
+            $query->where('client_id', $request->customer_id);
+        }
+
+        // Filter by Date Range
+        if ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('end_date', '<=', $request->end_date);
+        }
+
+        $contracts = $query->latest()->paginate(12);
+
+        $customers = \App\Models\Customer::all();
+
+        // Contract types list (for filter + readable names)
+        $contractTypes = [
+            'contracts_under_seal' => 'Contracts Under Seal',
+            'implied_contracts'    => 'Implied Contracts',
+            'executory_contracts'  => 'Executory Contracts',
+            'voidable_contracts'   => 'Voidable Contracts',
+        ];
+
+        return view('content.pages.business_management.contract.index', compact('contracts', 'customers', 'contractTypes'));
     }
+
 
     /**
      * Show the form for creating a new contract.

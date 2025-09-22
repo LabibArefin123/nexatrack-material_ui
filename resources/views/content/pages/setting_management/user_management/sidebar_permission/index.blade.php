@@ -104,7 +104,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Are you sure you want to delete this view access?')"
-                                        type="submit" class="btn btn-danger btn-sm">
+                                        type="submit" class="btn btn-danger ">
                                         Delete
                                     </button>
                                 </form>

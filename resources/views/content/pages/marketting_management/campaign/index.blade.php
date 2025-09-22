@@ -5,9 +5,9 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
         <h3 class="mb-2 fw-bold">Campaign Dashboard</h3>
-        <a href="{{ route('campaigns.create') }}" class="btn btn-success btn-sm d-flex align-items-center gap-2">
+        <a href="{{ route('campaigns.create') }}" class="btn btn-success  d-flex align-items-center gap-2">
             <i class="fas fa-plus"></i>
-            <span>Add New Campaign</span>
+            <span>+ Add New Campaign</span>
         </a>
     </div>
 

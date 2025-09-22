@@ -7,13 +7,13 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Organizations</h3>
         <div class="d-flex gap-2">
-            <a href="{{ route('organizations.create') }}" class="btn btn-success btn-sm" title="Add Organization">
+            <a href="{{ route('organizations.create') }}" class="btn btn-success " title="Add Organization">
                 <i class="bi bi-plus-lg">Create</i>
             </a>
-            <button id="gridViewBtn" class="btn btn-outline-primary btn-sm" title="Grid View">
+            <button id="gridViewBtn" class="btn btn-outline-primary " title="Grid View">
                 <i class="bi bi-grid-3x2-gap">Grid View</i>
             </button>
-            <button id="listViewBtn" class="btn btn-outline-secondary btn-sm" title="List View">
+            <button id="listViewBtn" class="btn btn-outline-secondary " title="List View">
                 <i class="bi bi-list">List View</i>
             </button>
         </div>
@@ -35,11 +35,11 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ $organization->name }}</h5>
                         <div class="mt-auto d-flex justify-content-between gap-1">
-                            <a href="{{ route('organizations.edit', $organization->id) }}" class="btn btn-sm btn-primary"
+                            <a href="{{ route('organizations.edit', $organization->id) }}" class="btn  btn-primary"
                                 title="Edit">
                                 <i class="bi bi-pencil-fill">Edit</i>
                             </a>
-                            <a href="{{ route('organizations.show', $organization->id) }}" class="btn btn-sm btn-warning"
+                            <a href="{{ route('organizations.show', $organization->id) }}" class="btn  btn-warning"
                                 title="Show">
                                 <i class="bi bi-eye-fill">Show</i>
                             </a>
@@ -47,7 +47,7 @@
                                 class="d-inline" onsubmit="return confirm('Are you sure?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                <button type="submit" class="btn  btn-danger" title="Delete">
                                     <i class="bi bi-trash-fill">Delete</i>
                                 </button>
                             </form>
@@ -89,11 +89,11 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('organizations.edit', $organization->id) }}" class="btn btn-sm btn-primary"
+                            <a href="{{ route('organizations.edit', $organization->id) }}" class="btn  btn-primary"
                                 title="Edit">
                                 <i class="bi bi-pencil-fill">Edit</i>
                             </a>
-                            <a href="{{ route('organizations.show', $organization->id) }}" class="btn btn-sm btn-warning"
+                            <a href="{{ route('organizations.show', $organization->id) }}" class="btn  btn-warning"
                                 title="Show">
                                 <i class="bi bi-eye-fill">Show</i>
                             </a>
@@ -101,7 +101,7 @@
                                 class="d-inline" onsubmit="return confirm('Are you sure?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                <button type="submit" class="btn  btn-danger" title="Delete">
                                     <i class="bi bi-trash-fill">Delete</i>
                                 </button>
                             </form>

@@ -15,7 +15,7 @@
                     </div>
                     <h5 class="mb-2">Theme Change</h5>
                     <p class="text-muted small">Switch between light & dark mode</p>
-                    <a href="{{ route('settings.theme') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                    <a href="{{ route('settings.theme') }}" class="btn  btn-outline-primary">Manage</a>
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
                     </div>
                     <h5 class="mb-2">Software Error & Logs</h5>
                     <p class="text-muted small">Check recent system errors & logs</p>
-                    <a href="{{ route('settings.logs') }}" class="btn btn-sm btn-outline-danger">View Logs</a>
+                    <a href="{{ route('settings.logs') }}" class="btn  btn-outline-danger">View Logs</a>
                 </div>
             </div>
 
@@ -39,21 +39,49 @@
                     </div>
                     <h5 class="mb-2">Database Backup</h5>
                     <p class="text-muted small">Download & restore database backups</p>
-                    <a href="{{ route('settings.database') }}" class="btn btn-sm btn-outline-success">Backup Now</a>
+                    <a href="{{ route('settings.database') }}" class="btn  btn-outline-success">Backup Now</a>
                 </div>
             </div>
 
-            <!-- Language Conversion -->
+            <!-- Notification Settings -->
             <div class="col-md-4 col-sm-6">
                 <div class="card shadow-sm setting-card h-100 text-center p-4">
                     <div class="setting-icon mb-3">
-                        <i class="ri-translate-2 fs-1 text-info"></i>
+                        <i class="ri-notification-line fs-1 text-warning"></i>
                     </div>
-                    <h5 class="mb-2">Language Conversion</h5>
-                    <p class="text-muted small">Switch English to Multi-language</p>
-                    <a href="{{ route('settings.language') }}" class="btn btn-sm btn-outline-info">Convert</a>
+                    <h5 class="mb-2">Notification Settings</h5>
+                    <p class="text-muted small">Configure email, SMS & in-app notifications for the system</p>
+                    <a href="#" class="btn btn-outline-warning">Manage</a>
+                    {{-- <a href="{{ route('settings.notifications') }}" class="btn btn-outline-warning">Manage</a> --}}
                 </div>
             </div>
+
+            <!-- Email / SMTP Settings -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-mail-settings-line fs-1 text-info"></i>
+                    </div>
+                    <h5 class="mb-2">Email Settings</h5>
+                    <p class="text-muted small">Configure outgoing emails for proposals, invoices, alerts</p>
+                    <a href="#" class="btn btn-outline-info">Configure</a>
+                    {{-- <a href="{{ route('settings.email') }}" class="btn btn-outline-info">Configure</a> --}}
+                </div>
+            </div>
+
+            <!-- Integration Settings -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm setting-card h-100 text-center p-4">
+                    <div class="setting-icon mb-3">
+                        <i class="ri-plug-line fs-1 text-secondary"></i>
+                    </div>
+                    <h5 class="mb-2">Integration Settings</h5>
+                    <p class="text-muted small">Connect CRM with tools like Slack, Google Calendar, Payment gateways</p>
+                    {{-- <a href="{{ route('settings.integrations') }}" class="btn btn-outline-secondary">Manage</a> --}}
+                    <a href="#" class="btn btn-outline-secondary">Manage</a>
+                </div>
+            </div>
+
 
             <!-- Authorized URLs -->
             {{-- <div class="col-md-4 col-sm-6">
@@ -63,7 +91,7 @@
                     </div>
                     <h5 class="mb-2">Authorized URLs</h5>
                     <p class="text-muted small">View only URLs allowed for your role</p>
-                    <a href="{{ route('settings.urls') }}" class="btn btn-sm btn-outline-warning">View URLs</a>
+                    <a href="{{ route('settings.urls') }}" class="btn  btn-outline-warning">View URLs</a>
                 </div>
             </div> --}}
 

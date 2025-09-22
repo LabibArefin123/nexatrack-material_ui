@@ -8,10 +8,10 @@
 
         <!-- Right: Buttons -->
         <div class="d-flex" style="gap: 10px;">
-            <a href="javascript:history.back()" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+            <a href="javascript:history.back()" class="btn btn-primary  d-flex align-items-center gap-1">
                 <i class="fas fa-arrow-left"></i> Go Back
             </a>
-            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning ">
                 Edit
             </a>
         </div>

@@ -49,8 +49,8 @@
                 </div>
             </div>
             <div class="mt-2">
-                <button type="submit" class="btn btn-danger btn-sm"
-                    onclick="return confirm('Delete selected logs?')">Delete Selected</button>
+                <button type="submit" class="btn btn-danger " onclick="return confirm('Delete selected logs?')">Delete
+                    Selected</button>
             </div>
         </form>
     </div>

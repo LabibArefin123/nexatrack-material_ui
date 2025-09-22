@@ -4,15 +4,44 @@ namespace App\Http\Controllers\Auth\main;
 
 use App\Models\Project;
 use App\Models\Customer;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::latest()->get();
-        return view('content.pages.workflow_management.project.index', compact('projects'));
+        $query = Project::query();
+
+        // Priority filter
+        if ($request->filled('priority')) {
+            $query->where('priority', $request->priority);
+        }
+
+        // Pipeline stage filter
+        if ($request->filled('pipeline_stage')) {
+            $query->where('pipeline_stage', $request->pipeline_stage);
+        }
+
+        // Date filters
+        if ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', Carbon::parse($request->start_date));
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('end_date', '<=', Carbon::parse($request->end_date));
+        }
+
+
+        $projects = $query->with('customer') // customer load হবে
+            ->orderBy('id', 'desc')
+            ->paginate(15)
+            ->withQueryString();
+
+        $priorities = ['Low', 'Medium', 'High'];
+        $pipelineStages = ['plan', 'design', 'develop', 'completed'];
+
+        return view('content.pages.workflow_management.project.index', compact('projects', 'priorities', 'pipelineStages'));
     }
 
     public function create()

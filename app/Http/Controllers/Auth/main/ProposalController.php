@@ -16,9 +16,27 @@ class ProposalController extends Controller
     /**
      * Display a listing of the proposals.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $proposals = Proposal::latest()->get();
+        $query = Proposal::query();
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('estimate_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('expiry_date', '<=', $request->end_date);
+        }
+
+        // Get all company names for the filter dropdown
+        $allNames = \App\Models\Organization::orderBy('name')->pluck('name');
+
+        $proposals = $query->latest()->paginate(15)->withQueryString();
         return view('content.pages.finance_management.proposal.index', compact('proposals'));
     }
 

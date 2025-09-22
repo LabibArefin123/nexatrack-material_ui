@@ -13,9 +13,30 @@ class TaskController extends Controller
     /**
      * Display a listing of the tasks.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::orderBy('id', 'asc')->get();
+        $query = Task::query();
+
+        // Filter by priority
+        if ($request->filled('priority')) {
+            $query->where('priority', ucfirst(strtolower($request->priority))); // normalize to 'Low', 'Medium', 'High'
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('due_date', '<=', $request->end_date);
+        }
+
+        $tasks = $query->orderBy('id', 'asc')->get();
+
         return view('content.pages.workflow_management.task.index', compact('tasks'));
     }
 

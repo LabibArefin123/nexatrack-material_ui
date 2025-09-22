@@ -18,14 +18,14 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return view('content.pages.setting.index');
+        return view('content.pages.setting_management.index');
     }
 
     public function theme()
     {
         // default theme load (from session or db)
         $currentTheme = session('theme', 'light');
-        return view('content.pages.setting.theme', compact('currentTheme'));
+        return view('content.pages.setting_management.theme', compact('currentTheme'));
     }
 
     public function updateTheme(Request $request)
@@ -99,7 +99,7 @@ class SettingController extends Controller
             usort($errorLogs, fn($a, $b) => strcmp($b['date'], $a['date']));
         }
 
-        return view('content.pages.setting.logs', compact('errorLogs', 'filter'));
+        return view('content.pages.setting_management.logs', compact('errorLogs', 'filter'));
     }
     // Delete selected logs
     public function deleteLogs(Request $request)

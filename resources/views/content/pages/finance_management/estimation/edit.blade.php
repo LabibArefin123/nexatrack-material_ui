@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Edit Estimate</h3>
-        <a href="{{ route('estimations.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('estimations.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -150,9 +150,9 @@
                         <label class="form-label fw-bold">Tags</label>
                         <input type="text" id="tagsInput" class="form-control" placeholder="Enter tag">
                         <div id="tagsContainer" class="mt-2 d-flex flex-wrap gap-1"></div>
-                        <input type="hidden" name="tags" id="tagsHidden"
-                            value='{{ old('tags', $estimation->tags) }}'>
+                        <input type="hidden" name="tags" id="tagsHidden" value='@json(old('tags', $estimation->tags ?? []))'>
                     </div>
+
 
                     {{-- Attachment --}}
                     <div class="col-md-12">
@@ -183,6 +183,7 @@
 
 @section('js')
     <script>
+        // --- Tags ---
         // --- Tags ---
         let tags = [];
 
@@ -219,6 +220,7 @@
             hidden.value = JSON.stringify(tags);
         }
 
+        // Add new tag on spacebar
         input.addEventListener('keyup', e => {
             if (e.key === ' ' && input.value.trim() !== '') {
                 tags.push(input.value.trim());

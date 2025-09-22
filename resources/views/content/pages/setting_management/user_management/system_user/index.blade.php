@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h3 class="mb-0">System Users</h3>
-        <a href="{{ route('system_users.create') }}" class="btn btn-success btn-sm">
+        <a href="{{ route('system_users.create') }}" class="btn btn-success ">
             Add
         </a>
     </div>
@@ -35,10 +35,10 @@
                                 <td>{{ $user->phone ?? 'Not Provided' }}</td>
                                 <td>{{ $user->username ?? 'Not Provided' }}</td>
                                 <td>
-                                    <a href="{{ route('system_users.show', $user->id) }}"
-                                        class="btn btn-info btn-sm me-2">View</a> <!-- Add me-2 -->
+                                    <a href="{{ route('system_users.show', $user->id) }}" class="btn btn-info  me-2">View</a>
+                                    <!-- Add me-2 -->
                                     <a href="{{ route('system_users.edit', $user->id) }}"
-                                        class="btn btn-warning btn-sm me-2">Edit</a> <!-- Add me-2 -->
+                                        class="btn btn-warning  me-2">Edit</a> <!-- Add me-2 -->
                                 </td>
                             </tr>
                         @endforeach

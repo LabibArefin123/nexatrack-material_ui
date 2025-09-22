@@ -63,9 +63,9 @@ class DataTableController extends Controller
                     $deleteUrl = route('posts.destroy', $row->id);
                     $pdfDownloadUrl = route('pdfDownload', ['modelType' => 'post', 'id' => $row->id]);
 
-                    return '<a href="' . $viewUrl . '" class="btn btn-sm btn-info" title="View"><i class="fas fa-eye"></i></a>
-                        <a href="' . $editUrl . '" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
-                        <button class="btn btn-sm btn-danger deleteData" data-id="' . $row->id . '" data-url="' . $deleteUrl . '" title="Delete"><i class="fas fa-trash"></i></button>
+                    return '<a href="' . $viewUrl . '" class="btn  btn-info" title="View"><i class="fas fa-eye"></i></a>
+                        <a href="' . $editUrl . '" class="btn  btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
+                        <button class="btn  btn-danger deleteData" data-id="' . $row->id . '" data-url="' . $deleteUrl . '" title="Delete"><i class="fas fa-trash"></i></button>
                         <a href="' . $pdfDownloadUrl . '" class="btn btn-sm btn-primary" title="Download PDF"><i class="fas fa-download"></i></a>';
                 })
                 ->make(true);

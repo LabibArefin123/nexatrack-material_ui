@@ -5,42 +5,82 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Todo List</h1>
-        <a href="{{ route('todos.create') }}" class="btn btn-success">
-            Add Todo
+        <a href="{{ route('todos.create') }}" class="btn btn-primary">
+            + Add Todo
         </a>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <div class="card mb-3 p-3 border shadow-sm">
+        <div class="d-flex align-items-center justify-content-between gap-2 mb-3 flex-nowrap">
 
-            {{-- Filters + Delete Selected (One Row - Always Inline) --}}
-            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 flex-nowrap">
+            <form class="d-flex align-items-end gap-3 flex-wrap m-0" method="GET">
 
-                <form class="d-flex align-items-center gap-2 flex-nowrap m-0" method="GET">
-                    <select name="priority" class="form-select form-select-sm" style="min-width: 150px;">
+                {{-- Priority --}}
+                <div class="d-flex flex-column" style="min-width:150px;">
+                    <label for="priority" class="form-label fw-bold mb-1">Priority</label>
+                    <select id="priority" name="priority" class="form-select form-select-sm">
                         <option value="">All Priorities</option>
                         <option value="1" @if (request('priority') == 1) selected @endif>High</option>
                         <option value="2" @if (request('priority') == 2) selected @endif>Medium</option>
                         <option value="3" @if (request('priority') == 3) selected @endif>Low</option>
                     </select>
+                </div>
 
-                    <select name="status" class="form-select form-select-sm" style="min-width: 150px;">
+                {{-- Status --}}
+                <div class="d-flex flex-column" style="min-width:150px;">
+                    <label for="status" class="form-label fw-bold mb-1">Status</label>
+                    <select id="status" name="status" class="form-select form-select-sm">
                         <option value="">All Status</option>
                         <option value="1" @if (request('status') == 1) selected @endif>Pending</option>
                         <option value="2" @if (request('status') == 2) selected @endif>In Progress</option>
                         <option value="3" @if (request('status') == 3) selected @endif>Completed</option>
                         <option value="4" @if (request('status') == 4) selected @endif>On Hold</option>
                     </select>
+                </div>
 
-                    <button class="btn btn-primary btn-sm">Filter</button>
-                </form>
+                {{-- Due Date Sort --}}
+                <div class="d-flex flex-column" style="min-width:150px;">
+                    <label for="due_date_sort" class="form-label fw-bold mb-1">Due Date</label>
+                    <select id="due_date_sort" name="due_date_sort" class="form-select form-select-sm">
+                        <option value="">Sort by</option>
+                        <option value="asc" @if (request('due_date_sort') == 'asc') selected @endif>Oldest First</option>
+                        <option value="desc" @if (request('due_date_sort') == 'desc') selected @endif>Latest First</option>
+                    </select>
+                </div>
 
-                <button id="bulkDeleteBtn" class="btn btn-danger btn-sm">
-                    Delete Selected
-                </button>
+                {{-- Start Date --}}
+                <div class="d-flex flex-column" style="min-width:160px;">
+                    <label for="start_date" class="form-label fw-bold mb-1">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
+                        class="form-control form-control-sm">
+                </div>
 
+                {{-- End Date --}}
+                <div class="d-flex flex-column" style="min-width:160px;">
+                    <label for="end_date" class="form-label fw-bold mb-1">End Date</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
+                        class="form-control form-control-sm">
+                </div>
+
+                {{-- Filter Button --}}
+                <div class="d-flex flex-column">
+                    <label class="form-label fw-bold mb-1 text-white">Filter</label>
+                    <button class="btn btn-success">Apply Filter</button>
+                </div>
+
+            </form>
+
+            {{-- Bulk Delete --}}
+            <div class="d-flex flex-column">
+                <label class="form-label fw-bold mb-1 text-white">Delete</label>
+                <button id="bulkDeleteBtn" class="btn btn-danger ">Delete Selected</button>
             </div>
 
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
 
             {{-- Todo List Table --}}
             <div class="table-responsive">
@@ -48,6 +88,7 @@
                     <thead class="table-light">
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>
+                            <th>SL</th>
                             <th>Title</th>
                             <th>Due Date</th>
                             <th>Priority</th>
@@ -60,7 +101,8 @@
                         @forelse ($todos->sortBy('priority') as $todo)
                             <tr>
                                 <td><input type="checkbox" class="selectItem" value="{{ $todo->id }}"></td>
-                                <td>{{ $todo->title }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ implode(' ', array_slice(explode(' ', $todo->title), 0, 3)) }}</td>
                                 <td>{{ $todo->due_date ?? 'N/A' }}</td>
                                 <td>
                                     <span
@@ -82,11 +124,11 @@
                                     </span>
                                 </td>
                                 <td>{{ $todo->user?->name ?? 'N/A' }}</td>
-                                <td class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('todos.edit', $todo) }}" class="btn btn-sm btn-primary">
+                                <td>
+                                    <a href="{{ route('todos.edit', $todo) }}" class="btn  btn-primary">
                                         Edit
                                     </a>
-                                    <a href="{{ route('todos.show', $todo) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('todos.show', $todo) }}" class="btn  btn-info">
                                         View
                                     </a>
                                     <form action="{{ route('todos.destroy', $todo) }}" method="POST"
@@ -94,7 +136,7 @@
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">
+                                        <button class="btn  btn-danger">
                                             Delete
                                         </button>
                                     </form>

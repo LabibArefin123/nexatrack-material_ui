@@ -23,8 +23,23 @@ class TodoController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Sort by priority (High -> Low)
-        $todos = $query->orderBy('priority')->get()->map(function ($todo) {
+        // Filter by date range (created_at)
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // Sort by due date if filter applied
+        if ($request->filled('due_date_sort')) {
+            $query->orderBy('due_date', $request->due_date_sort);
+        } else {
+            // Default: sort by priority (High -> Low)
+            $query->orderBy('priority');
+        }
+
+        $todos = $query->get()->map(function ($todo) {
             $todo->due_date = $todo->due_date ? \Carbon\Carbon::parse($todo->due_date)->format('d M Y') : null;
             return $todo;
         });

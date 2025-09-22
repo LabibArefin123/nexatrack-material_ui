@@ -33,14 +33,14 @@
                                 permission{{ $role->permissions->count() !== 1 ? 's' : '' }}
                             </td>
                             <td>
-                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning ">Edit</a>
 
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST"
                                     style="display:inline-block;"
                                     onsubmit="return confirm('Are you sure you want to delete this role?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm ml-1">Delete</button>
+                                    <button type="submit" class="btn btn-danger  ml-1">Delete</button>
                                 </form>
                             </td>
                         </tr>

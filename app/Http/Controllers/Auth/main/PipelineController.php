@@ -9,10 +9,35 @@ use Illuminate\Http\Request;
 class PipelineController extends Controller
 {
     // Display all pipelines
-    public function index()
+    public function index(Request $request)
     {
-        $pipelines = Pipeline::all();
-        return view('content.pages.business_management.pipeline.index', compact('pipelines'));
+        $query = Pipeline::query();
+
+        // Filter by pipeline name
+        if ($request->filled('name')) {
+            $query->where('name', $request->name);
+        }
+
+        // Filter by stage
+        if ($request->filled('stage')) {
+            $query->where('stage', $request->stage);
+        }
+
+        // Filter by date range (created_at)
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $pipelines = $query->orderBy('created_at', 'asc')->paginate(15)->withQueryString();
+
+        // Pass options for filters
+        $names = Pipeline::select('name')->distinct()->pluck('name');
+        $stages = Pipeline::select('stage')->distinct()->pluck('stage');
+
+        return view('content.pages.business_management.pipeline.index', compact('pipelines', 'names', 'stages'));
     }
 
     // Show create form

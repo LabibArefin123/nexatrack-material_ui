@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Create Invoice</h3>
-        <a href="{{ route('invoices.index') }}" class="btn btn-sm btn-secondary">Back</a>
+        <a href="{{ route('invoices.index') }}" class="btn  btn-secondary">Back</a>
     </div>
 
     @if ($errors->any())
@@ -137,7 +137,7 @@
                                     <option value="{{ $project->id }}">{{ $project->name }}</option>
                                 @endforeach
                             </select>
-                            <a href="{{ route('projects.create') }}" class="btn btn-sm btn-success">Add New</a>
+                            <a href="{{ route('projects.create') }}" class="btn  btn-success">Add New</a>
                         </div>
                         @error('project_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -204,11 +204,11 @@
                                 </td>
                                 <td><input type="number" step="0.01" name="items[0][amount]" class="form-control">
                                 </td>
-                                <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
+                                <td><button type="button" class="btn  btn-danger removeRow">X</button></td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" id="addRow" class="btn btn-sm btn-success">+ Add New</button>
+                    <button type="button" id="addRow" class="btn  btn-success">+ Add New</button>
                 </div>
 
                 {{-- Notes --}}
@@ -244,7 +244,7 @@
             <td><input type="number" step="0.01" name="items[${rowIndex}][price]" class="form-control"></td>
             <td><input type="number" step="0.01" name="items[${rowIndex}][discount]" class="form-control"></td>
             <td><input type="number" step="0.01" name="items[${rowIndex}][amount]" class="form-control"></td>
-            <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
+            <td><button type="button" class="btn  btn-danger removeRow">X</button></td>
         </tr>`;
             table.insertAdjacentHTML('beforeend', newRow);
             rowIndex++;

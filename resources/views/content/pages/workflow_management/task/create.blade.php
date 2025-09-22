@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Add New Task</h3>
-        <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('tasks.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -54,7 +54,7 @@
                                     <small>{{ Str::limit($user->name, 6) }}</small>
                                 </div>
                             @endforeach
-                            <button type="button" class="btn btn-sm btn-primary" onclick="showAddUserModal()">Add</button>
+                            <button type="button" class="btn  btn-primary" onclick="showAddUserModal()">Add</button>
                         </div>
                         <input type="hidden" name="responsibles" id="responsiblesInput">
                         <div id="responsiblesList" class="mt-2 d-flex flex-wrap gap-1"></div>

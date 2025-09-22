@@ -16,95 +16,40 @@ class DealController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $deals = Deal::query();
+        $query = Deal::query();
 
-            $allowedFilters = [
-                'name',
-                'deal_stage',
-                'currency',
-                'deal_type',
-                'source',
-                'client_option',
-                'company_option',
-            ];
-
-            // Apply field filter
-            if ($request->filled('filter_field') && $request->filled('filter_value')) {
-                $field = $request->filter_field;
-                $value = $request->filter_value;
-                if (in_array($field, $allowedFilters)) {
-                    $deals->where($field, 'like', "%{$value}%");
-                }
-            }
-
-            // Apply global search
-            if ($request->filled('q')) {
-                $search = $request->q;
-                $deals->where(function ($q) use ($search, $allowedFilters) {
-                    foreach ($allowedFilters as $field) {
-                        $q->orWhere($field, 'like', "%{$search}%");
-                    }
-                });
-            }
-
-            $data = $deals->get()->map(function ($deal, $index) {
-                $responsibles = is_array($deal->responsibles)
-                    ? implode(', ', \App\Models\User::whereIn('id', $deal->responsibles)->pluck('name')->toArray())
-                    : '-';
-
-                $observers = '-';
-                if (is_array($deal->observer)) {
-                    $names = [];
-                    foreach ($deal->observer as $obs) {
-                        if (str_starts_with($obs, 'user_')) {
-                            $id = str_replace('user_', '', $obs);
-                            $user = \App\Models\User::find($id);
-                            if ($user) $names[] = "User: {$user->name}";
-                        } elseif (str_starts_with($obs, 'customer_')) {
-                            $id = str_replace('customer_', '', $obs);
-                            $customer = \App\Models\Customer::find($id);
-                            if ($customer) $names[] = $customer->name;
-                        }
-                    }
-                    if ($names) $observers = implode(', ', $names);
-                }
-
-                $editUrl = route('deals.edit', $deal->id);
-                $deleteUrl = route('deals.destroy', $deal->id);
-                $action = '
-                <a href="' . $editUrl . '" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                <form action="' . $deleteUrl . '" method="POST" style="display:inline-block;" onsubmit="return confirm(\'Are you sure?\')">
-                    ' . csrf_field() . method_field('DELETE') . '
-                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                </form>
-            ';
-
-                return [
-                    'id' => $index + 1,
-                    'name' => $deal->name,
-                    'deal_stage' => $deal->deal_stage,
-                    'amount' => number_format($deal->amount, 2),
-                    'currency' => $deal->currency,
-                    'start_date' => $deal->start_date,
-                    'end_date' => $deal->end_date,
-                    'client_option' => $deal->client_option,
-                    'company_option' => $deal->company_option,
-                    'deal_type' => $deal->deal_type,
-                    'source' => $deal->source,
-                    'responsibles' => $responsibles,
-                    'observer' => $observers,
-                    'comment' => strip_tags($deal->comment),
-                    'action' => $action,
-                ];
-            });
-
-            return response()->json(['data' => $data]);
+        // Filter by deal name
+        if ($request->filled('deal_name')) {
+            $query->where('name', $request->deal_name);
         }
 
-        // Default page load
-        $deals = Deal::all();
-        return view('content.pages.business_management.deal.index', compact('deals'));
+        // Filter by deal_stage
+        if ($request->filled('deal_stage')) {
+            $query->where('deal_stage', $request->deal_stage);
+        }
+
+        // Filter by source
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        // Filter by date range (created_at / end_date)
+        if ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('end_date', '<=', $request->end_date);
+        }
+
+        $deals = $query->orderBy('end_date', 'asc')->paginate(15)->withQueryString();
+
+        // Fetch unique deal names from Deal table for filter dropdown
+        $dealNames = Deal::select('name')
+            ->distinct()
+            ->orderBy('name')
+            ->pluck('name');
+
+        return view('content.pages.business_management.deal.index', compact('deals', 'dealNames'));
     }
 
 

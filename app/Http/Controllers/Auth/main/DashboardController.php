@@ -13,18 +13,18 @@ class DashboardController extends Controller
     {
         return view('content.dashboard.dashboards-analytics');
     }
-    
+
     public function dashboard()
     {
         $totalBidTrackUsers = Customer::where('software', 'BidTrack')->count();
         $totalBidTrackPlanUsers = Plan::where('software', 'BidTrack')->count();
-        $totalTimeTrackUsers = Customer::where('software', 'Timetrack')->count();
-        $totalTimetracksPlanUsers = Plan::where('software', 'Timetrack')->count();
+        $totalTimeTrackUsers = Customer::where('software', 'Timetracks')->count();
+        $totalTimetracksPlanUsers = Plan::where('software', 'Timetracks')->count();
         $totalUsers = Customer::count();
         $totalPlanUsers = Plan::count();
 
-        $otherUsers = Customer::whereNotIn('software', ['Bidtrack', 'Timetrack'])->count();
-        $otherPlanUsers = Plan::whereNotIn('software', ['Bidtrack', 'Timetrack'])->count();
+        $otherUsers = Customer::whereNotIn('software', ['Bidtrack', 'Timetracks'])->count();
+        $otherPlanUsers = Plan::whereNotIn('software', ['Bidtrack', 'Timetracks'])->count();
 
 
         return view('content.pages.dashboard', compact(

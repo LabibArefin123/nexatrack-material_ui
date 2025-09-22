@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Edit Invoice</h3>
-        <a href="{{ route('invoices.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('invoices.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -92,7 +92,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <a href="{{ route('projects.create') }}" class="btn btn-sm btn-success">Add New</a>
+                            <a href="{{ route('projects.create') }}" class="btn  btn-success">Add New</a>
                         </div>
                         @error('project_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -226,12 +226,12 @@
                                             class="form-control" value="{{ $item['discount'] }}"></td>
                                     <td><input type="number" step="0.01" name="items[{{ $index }}][amount]"
                                             class="form-control" value="{{ $item['amount'] }}"></td>
-                                    <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
+                                    <td><button type="button" class="btn  btn-danger removeRow">X</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <button type="button" id="addRow" class="btn btn-sm btn-success">+ Add New</button>
+                    <button type="button" id="addRow" class="btn  btn-success">+ Add New</button>
                 </div>
 
                 {{-- Notes --}}
@@ -266,7 +266,7 @@
         <td><input type="number" step="0.01" name="items[${rowIndex}][price]" class="form-control"></td>
         <td><input type="number" step="0.01" name="items[${rowIndex}][discount]" class="form-control"></td>
         <td><input type="number" step="0.01" name="items[${rowIndex}][amount]" class="form-control"></td>
-        <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
+        <td><button type="button" class="btn  btn-danger removeRow">X</button></td>
     </tr>`;
             table.insertAdjacentHTML('beforeend', newRow);
             rowIndex++;

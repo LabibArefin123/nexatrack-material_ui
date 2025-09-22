@@ -16,10 +16,37 @@ class EstimationController extends Controller
     /**
      * Display a listing of the Estimations.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $estimateds = Estimation::latest()->get();
-        return view('content.pages.estimation.index', compact('estimateds'));
+        $query = Estimation::query()->with('company');
+
+        // Filter by deal/company name
+        if ($request->filled('deal_name')) {
+            $query->whereHas('company', function ($q) use ($request) {
+                $q->where('name', $request->deal_name);
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('estimate_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('expiry_date', '<=', $request->end_date);
+        }
+
+        // Get all company names for the filter dropdown
+        $allNames = \App\Models\Organization::orderBy('name')->pluck('name');
+
+        $estimateds = $query->latest()->paginate(15)->withQueryString();
+
+        return view('content.pages.finance_management.estimation.index', compact('estimateds', 'allNames'));
     }
 
     /**
@@ -30,7 +57,7 @@ class EstimationController extends Controller
         $clients = Organization::all();
         $projects = Project::all();
         $users = User::all();
-        return view('content.pages.estimation.create', compact('clients', 'users', 'projects'));
+        return view('content.pages.finance_management.estimation.create', compact('clients', 'users', 'projects'));
     }
 
     /**
@@ -73,7 +100,7 @@ class EstimationController extends Controller
      */
     public function show(Estimation $estimation)
     {
-        return view('content.pages.estimation.show', compact('estimation'));
+        return view('content.pages.finance_management.estimation.show', compact('estimation'));
     }
 
     /**
@@ -84,7 +111,7 @@ class EstimationController extends Controller
         $clients = Organization::all();
         $projects = Project::all();
         $users = User::all();
-        return view('content.pages.estimation.edit', compact('estimation', 'clients', 'users', 'projects'));
+        return view('content.pages.finance_management.estimation.edit', compact('estimation', 'clients', 'users', 'projects'));
     }
 
     /**

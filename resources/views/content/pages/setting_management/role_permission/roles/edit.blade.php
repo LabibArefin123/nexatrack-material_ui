@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Update Roles</h3>
-        <a href="{{ route('roles.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('roles.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -62,11 +62,11 @@
                                 <i class="bi bi-folder2-open"></i> {{ ucfirst($group) }}
                             </h6>
                             <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-sm btn-outline-primary select-all-btn"
+                                <button type="button" class="btn  btn-outline-primary select-all-btn"
                                     data-group="{{ \Illuminate\Support\Str::slug($group) }}">
                                     <i class="bi bi-check2-all"></i> Select All
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger unselect-all-btn"
+                                <button type="button" class="btn  btn-outline-danger unselect-all-btn"
                                     data-group="{{ \Illuminate\Support\Str::slug($group) }}">
                                     <i class="bi bi-x-circle"></i> Unselect All
                                 </button>

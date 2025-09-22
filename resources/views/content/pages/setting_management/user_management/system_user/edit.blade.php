@@ -7,7 +7,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">✏️ Edit System User</h3>
-        <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" onclick="history.back()">
+        <button class="btn btn-outline-secondary  d-flex align-items-center gap-1" onclick="history.back()">
             <i class="bi bi-arrow-left"></i> Back
         </button>
     </div>

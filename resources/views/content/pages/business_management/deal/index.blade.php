@@ -7,35 +7,66 @@
         <div>
             <h3 class="mb-2 fw-bold">Deal List</h3>
         </div>
-        <a href="{{ route('deals.create') }}" class="btn btn-success btn-sm d-flex align-items-center gap-2">
+        <a href="{{ route('deals.create') }}" class="btn btn-success  d-flex align-items-center gap-2">
             <span>Add New</span>
         </a>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <input type="text" id="search" class="form-control" placeholder="Search deals...">
-                </div>
-                <div class="col-md-4">
-                    <select id="filter_field" class="form-control">
-                        <option value="">-- Filter By --</option>
-                        <option value="deal_stage">Stage</option>
-                        <option value="currency">Currency</option>
-                        <option value="deal_type">Deal Type</option>
-                        <option value="source">Source</option>
-                        <option value="client_option">Client</option>
-                        <option value="company_option">Company</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <input type="text" id="filter_value" class="form-control" placeholder="Filter value...">
-                </div>
+    <!-- Filter Form -->
+    <div class="card mb-3 p-3">
+        <form action="{{ route('deals.index') }}" method="GET" class="row g-2">
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Deal Name</label>
+                <select name="deal_name" class="form-select">
+                    <option value="">-- All Deals --</option>
+                    @foreach ($dealNames as $name)
+                        <option value="{{ $name }}" {{ request('deal_name') == $name ? 'selected' : '' }}>
+                            {{ $name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Deal Stage</label>
+                <select name="deal_stage" class="form-select">
+                    <option value="">-- All Stages --</option>
+                    @foreach (['new', 'create_stage', 'invoice', 'in_progress', 'final_invoice', 'deal_won', 'deal_lost', 'analyze_failure'] as $stage)
+                        <option value="{{ $stage }}" {{ request('deal_stage') == $stage ? 'selected' : '' }}>
+                            {{ ucwords(str_replace('_', ' ', $stage)) }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Source</label>
+                <select name="source" class="form-select">
+                    <option value="">-- All Sources --</option>
+                    @foreach (['call', 'email', 'website', 'advertising', 'existing_client', 'by_recommendation', 'show_or_exhibition', 'crm_form', 'callback', 'sales_boost', 'online_store', 'other'] as $source)
+                        <option value="{{ $source }}" {{ request('source') == $source ? 'selected' : '' }}>
+                            {{ ucwords(str_replace('_', ' ', $source)) }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">Apply Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover" id="deals-table" style="width:100%">
+                <table class="table table-bordered table-striped table-hover" id="deals-table" style="width:20%">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -63,8 +94,8 @@
                                 <td>{{ $deal->deal_stage }}</td>
                                 <td>{{ number_format($deal->amount, 2) }}</td>
                                 <td>{{ $deal->currency }}</td>
-                                <td>{{ $deal->start_date }}</td>
-                                <td>{{ $deal->end_date }}</td>
+                                <td class="width: 50%">{{ \Carbon\Carbon::parse($deal->start_date)->format('d M Y') }}</td>
+                                <td class="width: 50%">{{ \Carbon\Carbon::parse($deal->end_date)->format('d M Y') }}</td>
                                 <td>{{ $deal->client_option }}</td>
                                 <td>{{ $deal->company_option }}</td>
                                 <td>{{ $deal->deal_type }}</td>
@@ -79,38 +110,46 @@
                                 <td>
                                     @if (is_array($deal->observer))
                                         @php
-                                            $obsNames = [];
+                                            $userIds = [];
+                                            $customerIds = [];
+
                                             foreach ($deal->observer as $obs) {
                                                 if (str_starts_with($obs, 'user_')) {
-                                                    $id = str_replace('user_', '', $obs);
-                                                    $user = \App\Models\User::find($id);
-                                                    if ($user) {
-                                                        $obsNames[] = 'User: ' . $user->name;
-                                                    }
+                                                    $userIds[] = (int) str_replace('user_', '', $obs);
                                                 } elseif (str_starts_with($obs, 'customer_')) {
-                                                    $id = str_replace('customer_', '', $obs);
-                                                    $customer = \App\Models\Customer::find($id);
-                                                    if ($customer) {
-                                                        $obsNames[] = $customer->name;
-                                                    }
+                                                    $customerIds[] = (int) str_replace('customer_', '', $obs);
                                                 }
                                             }
+
+                                            $userNames = \App\Models\User::whereIn('id', $userIds)
+                                                ->pluck('name')
+                                                ->map(fn($n) => 'User: ' . $n)
+                                                ->toArray();
+                                            $customerNames = \App\Models\Customer::whereIn('id', $customerIds)
+                                                ->pluck('name')
+                                                ->toArray();
+
+                                            $obsNames = array_merge($userNames, $customerNames);
                                         @endphp
-                                        {{ implode(', ', $obsNames) }}
+                                        {{ implode(', ', $obsNames) ?: '-' }}
                                     @else
                                         -
                                     @endif
                                 </td>
-                                <td>{{ strip_tags($deal->comment) }}</td>
+
                                 <td>
-                                    <a href="{{ route('deals.edit', $deal->id) }}" class="btn btn-sm btn-primary me-1">
+                                    {{ implode(' ', array_slice(explode(' ', strip_tags($deal->comment)), 0, 5)) }}
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('deals.edit', $deal->id) }}" class="btn  btn-primary me-1">
                                         <i class="fas fa-edit">Edit</i>
                                     </a>
                                     <form action="{{ route('deals.destroy', $deal->id) }}" method="POST"
                                         style="display:inline-block;" onsubmit="return confirm('Are you sure?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"><i
+                                        <button type="submit" class="btn  btn-danger"><i
                                                 class="fas fa-trash"></i>Delete</button>
                                     </form>
                                 </td>
@@ -119,59 +158,10 @@
                     </tbody>
 
                 </table>
+                <div class="d-flex justify-content-end mt-3">
+                    {{ $deals->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>
-@stop
-@section('js')
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-
-            function fetchDeals() {
-                var search = $('#search').val();
-                var field = $('#filter_field').val();
-                var value = $('#filter_value').val();
-
-                $.ajax({
-                    url: "{{ route('deals.index') }}",
-                    type: "GET",
-                    data: {
-                        q: search,
-                        filter_field: field,
-                        filter_value: value
-                    },
-                    success: function(res) {
-                        var tbody = '';
-                        $.each(res.data, function(i, deal) {
-                            tbody += '<tr>' +
-                                '<td>' + (i + 1) + '</td>' +
-                                '<td>' + deal.name + '</td>' +
-                                '<td>' + deal.deal_stage + '</td>' +
-                                '<td>' + deal.amount + '</td>' +
-                                '<td>' + deal.currency + '</td>' +
-                                '<td>' + deal.start_date + '</td>' +
-                                '<td>' + deal.end_date + '</td>' +
-                                '<td>' + deal.client_option + '</td>' +
-                                '<td>' + deal.company_option + '</td>' +
-                                '<td>' + deal.deal_type + '</td>' +
-                                '<td>' + deal.source + '</td>' +
-                                '<td>' + deal.responsibles + '</td>' +
-                                '<td>' + deal.observer + '</td>' +
-                                '<td>' + deal.comment + '</td>' +
-                                '<td>' + deal.action + '</td>' +
-                                '</tr>';
-                        });
-                        $('#deal-body').html(tbody);
-                    }
-                });
-            }
-
-            // Trigger search/filter on input change
-            $('#search, #filter_field, #filter_value').on('input change', function() {
-                fetchDeals();
-            });
-        });
-    </script>
-
 @stop

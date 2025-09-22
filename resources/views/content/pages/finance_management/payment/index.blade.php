@@ -5,7 +5,48 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Payments List</h3>
-        <a href="{{ route('invoices.index') }}" class="btn btn-sm btn-secondary">Back to Invoices</a>
+        <a href="{{ route('invoices.index') }}" class="btn  btn-secondary">Back to Invoices</a>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="card mb-3 p-3">
+        <form action="{{ route('payments.index') }}" method="GET" class="row g-2">
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Client</label>
+                <select name="client_id" class="form-select">
+                    <option value="">-- All Clients --</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>
+                            {{ $client->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Payment Method</label>
+                <select name="payment_method" class="form-select">
+                    <option value="">-- All Methods --</option>
+                    <option value="cash" {{ request('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
+                    <option value="card" {{ request('payment_method') == 'card' ? 'selected' : '' }}>Card</option>
+                    <option value="bank" {{ request('payment_method') == 'bank' ? 'selected' : '' }}>Bank</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control">
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">Apply Filter</button>
+            </div>
+        </form>
     </div>
 
     <div class="card shadow-sm">
@@ -13,7 +54,7 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Date</th>
+                        <th>SL</th>
                         <th>Invoice ID</th>
                         <th>Client</th>
                         <th>Amount</th>
@@ -26,14 +67,15 @@
                 <tbody>
                     @forelse ($payments as $payment)
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($payment->created_at)->format('d M Y') }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>#{{ $payment->invoice_id ?? '-' }}</td>
                             <td>
                                 @if ($payment->client)
                                     <div class="d-flex align-items-center gap-2">
                                         <img src="{{ $payment->client->image ? asset('uploads/images/organization/' . $payment->client->image) : asset('uploads/images/default.jpg') }}"
                                             alt="Client Image" width="50" height="30">
-                                        {{ $payment->client->name ?? '-' }}
+                                        {{ implode(' ', array_slice(explode(' ', $payment->client->name), 0, 2)) }}
+
                                     </div>
                                 @elseif($payment->invoice && $payment->invoice->client)
                                     <div class="d-flex align-items-center gap-2">
@@ -49,17 +91,15 @@
                             <td>{{ $payment ? \Carbon\Carbon::parse($payment->due_date)->format('d M Y') : '-' }}
                             </td>
                             <td>{{ ucfirst($payment->payment_method ?? '-') }}</td>
-                            <td>{{ $payment->transaction_id ?? '-' }}</td>
+                            <td>#{{ $payment->transaction_id ?? '-' }}</td>
                             <td>
-                                <a href="{{ route('payments.show', $payment->id) }}"
-                                    class="btn btn-sm btn-warning">Show</a>
-                                <a href="{{ route('payments.edit', $payment->id) }}"
-                                    class="btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('payments.show', $payment->id) }}" class="btn  btn-warning">Show</a>
+                                <a href="{{ route('payments.edit', $payment->id) }}" class="btn  btn-primary">Edit</a>
                                 <form action="{{ route('payments.destroy', $payment->id) }}" method="POST"
                                     class="d-inline">
                                     @csrf @method('DELETE')
                                     <button type="submit" onclick="return confirm('Are you sure?')"
-                                        class="btn btn-sm btn-danger">
+                                        class="btn  btn-danger">
                                         Delete
                                     </button>
                                 </form>
@@ -72,6 +112,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="d-flex justify-content-end mt-3">
+                {{ $payments->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 @endsection

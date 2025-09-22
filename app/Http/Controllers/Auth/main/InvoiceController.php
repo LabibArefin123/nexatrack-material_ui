@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -13,12 +14,47 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the invoices.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::latest()->get();
-        return view('content.pages.invoice.index', compact('invoices'));
-    }
+        $query = Invoice::query();
 
+        // Filter by client
+        if ($request->filled('client_id')) {
+            $query->where('client_id', $request->client_id);
+        }
+
+        // Filter by project
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('due_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('due_date', '<=', $request->end_date);
+        }
+
+        $invoices = $query->latest()->paginate(15)->withQueryString();
+
+        // Pass clients and projects for filter dropdowns
+        $clients = Organization::select('id', 'name')->get();
+        $projects = Project::select('id', 'name')->get();
+        $statuses = ['paid', 'unpaid', 'partially paid', 'overdue'];
+
+        return view('content.pages.finance_management.invoice.index', compact(
+            'invoices',
+            'clients',
+            'projects',
+            'statuses'
+        ));
+    }
     /**
      * Show the form for creating a new invoice.
      */
@@ -26,7 +62,7 @@ class InvoiceController extends Controller
     {
         $clients = Organization::all();
         $projects = Project::all();
-        return view('content.pages.invoice.create', compact('clients', 'projects'));
+        return view('content.pages.finance_management.invoice.create', compact('clients', 'projects'));
     }
 
     /**
@@ -73,7 +109,7 @@ class InvoiceController extends Controller
         $clients = Organization::all();
         $projects = Project::all();
         $invoice->items = json_decode($invoice->items, true); // decode JSON to array
-        return view('content.pages.invoice.edit', compact('invoice', 'clients', 'projects'));
+        return view('content.pages.finance_management.invoice.edit', compact('invoice', 'clients', 'projects'));
     }
 
     /**
@@ -118,7 +154,7 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     {
         $invoice->items = json_decode($invoice->items, true); // decode JSON to array
-        return view('content.pages.invoice.show', compact('invoice'));
+        return view('content.pages.finance_management.invoice.show', compact('invoice'));
     }
 
     /**

@@ -18,10 +18,50 @@ class PlanController extends Controller
 
     public function index(Request $request)
     {
-        $allContacts = $this->getFilteredData($request, true);
+        $query = Plan::query();
 
-        return view('content.pages.business_management.plan.index', compact('allContacts'));
+        // Apply filters if set
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
+        }
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        $allContacts = $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString();
+
+        // Pass unique values for filters
+        $countries = Plan::select('country')->distinct()->pluck('country');
+        $plans     = Plan::select('plan')->distinct()->pluck('plan');
+        $sources   = Plan::select('source')->distinct()->pluck('source');
+
+        return view('content.pages.business_management.plan.index', compact('allContacts', 'countries', 'plans', 'sources'));
     }
+
+
+    public function filter(Request $request)
+    {
+        $query = Plan::query();
+
+        // Apply multi-field filter
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
+        }
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
     private function getFilteredData(Request $request, $paginate = false)
     {
         $allowedFields = [
@@ -48,7 +88,7 @@ class PlanController extends Controller
             $value = $request->filter_value;
 
             if ($field === 'software' && strtolower($value) === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
+                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
             } elseif (in_array($field, $allowedFields)) {
                 $query->where($field, $value);
             }
@@ -98,30 +138,7 @@ class PlanController extends Controller
         return redirect()->route('plans.index')->with('success', 'Customer Plan added successfully!');
     }
 
-    public function filter(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = Plan::query();
 
-            // Apply dynamic field filter
-            if ($request->filled('filter_field') && $request->filled('filter_value')) {
-                $field = $request->filter_field;
-                $value = $request->filter_value;
-
-                // Sanitize field to prevent SQL injection (must be a known field)
-                $allowedFields = ['area', 'city', 'country', 'source', 'software'];
-                if (in_array($field, $allowedFields)) {
-                    $query->where($field, 'like', '%' . $value . '%');
-                }
-            }
-
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-        return view('content.pages.business_management.plan.index');
-    }
 
     public function exportPdf(Request $request)
     {
@@ -337,12 +354,12 @@ class PlanController extends Controller
     {
         $request->validate([
             'ids' => 'required|array',
-            'ids.*' => 'exists:customers,id'
+            'ids.*' => 'exists:plans,id'
         ]);
 
         Plan::whereIn('id', $request->ids)->delete();
 
-        return response()->json(['message' => 'Selected customers deleted successfully.']);
+        return response()->json(['message' => 'Selected customer plan deleted successfully.']);
     }
 
     public function markRead(Plan $plan)

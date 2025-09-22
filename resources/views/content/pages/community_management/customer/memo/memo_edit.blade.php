@@ -11,7 +11,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Edit Customer Memo</h1>
         {{-- Pass customer_id to go back to memo list --}}
-        <a href="{{ route('customer_memos.memo', $editMemo->customer_id) }}" class="btn btn-success btn-sm">
+        <a href="{{ route('customer_memos.memo', $editMemo->customer_id) }}" class="btn btn-success ">
             <i class="fas fa-arrow-left me-1"></i> Back to List
         </a>
     </div>
@@ -34,7 +34,7 @@
             <div class="card border-warning shadow-sm">
                 <div class="card-header bg-warning text-white py-2 d-flex justify-content-end align-items-center">
                     <a href="{{ route('customer_memos.memo', $editMemo->customer_id) }}"
-                        class="btn btn-sm btn-light text-dark">Cancel</a>
+                        class="btn  btn-light text-dark">Cancel</a>
                 </div>
                 <div class="card-body">
                     {{-- Pass memo id to update route --}}

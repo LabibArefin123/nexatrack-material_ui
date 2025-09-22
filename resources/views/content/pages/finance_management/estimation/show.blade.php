@@ -7,10 +7,10 @@
         <h3 class="mb-0">Estimate Details</h3>
         <div class="d-flex gap-2">
             <a href="{{ route('estimations.edit', $estimation->id) }}"
-                class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+                class="btn  btn-primary d-flex align-items-center gap-1">
                 <i class="bi bi-pencil-square"></i> Edit
             </a>
-            <a href="{{ route('estimations.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-1">
+            <a href="{{ route('estimations.index') }}" class="btn  btn-secondary d-flex align-items-center gap-1">
                 <i class="bi bi-arrow-left"></i> Back
             </a>
         </div>
@@ -86,17 +86,22 @@
                     </p>
                 </div>
 
-                {{-- Tags --}}
                 <div class="col-md-12">
                     <label class="form-label fw-bold">Tags</label>
                     <div>
                         @php
-                            $tags = is_array(json_decode($estimation->tags, true))
-                                ? json_decode($estimation->tags, true)
-                                : explode(',', $estimation->tags);
+                            $tags = $estimation->tags;
+
+                            // Ensure it's always an array
+                            if (is_string($tags)) {
+                                $tags = json_decode($tags, true) ?? [];
+                            } elseif (!is_array($tags)) {
+                                $tags = [];
+                            }
                         @endphp
+
                         @forelse ($tags as $tag)
-                            <span class="badge bg-primary me-1">{{ trim($tag) }}</span>
+                            <span class="badge bg-primary me-1">{{ $tag }}</span>
                         @empty
                             <p class="text-muted mb-0">No tags</p>
                         @endforelse

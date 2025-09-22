@@ -7,7 +7,7 @@
         <h1 class="mb-0">Organization Details</h1>
         <div class="d-flex gap-2">
             <a href="{{ route('organizations.edit', $organization->id) }}"
-                class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+                class="btn  btn-primary d-flex align-items-center gap-1">
                 <i class="fas fa-edit"></i> Edit
             </a>
 

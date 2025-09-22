@@ -19,4 +19,10 @@ class Project extends Model
         'pipeline_stage',
         'status',
     ];
+
+    // App\Models\Project.php
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'client'); // client column = customer_id
+    }
 }

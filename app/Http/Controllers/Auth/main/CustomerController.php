@@ -87,14 +87,14 @@ class CustomerController extends Controller
                     $deleteUrl = route('customers.destroy', $row->id);
                     $memoUrl = route('customer_memos.memo', $row->id);
 
-                    $buttons = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary">Edit</a> ';
+                    $buttons = '<a href="' . $editUrl . '" class="btn  btn-primary">Edit</a> ';
                     if (auth()->user()->hasRole('superadmin')) {
                         $buttons .= '<form action="' . $deleteUrl . '" method="POST" style="display:inline;">
                         ' . csrf_field() . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                        <button type="submit" class="btn  btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
                     </form> ';
                     }
-                    $buttons .= '<a href="' . $memoUrl . '" class="btn btn-sm btn-primary"><i class="fas fa-sticky-note"></i></a>';
+                    $buttons .= '<a href="' . $memoUrl . '" class="btn  btn-primary"><i class="fas fa-sticky-note"></i></a>';
                     return $buttons;
                 })
                 ->rawColumns(['actions'])

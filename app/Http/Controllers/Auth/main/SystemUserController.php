@@ -18,7 +18,7 @@ class SystemUserController extends Controller
     public function index()
     {
         $users = User::paginate(10); // Directly paginate the query builder
-        return view('content.pages.user_management.system_user.index', compact('users'));
+        return view('content.pages.setting_management.user_management.system_user.index', compact('users'));
     }
 
 
@@ -27,7 +27,7 @@ class SystemUserController extends Controller
      */
     public function create()
     {
-        return view('content.pages.user_management.system_user.create');
+        return view('content.pages.setting_management.user_management.system_user.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class SystemUserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('content.pages.user_management.system_user.view', compact('user'));
+        return view('content.pages.setting_management.user_management.system_user.show', compact('user'));
     }
 
 
@@ -81,7 +81,7 @@ class SystemUserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        return view('content.pages.user_management.system_user.edit', compact('user', 'roles'));
+        return view('content.pages.setting_management.user_management.system_user.edit', compact('user', 'roles'));
     }
 
     /**

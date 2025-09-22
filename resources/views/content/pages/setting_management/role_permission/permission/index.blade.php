@@ -56,14 +56,13 @@
                             <td>{{ $permission->name }}</td>
                             <td>{{ $permission->guard_name }}</td>
                             <td>
-                                <a href="{{ route('permissions.edit', $permission->id) }}"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-warning ">Edit</a>
                                 <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Are you sure?')" type="submit"
-                                        class="btn btn-danger btn-sm">
+                                        class="btn btn-danger ">
                                         Delete
                                     </button>
                                 </form>

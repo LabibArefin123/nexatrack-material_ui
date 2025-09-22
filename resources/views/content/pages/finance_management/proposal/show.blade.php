@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">View Proposal</h3>
-        <a href="{{ route('proposals.edit', $proposal->id) }}" class="btn btn-sm btn-primary">Edit Proposal</a>
+        <a href="{{ route('proposals.edit', $proposal->id) }}" class="btn  btn-primary">Edit Proposal</a>
     </div>
 
     <div class="card shadow-sm">
@@ -86,15 +86,24 @@
                 <div class="col-md-12">
                     <label class="form-label fw-bold">Tags</label>
                     <div class="d-flex flex-wrap gap-1">
-                        @if ($proposal->tags)
-                            @foreach (json_decode($proposal->tags, true) as $tag)
+                        @php
+                            if (is_array($proposal->tags)) {
+                                $tags = $proposal->tags;
+                            } else {
+                                $tags = json_decode($proposal->tags ?? '[]', true);
+                            }
+                        @endphp
+
+                        @if (!empty($tags) && is_array($tags))
+                            @foreach ($tags as $tag)
                                 <span class="badge bg-primary">{{ $tag }}</span>
                             @endforeach
                         @else
-                            -
+                            <span class="text-muted">-</span>
                         @endif
                     </div>
                 </div>
+
 
                 {{-- Attachment --}}
                 <div class="col-md-12">

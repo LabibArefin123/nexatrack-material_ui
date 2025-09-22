@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Edit Proposal</h3>
-        <a href="{{ route('proposals.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('proposals.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -116,14 +116,13 @@
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Date</label>
                         <input type="date" name="date" class="form-control"
-                            value="{{ old('date', $proposal->date) }}">
+                            value="{{ old('date', optional($proposal->date)->format('Y-m-d')) }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Open Till</label>
                         <input type="date" name="open_till" class="form-control"
-                            value="{{ old('open_till', $proposal->open_till) }}">
+                            value="{{ old('open_till', optional($proposal->open_till)->format('Y-m-d')) }}">
                     </div>
-
                     {{-- Assigned To --}}
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Assigned To</label>
@@ -184,13 +183,14 @@
 @section('js')
     <script>
         // --- Assigned Users ---
-        let assigned = {!! $proposal->assigned_to ? $proposal->assigned_to : '[]' !!};
-        try {
-            if (typeof assigned === 'string') assigned = JSON.parse(assigned);
-        } catch (e) {
-            assigned = [];
+        let assigned = @json($proposal->assigned_to ?? []);
+        if (typeof assigned === 'string') {
+            try {
+                assigned = JSON.parse(assigned);
+            } catch (e) {
+                assigned = [];
+            }
         }
-
 
         function addAssigned(id, name) {
             if (!assigned.includes(id)) {
@@ -220,10 +220,15 @@
         }
 
         // --- Tags ---
-        let tags = {!! $proposal->tags ? $proposal->tags : '[]' !!};
+        let tags = @json($proposal->tags ?? []);
         if (typeof tags === 'string') {
-            tags = JSON.parse(tags);
+            try {
+                tags = JSON.parse(tags);
+            } catch (e) {
+                tags = [];
+            }
         }
+
         const input = document.getElementById('tagsInput');
         const container = document.getElementById('tagsContainer');
         const hidden = document.getElementById('tagsHidden');

@@ -3,17 +3,7 @@
 @section('title', 'Edit Deal')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-0">Edit Deal</h1>
-        <a href="{{ route('deals.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            Back
-        </a>
-    </div>
+
 @stop
 
 @push('css')
@@ -21,6 +11,18 @@
 @endpush
 
 @section('content')
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Edit Deal</h3>
+        <a href="{{ route('deals.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left"
+                viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>There were some problems with your input:</strong>
@@ -205,7 +207,7 @@
                                 </select>
                             @endforeach
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="add-responsible">
+                        <button type="button" class="btn btn-outline-primary  mt-2" id="add-responsible">
                             <i class="fas fa-plus"></i> Add More
                         </button>
                     </div>
@@ -232,7 +234,7 @@
                                 </select>
                             @endforeach
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-observer">
+                        <button type="button" class="btn btn-outline-primary " id="add-observer">
                             <i class="fas fa-plus"></i> Add Observer
                         </button>
                     </div>
@@ -324,7 +326,7 @@
                 newResponsible.classList.add("col-md-6", "mb-2", "responsible-item");
                 newResponsible.innerHTML = `
                     <div class="card p-2 shadow-sm position-relative">
-                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top:5px; right:5px;" onclick="this.closest('.responsible-item').remove()">×</button>
+                        <button type="button" class="btn  btn-danger position-absolute" style="top:5px; right:5px;" onclick="this.closest('.responsible-item').remove()">×</button>
                         <select name="responsibles[]" class="form-control">
                             <option disabled selected>Select user</option>
                             @foreach ($users as $user)
@@ -354,7 +356,7 @@
                                 <option value="customer_{{ $customer->id }}">Customer: {{ $customer->name }}</option>
                             @endforeach
                         </select>
-                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top:5px; right:5px;" onclick="this.closest('.observer-item').remove()">×</button>
+                        <button type="button" class="btn  btn-danger position-absolute" style="top:5px; right:5px;" onclick="this.closest('.observer-item').remove()">×</button>
                     </div>
                 `;
                 observerContainer.appendChild(newObserver);

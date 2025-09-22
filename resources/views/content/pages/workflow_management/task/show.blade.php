@@ -6,8 +6,8 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Task Details</h3>
         <div>
-            <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-primary me-1">Edit</a>
-            <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-secondary">Back</a>
+            <a href="{{ route('tasks.edit', $task->id) }}" class="btn  btn-primary me-1">Edit</a>
+            <a href="{{ route('tasks.index') }}" class="btn  btn-secondary">Back</a>
         </div>
     </div>
 

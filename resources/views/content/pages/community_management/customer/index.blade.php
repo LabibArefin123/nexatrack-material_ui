@@ -10,17 +10,17 @@
                     <h5 class="mb-0">Customer List</h5>
                     <div class="btn-group">
 
-                        <a href="{{ route('customers.export.pdf') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ route('customers.export.pdf') }}" class="btn btn-danger ">
                             <i class="ri-file-pdf-2-line me-1"></i> PDF
                         </a>
-                        <a href="{{ route('customers.export.excel') }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('customers.export.excel') }}" class="btn btn-success ">
                             <i class="ri-file-excel-2-line me-1"></i> Excel
                         </a>
-                        <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('customers.create') }}" class="btn btn-primary ">
                             <i class="ri-user-add-line me-1"></i> Add Customer
                         </a>
                         @hasanyrole('admin|superadmin')
-                            <button id="delete-selected" class="btn btn-sm btn-danger">
+                            <button id="delete-selected" class="btn  btn-danger">
                                 <i class="ri-delete-bin-line me-1"></i> Delete Selected
                             </button>
                         @endhasanyrole
@@ -75,11 +75,11 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Company Name</th>
-                                    <th>Area</th>
+                                    <th class="text-center">Company Name</th>
+                                    <th class="text-center">Area</th>
                                     <th>City</th>
-                                    <th>Country</th>
-                                    <th>Source</th>
+                                    <th class="text-center">Country</th>
+                                    <th class="text-center">Source</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -100,28 +100,29 @@
                                     <tr data-id="{{ $customer->id }}" class="{{ $highlightClass }}">
                                         <td><input type="checkbox" class="select-customer" value="{{ $customer->id }}"></td>
                                         <td>{{ $i + 1 }}</td>
-                                        <td>{{ $customer->software }}</td>
-                                        <td>{{ $customer->name }}</td>
+                                        <td class="text-center">{{ $customer->software }}</td>
+                                        <td>{{ implode(' ', array_slice(explode(' ', $customer->name), 0, 2)) }}</td>
                                         <td>{{ $customer->email }}</td>
                                         <td>{{ $customer->phone }}</td>
-                                        <td>{{ $customer->company_name }}</td>
-                                        <td>{{ $customer->area }}</td>
+                                        <td class="text-center">{{ $customer->company_name }}</td>
+                                        <td class="text-center">
+                                            {{ implode(' ', array_slice(explode(' ', $customer->area), 0, 2)) }}</td>
                                         <td>{{ $customer->city }}</td>
-                                        <td>{{ $customer->country }}</td>
-                                        <td>{{ $customer->source }}</td>
+                                        <td class="text-center">{{ $customer->country }}</td>
+                                        <td class="text-center">{{ $customer->source }}</td>
                                         <td>
                                             <a href="{{ route('customers.edit', $customer->id) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                                class="btn  btn-warning">Edit</a>
                                             @if (auth()->user()->hasRole('superadmin'))
                                                 <form action="{{ route('customers.destroy', $customer->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                    <button type="submit" class="btn  btn-danger"
                                                         onclick="return confirm('Are you sure?')">Delete</button>
                                                 </form>
                                             @endif
                                             <a href="{{ route('customer_memos.memo', $customer->id) }}"
-                                                class="btn btn-sm btn-primary memo-btn">
+                                                class="btn  btn-primary memo-btn">
                                                 <i class="fas fa-sticky-note"></i> Memo
                                             </a>
                                         </td>
@@ -141,7 +142,7 @@
 @endsection
 
 @section('js')
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             // Toggle filter

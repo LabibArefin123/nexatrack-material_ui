@@ -26,13 +26,13 @@
                         <td>{{ $campaign->closed }}</td>
                         <td> {{ $campaign->status }} </td>
                         <td>
-                            <a href="{{ route('campaigns.show', $campaign->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('campaigns.show', $campaign->id) }}" class="btn btn-info ">View</a>
+                            <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning ">Edit</a>
                             <form action="{{ route('campaigns.destroy', $campaign->id) }}" method="POST"
                                 style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm"
+                                <button class="btn btn-danger "
                                     onclick="return confirm('Delete this campaign?')">Delete</button>
                             </form>
                         </td>

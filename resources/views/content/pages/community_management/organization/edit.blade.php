@@ -5,8 +5,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Edit organization Image</h1>
-        <a href="{{ route('organizations.index') }}"
-            class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+        <a href="{{ route('organizations.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>

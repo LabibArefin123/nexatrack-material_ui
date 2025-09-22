@@ -9,10 +9,10 @@
             <i class="fas fa-info-circle text-primary"></i> Plan Details
         </h3>
         <div class="d-flex gap-2">
-            <a href="javascript:history.back()" class="btn btn-outline-primary btn-sm">
+            <a href="javascript:history.back()" class="btn btn-outline-primary ">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
-            <a href="{{ route('plans.edit', $customer->id) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('plans.edit', $customer->id) }}" class="btn btn-warning ">
                 <i class="fas fa-edit"></i> Edit
             </a>
         </div>

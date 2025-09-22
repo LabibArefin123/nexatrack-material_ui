@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Customer Memo</h3>
-        <a href="{{ route('customers.index') }}" class="btn btn-sm back-btn">
+        <a href="{{ route('customers.index') }}" class="btn  back-btn">
             <i class="fas fa-arrow-left me-1"></i> Back to List
         </a>
     </div>
@@ -34,7 +34,7 @@
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('customer_memos.memo.edit', $memo->id) }}"
-                                            class="btn btn-sm btn-warning">
+                                            class="btn  btn-warning">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('customer_memos.memo.destroy', $memo->id) }}" method="POST"
@@ -42,7 +42,7 @@
                                             onsubmit="return confirm('Are you sure you want to delete this memo?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
+                                            <button type="submit" class="btn  btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>

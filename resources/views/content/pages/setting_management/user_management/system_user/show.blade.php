@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h3 class="mb-0">User Details</h3>
-        <button class="btn btn-warning btn-sm d-flex align-items-center gap-1" onclick="history.back()">
+        <button class="btn btn-warning  d-flex align-items-center gap-1" onclick="history.back()">
             <i class="fas fa-arrow-left mr-1"></i> Go Back
         </button>
     </div>

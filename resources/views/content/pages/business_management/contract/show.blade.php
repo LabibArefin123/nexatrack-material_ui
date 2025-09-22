@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">View contract</h3>
-        <a href="{{ route('contracts.edit', $contract->id) }}" class="btn btn-sm btn-primary">Edit Contract</a>
+        <a href="{{ route('contracts.edit', $contract->id) }}" class="btn  btn-primary">Edit Contract</a>
     </div>
 
     <div class="card shadow-sm">

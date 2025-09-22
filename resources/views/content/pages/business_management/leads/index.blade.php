@@ -9,7 +9,7 @@
 
         </div>
 
-        <a href="{{ route('leads.create') }}" class="btn btn-success btn-sm d-flex align-items-center gap-2">
+        <a href="{{ route('leads.create') }}" class="btn btn-success  d-flex align-items-center gap-2">
             <span>Add New</span>
         </a>
     </div>
@@ -51,12 +51,12 @@
                                 <td>{{ $lead->amount }} Tk</td>
                                 <td>{{ $lead->assignedUser->name ?? '-' }}</td>
                                 <td>
-                                    <a href="{{ route('leads.show', $lead->id) }}" class="btn btn-info btn-sm">View</a>
-                                    <a href="{{ route('leads.edit', $lead->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('leads.show', $lead->id) }}" class="btn btn-info ">View</a>
+                                    <a href="{{ route('leads.edit', $lead->id) }}" class="btn btn-warning ">Edit</a>
                                     <form action="{{ route('leads.destroy', $lead->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf @method('DELETE')
-                                        <button class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger "
                                             onclick="return confirm('Delete this lead?')">Delete</button>
                                     </form>
                                 </td>
