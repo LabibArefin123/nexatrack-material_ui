@@ -134,17 +134,19 @@
                                 @endphp
                                 <span class="badge bg-{{ $statusClass }}">{{ ucfirst($invoice->status) }}</span>
                             </td>
-                            <td>
-                                <a href="{{ route('invoices.show', $invoice->id) }}" class="btn  btn-warning">Show</a>
-                                <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn  btn-primary">Edit</a>
-                                <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')"
-                                        class="btn  btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('invoices.show', $invoice->id) }}" class="btn  btn-warning">Show</a>
+                                    <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn  btn-primary">Edit</a>
+                                    <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Are you sure?')"
+                                            class="btn  btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

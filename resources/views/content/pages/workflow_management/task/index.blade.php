@@ -85,14 +85,16 @@
                                     @endforeach
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{ route('tasks.edit', $task->id) }}" class="btn  btn-primary">Edit</a>
-                                <a href="{{ route('tasks.show', $task->id) }}" class="btn  btn-warning">Show</a>
-                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn  btn-danger"
-                                        onclick="return confirm('Are you sure?')">Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn  btn-primary">Edit</a>
+                                    <a href="{{ route('tasks.show', $task->id) }}" class="btn  btn-warning">Show</a>
+                                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn  btn-danger"
+                                            onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

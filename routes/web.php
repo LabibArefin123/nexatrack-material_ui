@@ -62,6 +62,10 @@ use App\Http\Controllers\Auth\main\SystemUserController;
 use App\Http\Controllers\Auth\main\TaskController;
 use App\Http\Controllers\Auth\main\ProposalController;
 use App\Http\Controllers\Auth\main\ContractController;
+use App\Http\Controllers\Auth\main\ContactStageController;
+use App\Http\Controllers\Auth\main\LostReasonController;
+use App\Http\Controllers\Auth\main\SourceController;
+use App\Http\Controllers\Auth\main\CallController;
 use App\Http\Controllers\Auth\main\EstimationController;
 use App\Http\Controllers\Auth\main\InvoiceController;
 use App\Http\Controllers\Auth\main\PaymentController;
@@ -174,27 +178,25 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::post('/plans/{customer}/mark-read', [PlanController::class, 'markRead'])->name('plans.markRead');
     Route::resource('plans', PlanController::class);
 
-    //Deal
     Route::resource('deals', DealController::class);
-
-    //Todo
     Route::delete('todos/delete_selected', [TodoController::class, 'deleteSelected'])->name('todos.delete_selected');
     Route::resource('todos', TodoController::class);
-
-    //Lead
     Route::resource('leads', LeadController::class);
 
-    //Pipeline
     Route::resource('pipelines', PipelineController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
     Route::resource('proposals', ProposalController::class);
+    Route::resource('contact_stages', ContactStageController::class);
+    Route::resource('lost_reasons', LostReasonController::class);
+    Route::resource('sources', SourceController::class);
     Route::resource('contracts', ContractController::class);
     Route::resource('estimations', EstimationController::class);
     Route::resource('invoices', InvoiceController::class);
     Route::resource('payments', PaymentController::class);
 
-    //Campaign
+    Route::resource('calls', CallController::class);
+
     Route::resource('campaigns', CampaignController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);

@@ -5,7 +5,6 @@
 @section('content_header')
     <h1>Role List</h1>
 @stop
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @section('content')
     <div class="card">
@@ -20,6 +19,8 @@
                         <th>SL</th>
                         <th>Role Name</th>
                         <th>Permissions</th>
+                        <th class="text-center">Created By</th>
+                        <th class="text-center">Created At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -32,6 +33,11 @@
                                 {{ $role->permissions->count() }}
                                 permission{{ $role->permissions->count() !== 1 ? 's' : '' }}
                             </td>
+                            <td class="text-center">
+                                {{ auth()->user()->getRoleNames()->first() ?? '-' }}
+                            </td>
+                            <td class="text-center">
+                                {{ $role->created_at ? $role->created_at->format('d M Y, h:i A') : '-' }}</td>
                             <td>
                                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning ">Edit</a>
 

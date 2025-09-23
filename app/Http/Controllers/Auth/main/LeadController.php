@@ -14,10 +14,33 @@ class LeadController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $leads = Lead::all();
-        return view('content.pages.business_management.leads.index', compact('leads'));
+        $query = Lead::query();
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by plan
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+
+        // Filter by assigned user
+        if ($request->filled('assigned_to')) {
+            $query->where('assigned_to', $request->assigned_to);
+        }
+
+        $leads = $query->latest()->paginate(15)->withQueryString();
+
+        // Dropdown data
+        $statuses    = Lead::select('status')->distinct()->pluck('status');
+        $plans       = Lead::select('plan')->distinct()->pluck('plan');
+        $assignedUsers = \App\Models\User::select('id', 'name')->get();
+
+        return view('content.pages.business_management.leads.index', compact('leads', 'statuses', 'plans', 'assignedUsers'));
     }
 
     /**

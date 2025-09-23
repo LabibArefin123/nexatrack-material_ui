@@ -92,17 +92,11 @@
                             </td>
                             <td>{{ ucfirst($payment->payment_method ?? '-') }}</td>
                             <td>#{{ $payment->transaction_id ?? '-' }}</td>
-                            <td>
-                                <a href="{{ route('payments.show', $payment->id) }}" class="btn  btn-warning">Show</a>
-                                <a href="{{ route('payments.edit', $payment->id) }}" class="btn  btn-primary">Edit</a>
-                                <form action="{{ route('payments.destroy', $payment->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')"
-                                        class="btn  btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('payments.show', $payment->id) }}" class="btn  btn-warning">Show</a>
+                                    <a href="{{ route('payments.edit', $payment->id) }}" class="btn  btn-primary">Edit</a>
+                                </div>
                             </td>
                         </tr>
                     @empty

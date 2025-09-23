@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     $this->call([
       // UserSeeder::class,
       // ContractSeeder::class,
+      // ContactStageSeeder::class,
       // PlanSeeder::class,
       // InvoiceSeeder::class,
       // DealSeeder::class,
@@ -25,7 +26,11 @@ class DatabaseSeeder extends Seeder
       // ProjectSeeder::class,
       // TaskSeeder::class,
       // EstimationSeeder::class,
-      ProposalSeeder::class,
+      // ProposalSeeder::class,
+      // LeadSeeder::class,
+      // LostReasonSeeder::class,
+      // SourceSeeder::class,
+      CallSeeder::class,
       // RolePermissionSeeder::class,
       // CustomerSeeder::class,
       // SidebarPermissionSeeder::class

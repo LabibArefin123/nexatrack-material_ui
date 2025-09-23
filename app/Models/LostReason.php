@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class LostReason extends Model
+{
+    use HasFactory;
+
+    protected $table = 'lost_reasons';
+
+    protected $fillable = [
+        'title',
+        'status',
+    ];
+}

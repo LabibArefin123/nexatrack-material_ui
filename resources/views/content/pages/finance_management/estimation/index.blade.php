@@ -81,15 +81,19 @@
                             <td>{{ \Carbon\Carbon::parse($estimate->estimate_date)->format('d M Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($estimate->expiry_date)->format('d M Y') }}</td>
                             <td>{{ ucfirst($estimate->status ?? '-') }}</td>
-                            <td>
-                                <a href="{{ route('estimations.edit', $estimate->id) }}" class="btn  btn-primary">Edit</a>
-                                <a href="{{ route('estimations.show', $estimate->id) }}" class="btn  btn-warning">Show</a>
-                                <form action="{{ route('estimations.destroy', $estimate->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn  btn-danger"
-                                        onclick="return confirm('Are you sure?')">Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('estimations.edit', $estimate->id) }}"
+                                        class="btn  btn-primary">Edit</a>
+                                    <a href="{{ route('estimations.show', $estimate->id) }}"
+                                        class="btn  btn-warning">Show</a>
+                                    <form action="{{ route('estimations.destroy', $estimate->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn  btn-danger"
+                                            onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -89,22 +89,24 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('organizations.edit', $organization->id) }}" class="btn  btn-primary"
-                                title="Edit">
-                                <i class="bi bi-pencil-fill">Edit</i>
-                            </a>
-                            <a href="{{ route('organizations.show', $organization->id) }}" class="btn  btn-warning"
-                                title="Show">
-                                <i class="bi bi-eye-fill">Show</i>
-                            </a>
-                            <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST"
-                                class="d-inline" onsubmit="return confirm('Are you sure?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn  btn-danger" title="Delete">
-                                    <i class="bi bi-trash-fill">Delete</i>
-                                </button>
-                            </form>
+                            <div class="d-flex justify-content-center gap-1">
+                                <a href="{{ route('organizations.edit', $organization->id) }}" class="btn  btn-primary"
+                                    title="Edit">
+                                    Edit
+                                </a>
+                                <a href="{{ route('organizations.show', $organization->id) }}" class="btn  btn-warning"
+                                    title="Show">
+                                    Show
+                                </a>
+                                <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST"
+                                    class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn  btn-danger" title="Delete">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty

@@ -97,16 +97,18 @@
                             </td>
                             <td>{{ \Carbon\Carbon::parse($project->start_date)->format('d M Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($project->end_date)->format('d M Y') }}</td>
-                            <td>
-                                <a href="{{ route('projects.show', $project->id) }}" class="btn  btn-info">View</a>
-                                <a href="{{ route('projects.edit', $project->id) }}" class="btn  btn-warning">Edit</a>
-                                <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
-                                    class="d-inline"
-                                    onsubmit="return confirm('Are you sure you want to delete this project?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn  btn-danger">Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('projects.show', $project->id) }}" class="btn  btn-info">View</a>
+                                    <a href="{{ route('projects.edit', $project->id) }}" class="btn  btn-warning">Edit</a>
+                                    <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this project?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn  btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

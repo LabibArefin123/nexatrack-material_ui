@@ -141,17 +141,19 @@
                                     {{ implode(' ', array_slice(explode(' ', strip_tags($deal->comment)), 0, 5)) }}
                                 </td>
 
-                                <td>
-                                    <a href="{{ route('deals.edit', $deal->id) }}" class="btn  btn-primary me-1">
-                                        <i class="fas fa-edit">Edit</i>
-                                    </a>
-                                    <form action="{{ route('deals.destroy', $deal->id) }}" method="POST"
-                                        style="display:inline-block;" onsubmit="return confirm('Are you sure?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn  btn-danger"><i
-                                                class="fas fa-trash"></i>Delete</button>
-                                    </form>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('deals.edit', $deal->id) }}" class="btn  btn-primary me-1">
+                                            <i class="fas fa-edit">Edit</i>
+                                        </a>
+                                        <form action="{{ route('deals.destroy', $deal->id) }}" method="POST"
+                                            style="display:inline-block;" onsubmit="return confirm('Are you sure?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn  btn-danger"><i
+                                                    class="fas fa-trash"></i>Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

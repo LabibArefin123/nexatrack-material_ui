@@ -92,16 +92,19 @@
                                 </td>
                                 <td>{{ $contract->end_date ? \Carbon\Carbon::parse($contract->end_date)->format('j F Y') : '-' }}
                                 </td>
-                                <td>
-                                    <a href="{{ route('contracts.show', $contract->id) }}" class="btn btn-warning">Show</a>
-                                    <a href="{{ route('contracts.edit', $contract->id) }}"
-                                        class="btn  btn-primary">Edit</a>
-                                    <form action="{{ route('contracts.destroy', $contract->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Are you sure?')">Delete</button>
-                                    </form>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('contracts.show', $contract->id) }}"
+                                            class="btn btn-warning">Show</a>
+                                        <a href="{{ route('contracts.edit', $contract->id) }}"
+                                            class="btn  btn-primary">Edit</a>
+                                        <form action="{{ route('contracts.destroy', $contract->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

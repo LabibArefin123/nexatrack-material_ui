@@ -92,6 +92,13 @@
                   "slug": "customers",
                   "permission": "customers.index",
                   "active": "customers"
+                },
+                {
+                  "url": "industries",
+                  "name": "Industry",
+                  "slug": "industries",
+                  "permission": "industries.index",
+                  "active": "industries"
                 }
               ]
             },
@@ -134,6 +141,27 @@
                   "slug": "pipelines",
                   "permission": "pipelines.index",
                   "active": "pipelines"
+                },
+                {
+                  "url": "sources",
+                  "name": "Sources",
+                  "slug": "sources",
+                  "permission": "sources.index",
+                  "active": "sources"
+                },
+                {
+                  "url": "lost_reasons",
+                  "name": "Lost Reason",
+                  "slug": "lost-reasons",
+                  "permission": "lost_reasons.index",
+                  "active": "lost_reasons"
+                },
+                {
+                  "url": "contact_stages",
+                  "name": "Contact Stage",
+                  "slug": "contact-stages",
+                  "permission": "contact_stages.index",
+                  "active": "contact_stages"
                 }
               ]
             },
@@ -178,6 +206,14 @@
                   "active": "tasks"
                 }
               ]
+            },
+            {
+              "url": "calls",
+              "name": "Calls",
+              "icon": "ri-phone-line",
+              "slug": "calls",
+              "permission": "calls.index",
+              "active": "calls"
             },
             {
               "name": "Finance",

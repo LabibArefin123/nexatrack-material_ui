@@ -35,10 +35,10 @@ class Lead extends Model
     public function getStatusTextAttribute()
     {
         return match ($this->status) {
-            1 => 'Contacted',
-            2 => 'Not Contacted',
-            3 => 'Closed',
-            4 => 'Lost',
+            'contacted' => 'Contacted',
+            'not_contacted' => 'Not Contacted',
+            'closed' => 'Closed',
+            'lost' => 'Lost',
             default => 'Unknown',
         };
     }

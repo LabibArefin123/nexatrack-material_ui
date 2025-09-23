@@ -111,15 +111,19 @@
                             </td>
                             <td>{{ $proposal->date ? $proposal->date->format('d/m/Y') : '-' }}</td>
                             <td>{{ $proposal->open_till ? $proposal->open_till->format('d/m/Y') : '-' }}</td>
-                            <td>
-                                <a href="{{ route('proposals.edit', $proposal->id) }}" class="btn  btn-primary">Edit</a>
-                                <a href="{{ route('proposals.show', $proposal->id) }}" class="btn  btn-warning">Show</a>
-                                <form action="{{ route('proposals.destroy', $proposal->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn  btn-danger"
-                                        onclick="return confirm('Are you sure?')">Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('proposals.edit', $proposal->id) }}"
+                                        class="btn  btn-primary">Edit</a>
+                                    <a href="{{ route('proposals.show', $proposal->id) }}"
+                                        class="btn  btn-warning">Show</a>
+                                    <form action="{{ route('proposals.destroy', $proposal->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn  btn-danger"
+                                            onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
