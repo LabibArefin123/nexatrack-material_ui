@@ -185,6 +185,13 @@
               "slug": "projects-tasks",
               "submenu": [
                 {
+                  "url": "activities",
+                  "name": "Activity List",
+                  "slug": "activities",
+                  "permission": "activities.index",
+                  "active": "activities"
+                },
+                {
                   "url": "todos",
                   "name": "Todo List",
                   "slug": "todos",
@@ -251,6 +258,13 @@
               ]
             }
           ]
+        },
+        {
+          "url": "analytics",
+          "name": "My Analytics",
+          "slug": "my_analyics",
+          "permission": "analytics.index",
+          "active": "analytics"
         },
         {
           "name": "Settings",

@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
     $this->call([
       // UserSeeder::class,
       // ContractSeeder::class,
-      // ContactStageSeeder::class,
       // PlanSeeder::class,
       // InvoiceSeeder::class,
       // DealSeeder::class,
@@ -28,12 +27,14 @@ class DatabaseSeeder extends Seeder
       // EstimationSeeder::class,
       // ProposalSeeder::class,
       // LeadSeeder::class,
-      // LostReasonSeeder::class,
-      // SourceSeeder::class,
-      CallSeeder::class,
+      // CampaignSeeder::class,
+      ActivitySeeder::class,
       // RolePermissionSeeder::class,
       // CustomerSeeder::class,
-      // SidebarPermissionSeeder::class
+      // ContactStageSeeder::class,
+      // LostReasonSeeder::class,
+      // SourceSeeder::class,
+      // CallSeeder::class,
     ]);
   }
 }

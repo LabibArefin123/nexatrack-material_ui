@@ -2,16 +2,13 @@
 
 @section('title', 'Role List')
 
-@section('content_header')
-    <h1>Role List</h1>
-@stop
-
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <a href="{{ route('roles.create') }}" class="btn btn-success">Add Role</a>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Role List</h3>
+        <a href="{{ route('roles.create') }}" class="btn btn-success">+ Add</a>
+    </div>
 
+    <div class="card">
         <div class="card-body">
             <table id="rolesTable" class="table table-bordered table-striped">
                 <thead>

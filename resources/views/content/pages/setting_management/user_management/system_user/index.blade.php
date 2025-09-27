@@ -3,11 +3,9 @@
 @section('title', 'System Users')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <h3 class="mb-0">System Users</h3>
-        <a href="{{ route('system_users.create') }}" class="btn btn-success ">
-            Add
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">System User List</h3>
+        <a href="{{ route('system_users.create') }}" class="btn btn-success">+ Add</a>
     </div>
 
     <div class="card"> <!-- Wrap the table in a card to align with AdminLTE's layout -->

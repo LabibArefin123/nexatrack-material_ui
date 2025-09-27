@@ -34,9 +34,9 @@ class ContractController extends Controller
             $query->whereDate('end_date', '<=', $request->end_date);
         }
 
-        $contracts = $query->latest()->paginate(12);
+        $contracts = $query->orderBy('end_date', 'asc')->paginate(12);
 
-        $customers = \App\Models\Customer::all();
+        $customers = Customer::all();
 
         // Contract types list (for filter + readable names)
         $contractTypes = [

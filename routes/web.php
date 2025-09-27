@@ -59,6 +59,7 @@ use App\Http\Controllers\Auth\main\ProjectController;
 use App\Http\Controllers\Auth\main\RoleController;
 use App\Http\Controllers\Auth\main\PermissionController;
 use App\Http\Controllers\Auth\main\SystemUserController;
+use App\Http\Controllers\Auth\main\ActivityController;
 use App\Http\Controllers\Auth\main\TaskController;
 use App\Http\Controllers\Auth\main\ProposalController;
 use App\Http\Controllers\Auth\main\ContractController;
@@ -69,6 +70,7 @@ use App\Http\Controllers\Auth\main\CallController;
 use App\Http\Controllers\Auth\main\EstimationController;
 use App\Http\Controllers\Auth\main\InvoiceController;
 use App\Http\Controllers\Auth\main\PaymentController;
+use App\Http\Controllers\Auth\main\AnalyticsController;
 use App\Http\Controllers\Auth\main\OrganizationController;
 use App\Http\Controllers\Auth\main\SettingController;
 
@@ -178,6 +180,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::post('/plans/{customer}/mark-read', [PlanController::class, 'markRead'])->name('plans.markRead');
     Route::resource('plans', PlanController::class);
 
+    Route::resource('activities', ActivityController::class);
     Route::resource('deals', DealController::class);
     Route::delete('todos/delete_selected', [TodoController::class, 'deleteSelected'])->name('todos.delete_selected');
     Route::resource('todos', TodoController::class);
@@ -196,6 +199,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('payments', PaymentController::class);
 
     Route::resource('calls', CallController::class);
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
     Route::resource('campaigns', CampaignController::class);
     Route::resource('roles', RoleController::class);

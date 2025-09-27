@@ -11,46 +11,6 @@
         </a>
     </div>
 
-    {{-- Top Summary Cards --}}
-    <div class="row mb-3">
-        <div class="col-lg-3 col-md-6 mb-2">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
-                    <h4 class="fw-bold">{{ $campaigns->count() }}</h4>
-                    <p class="mb-1">Campaign</p>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-2">
-            <div class="card text-center shadow-sm h-100 bg-success text-white">
-                <div class="card-body">
-                    <h4 class="fw-bold">{{ $campaigns->sum('sent') }}</h4>
-                    <p class="mb-1">Sent</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-2">
-            <div class="card text-center shadow-sm h-100 bg-warning text-dark">
-                <div class="card-body">
-                    <h4 class="fw-bold">{{ $campaigns->sum('opened') }}</h4>
-                    <p class="mb-1">Opened</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-2">
-            <div class="card text-center shadow-sm h-100 bg-danger text-white">
-                <div class="card-body">
-                    <h4 class="fw-bold">{{ $campaigns->sum('closed') }}</h4>
-                    <p class="mb-1">Completed</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Tabs --}}
     <ul class="nav nav-tabs mb-3" id="campaignTab" role="tablist">
         <li class="nav-item">
