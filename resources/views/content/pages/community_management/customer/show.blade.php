@@ -1,82 +1,95 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Customer Details')
-@section('content_header')
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+@section('content')
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
         <!-- Left: Title -->
-        <h1 class="mb-0">Customer Details</h1>
+        <h3 class="mb-0">Customer Details</h3>
 
         <!-- Right: Buttons -->
         <div class="d-flex" style="gap: 10px;">
-            <a href="javascript:history.back()" class="btn btn-primary  d-flex align-items-center gap-1">
+            <a href="javascript:history.back()" class="btn btn-primary d-flex align-items-center gap-1">
                 <i class="fas fa-arrow-left"></i> Go Back
             </a>
-            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning ">
-                Edit
+            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
             </a>
         </div>
     </div>
-@stop
 
+    <div class="row">
+        <!-- Customer Info Card -->
+        <div class="col-12">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-dark text-white fw-bold">Customer Information</div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Software</label>
+                            <div class="form-control">{{ $customer->software }}</div>
+                        </div>
 
-@section('content')
-    <div class="container-fluid">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row">
-                    {{-- customer Number --}}
-                    <div class="form-group col-md-6">
-                        <label class="text">Software</label>
-                        <div class="data-box">{{ $customer->software }}</div>
-                    </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Name</label>
+                            <div class="form-control">{{ $customer->name }}</div>
+                        </div>
 
-                    {{-- Title --}}
-                    <div class="form-group col-md-6">
-                        <label class="text">Name</label>
-                        <div class="data-box">{{ $customer->name }}</div>
-                    </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <div class="form-control">{{ $customer->email }}</div>
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="text">Email</label>
-                        <div class="data-box">{{ $customer->email }}</div>
-                    </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Company Name</label>
+                            <div class="form-control">{{ $customer->company_name }}</div>
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="text">Company Name</label>
-                        <div class="data-box">{{ $customer->company_name }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Address</label>
-                        <div class="data-box">{{ $customer->address }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Area Name</label>
-                        <div class="data-box">{{ $customer->area }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">City Name</label>
-                        <div class="data-box">{{ $customer->city }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Country Name</label>
-                        <div class="data-box">{{ $customer->country }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Post Code</label>
-                        <div class="data-box">{{ $customer->post_code }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Source</label>
-                        <div class="data-box">{{ $customer->source }}</div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="text">Note</label>
-                        <div class="data-box">{{ $customer->note }}</div>
-                    </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Address</label>
+                            <div class="form-control">{{ $customer->address }}</div>
+                        </div>
 
-                    <div class="form-group col-md-12">
-                        <strong>Customer Memo Correspondence</strong>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Area</label>
+                            <div class="form-control">{{ $customer->area }}</div>
+                        </div>
 
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">City</label>
+                            <div class="form-control">{{ $customer->city }}</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Country</label>
+                            <div class="form-control">{{ $customer->country }}</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Post Code</label>
+                            <div class="form-control">{{ $customer->post_code }}</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Source</label>
+                            <div class="form-control">{{ $customer->source }}</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Note</label>
+                            <div class="form-control">{{ $customer->note }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Memo Card -->
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-secondary text-white fw-bold">Customer Memo Correspondence</div>
+                <div class="card-body">
+                    <div class="table-responsive">
                         <table class="table table-striped table-hover table-bordered mb-0">
                             <thead class="table-light">
                                 <tr>
@@ -102,24 +115,23 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
+    </div>
+@endsection
 
-    @endsection
-
-    @section('css')
-        <style>
-            .data-box {
-                background-color: #f1f1f1;
-                padding: 10px 15px;
-                border-radius: 5px;
-                font-weight: 500;
-                min-height: 45px;
-                display: flex;
-                align-items: center;
-
-            }
-        </style>
-    @endsection
+@section('css')
+    <style>
+        .form-control {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-weight: 500;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+@endsection

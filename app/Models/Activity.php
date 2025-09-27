@@ -55,4 +55,6 @@ class Activity extends Model
     {
         return $this->belongsTo(Organization::class, 'company_id');
     }
+
+   
 }

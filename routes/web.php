@@ -73,6 +73,7 @@ use App\Http\Controllers\Auth\main\PaymentController;
 use App\Http\Controllers\Auth\main\AnalyticsController;
 use App\Http\Controllers\Auth\main\OrganizationController;
 use App\Http\Controllers\Auth\main\SettingController;
+use App\Http\Controllers\Auth\main\ReportController;
 
 
 Route::get('/', function () {
@@ -205,6 +206,10 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', SystemUserController::class);
+
+    Route::get('/reports/customer', [ReportController::class, 'customerReport'])->name('reports.customer');
+    Route::get('reports/customer/pdf', [ReportController::class, 'customerReportPDF'])->name('reports.customer.pdf');
+
 
     Route::get('/setting_menu', [SettingController::class, 'index'])->name('settings.index');
     Route::get('/setting_theme', [SettingController::class, 'theme'])->name('settings.theme');

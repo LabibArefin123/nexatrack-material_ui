@@ -16,7 +16,6 @@ class CampaignController extends Controller
     public function index()
     {
         $campaigns = Campaign::with(['pipeline'])->get();
-
         return view('content.pages.marketting_management.campaign.index', compact('campaigns'));
     }
 
@@ -37,19 +36,19 @@ class CampaignController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'pipeline_id' => 'nullable|exists:pipelines,id',
+            'pipeline_id' => 'required|exists:pipelines,id',
             'plan' => 'required|string',
-            'total_members' => 'nullable|integer',
-            'sent' => 'nullable|integer',
-            'opened' => 'nullable|integer',
-            'delivered' => 'nullable|integer',
-            'closed' => 'nullable|integer',
-            'unsubscribe' => 'nullable|integer',
-            'bounced' => 'nullable|integer',
-            'progress' => 'nullable|numeric|min:0|max:100',
+            'total_members' => 'required|integer',
+            'sent' => 'required|integer',
+            'opened' => 'required|integer',
+            'delivered' => 'required|integer',
+            'closed' => 'required|integer',
+            'unsubscribe' => 'required|integer',
+            'bounced' => 'required|integer',
+            'progress' => 'required|numeric|min:0|max:100',
             'status' => 'required|in:Active,Completed,Archived',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
         Campaign::create($request->all());

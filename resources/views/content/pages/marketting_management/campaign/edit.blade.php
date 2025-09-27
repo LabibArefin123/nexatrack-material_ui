@@ -5,7 +5,14 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Edit Campaign</h3>
-        <a href="{{ route('campaigns.index') }}" class="btn btn-secondary ">Back</a>
+        <a href="{{ route('campaigns.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
     </div>
 
     @if ($errors->any())
@@ -26,13 +33,13 @@
                 @method('PUT')
                 <div class="row">
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="name">Campaign Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" class="form-control"
                             value="{{ old('name', $campaign->name) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="type">Campaign Type <span class="text-danger">*</span></label>
                         <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
                             <option value="">Select type</option>
@@ -62,7 +69,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="pipeline_id">Pipeline</label>
                         <select name="pipeline_id" id="pipeline_id" class="form-control">
                             <option value="">Select Pipeline</option>
@@ -75,7 +82,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="plan">Plan <span class="text-danger">*</span></label>
                         <select name="plan" id="plan" class="form-control @error('plan') is-invalid @enderror">
                             <option value="">Select a Plan</option>
@@ -95,55 +102,55 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="total_members">Total Members</label>
                         <input type="number" name="total_members" class="form-control"
                             value="{{ old('total_members', $campaign->total_members) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="sent">Sent</label>
                         <input type="number" name="sent" class="form-control"
                             value="{{ old('sent', $campaign->sent) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="opened">Opened</label>
                         <input type="number" name="opened" class="form-control"
                             value="{{ old('opened', $campaign->opened) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="delivered">Delivered</label>
                         <input type="number" name="delivered" class="form-control"
                             value="{{ old('delivered', $campaign->delivered) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="closed">Closed</label>
                         <input type="number" name="closed" class="form-control"
                             value="{{ old('closed', $campaign->closed) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="unsubscribe">Unsubscribe</label>
                         <input type="number" name="unsubscribe" class="form-control"
                             value="{{ old('unsubscribe', $campaign->unsubscribe) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="bounced">Bounced</label>
                         <input type="number" name="bounced" class="form-control"
                             value="{{ old('bounced', $campaign->bounced) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="progress">Progress (%)</label>
                         <input type="number" name="progress" class="form-control"
                             value="{{ old('progress', $campaign->progress) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="status">Status</label>
                         <select name="status" class="form-control">
                             <option value="Active" {{ old('status', $campaign->status) == 'Active' ? 'selected' : '' }}>
@@ -153,13 +160,13 @@
                         </select>
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="start_date">Start Date</label>
                         <input type="date" name="start_date" class="form-control"
                             value="{{ old('start_date', optional($campaign->start_date)->format('Y-m-d')) }}">
                     </div>
 
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-4 form-group">
                         <label for="end_date">End Date</label>
                         <input type="date" name="end_date" class="form-control"
                             value="{{ old('end_date', optional($campaign->end_date)->format('Y-m-d')) }}">

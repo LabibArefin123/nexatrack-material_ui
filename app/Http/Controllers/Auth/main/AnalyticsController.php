@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Contract;
+use App\Models\Campaign;
+use App\Models\Activity;
 use App\Models\Deal;
 
 class AnalyticsController extends Controller
@@ -14,7 +16,8 @@ class AnalyticsController extends Controller
     {
         $contractRange = (int) $request->get('contract_range', 30);
         $dealRange     = (int) $request->get('deal_range', 30);
-        $dealStage     = $request->get('deal_stage'); // optional filter
+        $dealStage     = $request->get('deal_stage');
+        $activeRange   = (int) $request->get('active_range', 30);
 
         // Recent contracts
         $recentContracts = Contract::where('created_at', '>=', now()->subDays($contractRange))
@@ -34,16 +37,27 @@ class AnalyticsController extends Controller
             ->orderBy('deal_stage')
             ->get();
 
-        // Format deal_stage names for display
         $formattedStages = $deals->pluck('deal_stage')->map(function ($stage) {
             return ucwords(str_replace('_', ' ', $stage));
         })->values();
+
+        // ✅ Recent activities
+        $activities = Activity::with('owner')
+            ->where('created_at', '>=', now()->subDays($activeRange))
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // ✅ Recently created campaigns (latest 3 only)
+        $campaigns = Campaign::latest()->take(3)->get();
 
         if ($request->ajax()) {
             return response()->json([
                 'recentContracts' => $recentContracts,
                 'deal_stage'      => $formattedStages,
                 'stageCounts'     => $deals->pluck('count')->values(),
+                'activities'      => $activities,
+                'campaigns'       => $campaigns,
             ]);
         }
 
@@ -54,6 +68,9 @@ class AnalyticsController extends Controller
             'contractRange'   => $contractRange,
             'dealRange'       => $dealRange,
             'dealStage'       => $dealStage,
+            'activeRange'     => $activeRange,
+            'activities'      => $activities,
+            'campaigns'       => $campaigns,
         ]);
     }
 }

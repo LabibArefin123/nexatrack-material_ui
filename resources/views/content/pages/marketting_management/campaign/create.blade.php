@@ -5,7 +5,14 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Create Campaign</h3>
-        <a href="{{ route('campaigns.index') }}" class="btn btn-secondary ">Back</a>
+        <a href="{{ route('campaigns.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
     </div>
 
     {{-- Show Validation Errors --}}
@@ -27,7 +34,7 @@
                 <div class="row g-3">
 
                     {{-- Campaign Name --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="name" class="form-label">Campaign Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name"
                             class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
@@ -37,7 +44,7 @@
                     </div>
 
                     {{-- Campaign Type --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="type" class="form-label">Campaign Type <span class="text-danger">*</span></label>
                         <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
                             <option value="">Select type</option>
@@ -61,9 +68,10 @@
                     </div>
 
                     {{-- Pipeline --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="pipeline_id" class="form-label">Pipeline</label>
-                        <select name="pipeline_id" id="pipeline_id" class="form-control">
+                        <select name="pipeline_id" id="pipeline_id"
+                            class="form-control  @error('pipeline_id') is-invalid @enderror">
                             <option value="">Select Pipeline</option>
                             @foreach ($pipelines as $pipeline)
                                 <option value="{{ $pipeline->id }}"
@@ -72,10 +80,13 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('pipeline_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Plan --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
                         <select name="plan" id="plan" class="form-control @error('plan') is-invalid @enderror">
                             <option value="">Select a Plan</option>
@@ -94,57 +105,105 @@
                     </div>
 
                     {{-- Numeric Fields --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Total Members</label>
-                        <input type="number" name="total_members" class="form-control"
+                        <input type="number" name="total_members"
+                            class="form-control @error('total_members') is-invalid @enderror"
                             value="{{ old('total_members', 0) }}">
+                        @error('total_members')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Sent</label>
-                        <input type="number" name="sent" class="form-control" value="{{ old('sent', 0) }}">
+                        <input type="number" name="sent" class="form-control @error('sent') is-invalid @enderror"
+                            value="{{ old('sent', 0) }}">
+                        @error('sent')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Opened</label>
-                        <input type="number" name="opened" class="form-control" value="{{ old('opened', 0) }}">
+                        <input type="number" name="opened" class="form-control @error('opened') is-invalid @enderror"
+                            value="{{ old('opened', 0) }}">
+                        @error('opened')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Delivered</label>
-                        <input type="number" name="delivered" class="form-control" value="{{ old('delivered', 0) }}">
+                        <input type="number" name="delivered"
+                            class="form-control @error('delivered') is-invalid @enderror"
+                            value="{{ old('delivered', 0) }}">
+                        @error('delivered')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Closed</label>
-                        <input type="number" name="closed" class="form-control" value="{{ old('closed', 0) }}">
+                        <input type="number" name="closed" class="form-control @error('closed') is-invalid @enderror"
+                            value="{{ old('closed', 0) }}">
+                        @error('closed')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Unsubscribe</label>
-                        <input type="number" name="unsubscribe" class="form-control" value="{{ old('unsubscribe', 0) }}">
+                        <input type="number" name="unsubscribe"
+                            class="form-control @error('unsubscribe') is-invalid @enderror"
+                            value="{{ old('unsubscribe', 0) }}">
+                        @error('unsubscribe')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Bounced</label>
-                        <input type="number" name="bounced" class="form-control" value="{{ old('bounced', 0) }}">
+                        <input type="number" name="bounced" class="form-control @error('bounced') is-invalid @enderror"
+                            value="{{ old('bounced', 0) }}">
+                        @error('bounced')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Progress (%)</label>
-                        <input type="number" name="progress" class="form-control" value="{{ old('progress', 0) }}">
+                        <input type="number" name="progress"
+                            class="form-control @error('progress') is-invalid @enderror"
+                            value="{{ old('progress', 0) }}">
+                        @error('progress')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Status --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Status</label>
-                        <select name="status" class="form-control">
+                        <select name="status" class="form-control @error('status') is-invalid @enderror">
+                            <option value="">Select status</option>
                             <option value="Active" {{ old('status') == 'Active' ? 'selected' : '' }}>Active</option>
                             <option value="Inactive" {{ old('status') == 'Inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
+                        @error('status')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Dates --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Start Date</label>
-                        <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                        <input type="date" name="start_date"
+                            class="form-control @error('start_date') is-invalid @enderror"
+                            value="{{ old('start_date') }}">
+                        @error('start_date')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">End Date</label>
-                        <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}">
+                        <input type="date" name="end_date"
+                            class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}">
+                        @error('end_date')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
 

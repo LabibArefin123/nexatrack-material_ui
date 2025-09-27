@@ -267,6 +267,21 @@
           "active": "analytics"
         },
         {
+          "name": "Report",
+          "icon": "ri-community-line",
+          "slug": "report",
+          "submenu": [
+            {
+              "url": "reports/customer",
+              "name": "Customer Report",
+              "slug": "report-customer",
+              "permission": "reports.customer",
+              "active": "reports.customer"
+            }
+            
+          ]
+        },
+        {
           "name": "Settings",
           "icon": "ri-settings-3-line",
           "slug": "settings",

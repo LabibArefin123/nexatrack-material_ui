@@ -31,4 +31,10 @@ class Campaign extends Model
     {
         return $this->belongsTo(Pipeline::class);
     }
+
+    public function getTypeNameAttribute()
+    {
+        // Replace underscore with space and make first letter of each word capital
+        return ucwords(str_replace('_', ' ', $this->type));
+    }
 }

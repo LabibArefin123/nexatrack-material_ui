@@ -17,24 +17,26 @@
             <tbody>
                 @forelse($campaigns as $campaign)
                     <tr>
-                        <td>{{ $campaign->name }}</td>
-                        <td>{{ ucfirst($campaign->type) }}</td>
+                        <td>{{ implode(' ', array_slice(explode(' ', $campaign->name), 0, 2)) }}</td>
+                        <td>{{ $campaign->type_name }}</td>
                         <td>{{ $campaign->progress }}%</td>
                         <td>{{ $campaign->total_members }}</td>
                         <td>{{ $campaign->sent }}</td>
                         <td>{{ $campaign->opened }}</td>
                         <td>{{ $campaign->closed }}</td>
                         <td> {{ $campaign->status }} </td>
-                        <td>
-                            <a href="{{ route('campaigns.show', $campaign->id) }}" class="btn btn-info ">View</a>
-                            <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning ">Edit</a>
-                            <form action="{{ route('campaigns.destroy', $campaign->id) }}" method="POST"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger "
-                                    onclick="return confirm('Delete this campaign?')">Delete</button>
-                            </form>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-1">
+                                <a href="{{ route('campaigns.show', $campaign->id) }}" class="btn btn-info ">View</a>
+                                <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning ">Edit</a>
+                                <form action="{{ route('campaigns.destroy', $campaign->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger "
+                                        onclick="return confirm('Delete this campaign?')">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
