@@ -209,6 +209,8 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
 
     Route::get('/reports/customer', [ReportController::class, 'customerReport'])->name('reports.customer');
     Route::get('reports/customer/pdf', [ReportController::class, 'customerReportPDF'])->name('reports.customer.pdf');
+    Route::get('/reports/plan', [ReportController::class, 'planReport'])->name('reports.plan');
+    Route::get('reports/plan/pdf', [ReportController::class, 'planReportPDF'])->name('reports.plan.pdf');
 
 
     Route::get('/setting_menu', [SettingController::class, 'index'])->name('settings.index');

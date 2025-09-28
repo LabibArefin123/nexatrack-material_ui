@@ -277,8 +277,14 @@
               "slug": "report-customer",
               "permission": "reports.customer",
               "active": "reports.customer"
+            },
+            {
+              "url": "reports/plan",
+              "name": "Plan Report",
+              "slug": "report-plan",
+              "permission": "reports.plan",
+              "active": "reports.plan"
             }
-            
           ]
         },
         {
