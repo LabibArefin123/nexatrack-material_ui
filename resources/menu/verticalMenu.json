@@ -284,6 +284,13 @@
               "slug": "report-plan",
               "permission": "reports.plan",
               "active": "reports.plan"
+            },
+            {
+              "url": "reports/lead",
+              "name": "Lead Report",
+              "slug": "report-lead",
+              "permission": "reports.lead",
+              "active": "reports.lead"
             }
           ]
         },

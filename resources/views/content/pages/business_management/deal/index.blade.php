@@ -91,15 +91,15 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $deal->name }}</td>
-                                <td>{{ $deal->deal_stage }}</td>
+                                <td>{{ ucfirst(str_replace('_', ' ', $deal->deal_stage)) }}</td>
                                 <td>{{ number_format($deal->amount, 2) }}</td>
                                 <td>{{ $deal->currency }}</td>
                                 <td class="width: 50%">{{ \Carbon\Carbon::parse($deal->start_date)->format('d M Y') }}</td>
                                 <td class="width: 50%">{{ \Carbon\Carbon::parse($deal->end_date)->format('d M Y') }}</td>
                                 <td>{{ $deal->client_option }}</td>
                                 <td>{{ $deal->company_option }}</td>
-                                <td>{{ $deal->deal_type }}</td>
-                                <td>{{ $deal->source }}</td>
+                                <td>{{ ucfirst(str_replace('_', ' ', $deal->deal_type)) }}</td>
+                                <td>{{ ucfirst(str_replace('_', ' ', $deal->source)) }}</td>
                                 <td>
                                     @if (is_array($deal->responsibles))
                                         {{ implode(', ', \App\Models\User::whereIn('id', $deal->responsibles)->pluck('name')->toArray()) }}

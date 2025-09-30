@@ -196,18 +196,42 @@
                         <label>Responsible <span class="text-danger">*</span></label>
                         <div id="responsible-container" class="row">
                             @php $oldResponsibles = old('responsibles', $deal->responsibles ?? []); @endphp
+
                             @foreach ($oldResponsibles as $responsible)
-                                <select name="responsibles[]" class="form-control">
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ $responsible == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                @php
+                                    $user = $users->firstWhere('id', $responsible);
+                                    $roles = $user ? $user->getRoleNames()->join(', ') : 'N/A';
+                                @endphp
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm p-2">
+                                        <div class="d-flex align-items-center gap-3">
+                                            {{-- Circle Avatar --}}
+                                            <img src="{{ asset('uploads/images/default.jpg') }}" alt="User Avatar"
+                                                class="rounded-circle" style="width:50px; height:50px; object-fit:cover;">
+
+                                            {{-- Name & Roles --}}
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold">{{ $user->name ?? 'Unknown' }}</div>
+                                                <div class="text-muted small">{{ $roles }}</div>
+                                            </div>
+
+                                            {{-- Hidden select for form submission --}}
+                                            <select name="responsibles[]" class="form-control d-none">
+                                                @foreach ($users as $u)
+                                                    <option value="{{ $u->id }}"
+                                                        {{ $responsible == $u->id ? 'selected' : '' }}>
+                                                        {{ $u->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
-                        <button type="button" class="btn btn-outline-primary  mt-2" id="add-responsible">
+
+                        {{-- Add New Responsible Button --}}
+                        <button type="button" class="btn btn-outline-primary mt-2" id="add-responsible">
                             <i class="fas fa-plus"></i> Add More
                         </button>
                     </div>
@@ -216,25 +240,42 @@
                     <div class="form-group col-md-12">
                         <label>Observer</label>
                         <div id="observer-container" class="row">
-                            @php $oldObservers = old('observers', $deal->observer ?? []); @endphp
+                            @php
+                                $oldObservers = old('observers', $deal->observer ?? []);
+                            @endphp
+
                             @foreach ($oldObservers as $observer)
-                                <select name="observers[]" class="form-control">
-                                    @foreach ($users as $user)
-                                        <option value="user_{{ $user->id }}"
-                                            {{ $observer == "user_$user->id" ? 'selected' : '' }}>
-                                            User: {{ $user->name }}
-                                        </option>
-                                    @endforeach
-                                    @foreach ($customers as $customer)
-                                        <option value="customer_{{ $customer->id }}"
-                                            {{ $observer == "customer_$customer->id" ? 'selected' : '' }}>
-                                            Customer: {{ $customer->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm p-2">
+                                        <div class="d-flex align-items-center">
+                                            {{-- Circle Avatar --}}
+                                            <img src="{{ asset('uploads/images/default.jpg') }}" alt="Observer Avatar"
+                                                class="rounded-circle me-2"
+                                                style="width:50px; height:50px; object-fit:cover;">
+
+                                            {{-- Dropdown --}}
+                                            <select name="observers[]" class="form-control">
+                                                @foreach ($users as $user)
+                                                    <option value="user_{{ $user->id }}"
+                                                        {{ $observer == "user_$user->id" ? 'selected' : '' }}>
+                                                        User: {{ $user->name }}
+                                                    </option>
+                                                @endforeach
+                                                @foreach ($customers as $customer)
+                                                    <option value="customer_{{ $customer->id }}"
+                                                        {{ $observer == "customer_$customer->id" ? 'selected' : '' }}>
+                                                        Customer: {{ $customer->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
-                        <button type="button" class="btn btn-outline-primary " id="add-observer">
+
+                        {{-- Add New Observer Button --}}
+                        <button type="button" class="btn btn-outline-primary mt-2" id="add-observer">
                             <i class="fas fa-plus"></i> Add Observer
                         </button>
                     </div>

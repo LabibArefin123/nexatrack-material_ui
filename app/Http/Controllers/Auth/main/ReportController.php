@@ -9,7 +9,7 @@ use App\Models\Plan;
 use App\Models\Deal;
 use App\Models\Contract;
 use App\Models\Lead;
-use App\Models\Campaign;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf; // Add this
 
 class ReportController extends Controller
@@ -102,7 +102,7 @@ class ReportController extends Controller
         }
 
         // Main query with pagination
-        $reportData = $query->orderBy('software', 'asc')
+        $reportData = $query->orderBy('id', 'asc')
             ->paginate(10)
             ->appends($request->all());
 
@@ -148,5 +148,75 @@ class ReportController extends Controller
             ->setPaper('a4', 'landscape'); // optional
 
         return $pdf->stream('plan_report.pdf');
+    }
+
+    public function leadReport(Request $request)
+    {
+        $query = Lead::with(['customer', 'assignedUser']);
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by plan
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+
+        // Filter by assigned_to
+        if ($request->filled('assigned_to')) {
+            $query->where('assigned_to', $request->assigned_to);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // Main query with pagination
+        $leads = $query->orderBy('id', 'asc')
+            ->paginate(10)
+            ->appends($request->all());
+
+        // Dropdown data
+        $statuses = Lead::select('status')->whereNotNull('status')->distinct()->orderBy('status')->pluck('status');
+        $plans = Lead::select('plan')->whereNotNull('plan')->distinct()->orderBy('plan')->pluck('plan');
+        $assignedUsers = User::select('id', 'name')->orderBy('name')->get();
+
+        return view('content.pages.report.lead_report', compact('leads', 'statuses', 'plans', 'assignedUsers'));
+    }
+
+    public function leadReportPDF(Request $request)
+    {
+        $query = Lead::with(['customer', 'assignedUser']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+        if ($request->filled('assigned_to')) {
+            $query->where('assigned_to', $request->assigned_to);
+        }
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $reportData = $query->orderBy('id', 'asc')->get();
+
+        $pdf = Pdf::loadView('content.pages.report.pdf.lead_report_pdf', compact('reportData'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('lead_report.pdf');
     }
 }
