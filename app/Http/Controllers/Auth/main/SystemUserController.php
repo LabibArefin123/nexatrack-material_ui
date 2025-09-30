@@ -17,7 +17,8 @@ class SystemUserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10); // Directly paginate the query builder
+        // Eager load roles to avoid N+1 problem
+        $users = User::with('roles')->paginate(10);
         return view('content.pages.setting_management.user_management.system_user.index', compact('users'));
     }
 
