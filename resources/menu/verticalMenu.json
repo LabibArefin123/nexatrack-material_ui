@@ -286,6 +286,20 @@
               "active": "reports.plan"
             },
             {
+              "url": "reports/contract",
+              "name": "Contract Report",
+              "slug": "report-contract",
+              "permission": "reports.contract",
+              "active": "reports.contract"
+            },
+            {
+              "url": "reports/deal",
+              "name": "Deal Report",
+              "slug": "report-deal",
+              "permission": "reports.deal",
+              "active": "reports.deal"
+            },
+            {
               "url": "reports/lead",
               "name": "Lead Report",
               "slug": "report-lead",

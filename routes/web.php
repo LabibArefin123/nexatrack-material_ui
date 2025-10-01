@@ -211,6 +211,10 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('reports/customer/pdf', [ReportController::class, 'customerReportPDF'])->name('reports.customer.pdf');
     Route::get('/reports/plan', [ReportController::class, 'planReport'])->name('reports.plan');
     Route::get('reports/plan/pdf', [ReportController::class, 'planReportPDF'])->name('reports.plan.pdf');
+    Route::get('/reports/contract', [ReportController::class, 'contractReport'])->name('reports.contract');
+    Route::get('reports/contract/pdf', [ReportController::class, 'contractReportPDF'])->name('reports.contract.pdf');
+    Route::get('/reports/deal', [ReportController::class, 'dealReport'])->name('reports.deal');
+    Route::get('reports/deal/pdf', [ReportController::class, 'dealReportPDF'])->name('reports.deal.pdf');
     Route::get('/reports/lead', [ReportController::class, 'leadReport'])->name('reports.lead');
     Route::get('reports/lead/pdf', [ReportController::class, 'leadReportPDF'])->name('reports.lead.pdf');
 

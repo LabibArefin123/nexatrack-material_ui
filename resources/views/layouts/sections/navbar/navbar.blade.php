@@ -86,18 +86,19 @@
     <!-- /Search -->
     <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-        <!-- Fullscreen Icon -->
-        <li class="nav-item me-3">
-            <a class="nav-link" href="javascript:void(0);" id="fullscreen-toggle">
+        <!-- Fullscreen -->
+        <li class="nav-item me-2">
+            <a class="btn btn-light btn-icon rounded-circle" href="javascript:void(0);" id="fullscreen-toggle"
+                title="Fullscreen">
                 <i class="ri-fullscreen-line ri-22px"></i>
             </a>
         </li>
 
         <!-- Notifications -->
-        <li class="nav-item dropdown me-3">
-            <a class="nav-link position-relative" href="javascript:void(0);" id="notificationDropdown"
-                data-bs-toggle="dropdown">
-                <i class="ri-notification-3-line ri-15px"></i>
+        <li class="nav-item dropdown me-2">
+            <a class="btn btn-light btn-icon rounded-circle position-relative" href="javascript:void(0);"
+                id="notificationDropdown" data-bs-toggle="dropdown" title="Notifications">
+                <i class="ri-notification-3-line ri-20px"></i>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     3
                 </span>
@@ -129,26 +130,16 @@
                     <div class="dropdown-divider"></div>
                 </li>
                 <li>
-                    <a class="dropdown-item text-center text-primary" href="#">
-                        View All Notifications
-                    </a>
+                    <a class="dropdown-item text-center text-primary" href="#">View All Notifications</a>
                 </li>
             </ul>
         </li>
 
-        <!-- GitHub Star Button -->
-        {{-- <li class="nav-item lh-1 me-4">
-            <a class="github-button" href="{{ config('variables.repository') }}" data-icon="octicon-star"
-                data-size="large" data-show-count="true"
-                aria-label="Star themeselection/materio-html-laravel-admin-template-free on GitHub">Star</a>
-        </li> --}}
-
         <!-- User -->
-        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-            <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                <div class="avatar avatar-online">
-                    <img src="{{ asset('uploads/images/default.jpg') }}" alt class="w-px-40 h-auto rounded-circle">
-                </div>
+        <li class="nav-item dropdown">
+            <a class="btn btn-light btn-icon rounded-circle" href="javascript:void(0);" data-bs-toggle="dropdown"
+                title="User Menu">
+                <img src="{{ asset('uploads/images/default.jpg') }}" alt class="w-px-30 h-auto rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
                 <li>
@@ -161,12 +152,9 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1">
-                                <h6 class="mb-0 small">
-                                    {{ Auth::user()->name ?? 'Guest User' }}
-                                </h6>
-                                <small class="text-muted">
-                                    {{ Auth::user()->getRoleNames()->first() ?? 'No Role' }}
-                                </small>
+                                <h6 class="mb-0 small">{{ Auth::user()->name ?? 'Guest User' }}</h6>
+                                <small
+                                    class="text-muted">{{ Auth::user()->getRoleNames()->first() ?? 'No Role' }}</small>
                             </div>
                         </div>
                     </a>
@@ -182,7 +170,7 @@
                 </li>
                 <li>
                     <a class="dropdown-item" href="{{ route('settings.index') }}">
-                        <i class='ri-settings-4-line ri-22px me-2'></i>
+                        <i class="ri-settings-4-line ri-22px me-2"></i>
                         <span class="align-middle">Settings</span>
                     </a>
                 </li>
@@ -193,17 +181,18 @@
                     <div class="d-grid px-4 pt-2 pb-1">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-danger d-flex">
-                                <small class="align-middle">Logout</small>
-                                <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
+                            <button type="submit"
+                                class="btn btn-danger d-flex justify-content-center align-items-center">
+                                <i class="ri-logout-box-r-line ri-16px me-2"></i>
+                                <small>Logout</small>
                             </button>
                         </form>
                     </div>
                 </li>
             </ul>
         </li>
-        <!--/ User -->
     </ul>
+
 
     {{-- JS for fullscreen --}}
     <script>

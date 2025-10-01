@@ -115,7 +115,6 @@ class ReportController extends Controller
         return view('content.pages.report.plan_report', compact('reportData', 'plans', 'sources', 'softwares', 'countries'));
     }
 
-    // PDF Route Example
     public function planReportPDF(Request $request)
     {
         $query = Plan::query();
@@ -149,6 +148,149 @@ class ReportController extends Controller
 
         return $pdf->stream('plan_report.pdf');
     }
+
+    // -- Start of Contract Report Part -- //
+    public function contractReport(Request $request)
+    {
+        $query = Contract::with(['customer']);
+
+        // Filter by Type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by Customer
+        if ($request->filled('customer_id')) {
+            $query->where('client_id', $request->customer_id);
+        }
+
+
+        // Date filter
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('start_date', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('end_date', '<=', $request->end_date);
+        }
+
+        $reportData = $query->orderBy('id', 'asc')
+            ->paginate(10)
+            ->appends($request->all());
+
+        // Dropdown data
+        $types = Contract::select('type')->whereNotNull('type')->distinct()->pluck('type');
+        $customers = Contract::with('customer')->whereNotNull('client_id')->get()->pluck('customer.name', 'client_id')->unique();
+
+        return view('content.pages.report.contract_report', compact('reportData', 'types', 'customers'));
+    }
+
+    public function contractReportPDF(Request $request)
+    {
+        $query = Contract::with(['customer']);
+
+        // Same filters
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        if ($request->filled('customer_id')) {
+            $query->where('client_id', $request->customer_id);
+        }
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('start_date', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('start_date', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('end_date', '<=', $request->end_date);
+        }
+
+        $reportData = $query->orderBy('id', 'asc')->get();
+
+        $pdf = Pdf::loadView('content.pages.report.pdf.contract_report_pdf', compact('reportData'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('contract_report.pdf');
+    }
+    // -- End of Contract Report Part -- //
+
+    // -- Start of Deal Report Part -- //
+
+    public function dealReport(Request $request)
+    {
+        $query = Deal::query();
+
+        // Filter by stage
+        if ($request->filled('deal_stage')) {
+            $query->where('deal_stage', $request->deal_stage);
+        }
+
+        // Filter by type
+        if ($request->filled('deal_type')) {
+            $query->where('deal_type', $request->deal_type);
+        }
+
+        // Filter by source
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // Main query with pagination
+        $deals = $query->orderBy('id', 'asc')
+            ->paginate(10)
+            ->appends($request->all());
+
+        // Dropdown data
+        $stages = Deal::select('deal_stage')->whereNotNull('deal_stage')->distinct()->orderBy('deal_stage')->pluck('deal_stage');
+        $types = Deal::select('deal_type')->whereNotNull('deal_type')->distinct()->orderBy('deal_type')->pluck('deal_type');
+        $sources = Deal::select('source')->whereNotNull('source')->distinct()->orderBy('source')->pluck('source');
+
+        return view('content.pages.report.deal_report', compact('deals', 'stages', 'types', 'sources'));
+    }
+
+    public function dealReportPDF(Request $request)
+    {
+        $query = Deal::query();
+
+        if ($request->filled('deal_stage')) {
+            $query->where('deal_stage', $request->deal_stage);
+        }
+        if ($request->filled('deal_type')) {
+            $query->where('deal_type', $request->deal_type);
+        }
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $reportData = $query->orderBy('id', 'asc')->get();
+
+        $pdf = Pdf::loadView('content.pages.report.pdf.deal_report_pdf', compact('reportData'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('deal_report.pdf');
+    }
+
+    // -- End of Deal Report Part -- //
+
+    // -- Start of Lead Report Part -- //
 
     public function leadReport(Request $request)
     {
@@ -219,4 +361,6 @@ class ReportController extends Controller
 
         return $pdf->stream('lead_report.pdf');
     }
+
+    // -- End of Lead Report Part -- //
 }

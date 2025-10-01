@@ -16,12 +16,12 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Role</th>
+                            <th class="text-center">Role</th>
                             <th>Email</th>
-                            <th>Phone 1</th>
-                            <th>Username</th>
+                            <th>Phone </th>
+                            <th class="text-center">Username</th>
                             @if (auth()->user()->hasRole('superadmin'))
-                                <th>Password</th>
+                                <th class="text-center">Password</th>
                             @endif
                             <th>Actions</th>
                         </tr>
@@ -31,16 +31,13 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->roles->pluck('name')->join(', ') }}</td>
+                                <td class="text-center">{{ $user->roles->pluck('name')->join(', ') }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone ?? 'Not Provided' }}</td>
-                                <td>{{ $user->username ?? 'Not Provided' }}</td>
-
-                                {{-- Only superadmin can see real password --}}
+                                <td class="text-center">{{ $user->username ?? 'Not Provided' }}</td>
                                 @if (auth()->user()->hasRole('superadmin'))
-                                    <td>{{ $user->password ?? 'N/A' }}</td>
+                                    <td class="text-center">{{ $user->plain_password ?? '********' }}</td>
                                 @endif
-
                                 <td>
                                     <a href="{{ route('system_users.show', $user->id) }}" class="btn btn-info me-2">View</a>
                                     <a href="{{ route('system_users.edit', $user->id) }}"
