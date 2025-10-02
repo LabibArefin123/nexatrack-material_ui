@@ -152,7 +152,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="form-group col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </div>
             </form>
         </div>
     </div>

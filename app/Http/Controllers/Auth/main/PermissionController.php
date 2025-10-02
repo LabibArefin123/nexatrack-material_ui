@@ -11,9 +11,12 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        $permissions = Permission::all();
+        // 25 per page paginate
+        $permissions = Permission::orderBy('id', 'desc')->paginate(15);
+
         return view('content.pages.setting_management.role_permission.permission.index', compact('permissions'));
     }
+
 
     public function store(Request $request)
     {

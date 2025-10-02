@@ -68,11 +68,11 @@ class ContractController extends Controller
             'subject' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'client_id' => 'nullable|exists:customers,id',
-            'type' => 'nullable|string|max:50',
-            'value' => 'nullable|string',
+            'client_id' => 'required|exists:customers,id',
+            'type' => 'required|string|max:50',
+            'value' => 'required|string',
             'attachment' => 'nullable|file|max:5120', // 5 MB
-            'description' => 'nullable|string',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('attachment')) {
@@ -115,11 +115,11 @@ class ContractController extends Controller
             'subject' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'client_id' => 'nullable|exists:customers,id',
-            'type' => 'nullable|string|max:50',
-            'value' => 'nullable|string|max:50',
+            'client_id' => 'required|exists:customers,id',
+            'type' => 'required|string|max:50',
+            'value' => 'required|string|max:50',
             'attachment' => 'nullable|file|max:5120', // 5 MB
-            'description' => 'nullable|string',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('attachment')) {

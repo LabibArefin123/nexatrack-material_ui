@@ -126,6 +126,16 @@ class DealController extends Controller
         return redirect()->route('deals.index')->with('success', 'Deal created successfully.');
     }
 
+    public function show($id)
+    {
+        $deal = Deal::findOrFail($id);
+
+        // All users (responsibles resolve korte lagbe)
+        $users = User::all();
+
+        return view('content.pages.business_management.deal.show', compact('deal', 'users'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

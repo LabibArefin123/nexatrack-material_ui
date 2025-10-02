@@ -18,142 +18,39 @@ class PlanController extends Controller
 
     public function index(Request $request)
     {
-        $query = Plan::query();
+        $query = $this->applyFilters($request);
 
-        // Apply filters if set
-        if ($request->filled('country')) {
-            $query->where('country', $request->country);
-        }
-        if ($request->filled('plan')) {
-            $query->where('plan', $request->plan);
-        }
-        if ($request->filled('source')) {
-            $query->where('source', $request->source);
-        }
+        // Always order latest first
+        $allContacts = $query->orderBy('created_at', 'desc')
+            ->paginate(25)
+            ->withQueryString();
 
-        $allContacts = $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString();
+        // Unique filter dropdown values
+        $countries = Plan::whereNotNull('country')->distinct()->pluck('country');
+        $plans     = Plan::whereNotNull('plan')->distinct()->pluck('plan');
+        $softwares = Plan::whereNotNull('software')->distinct()->pluck('software');
+        $sources   = Plan::whereNotNull('source')->distinct()->pluck('source');
 
-        // Pass unique values for filters
-        $countries = Plan::select('country')->distinct()->pluck('country');
-        $plans     = Plan::select('plan')->distinct()->pluck('plan');
-        $sources   = Plan::select('source')->distinct()->pluck('source');
-
-        return view('content.pages.business_management.plan.index', compact('allContacts', 'countries', 'plans', 'sources'));
+        return view(
+            'content.pages.business_management.plan.index',
+            compact('allContacts', 'countries', 'plans', 'softwares', 'sources')
+        );
     }
-
-
-    public function filter(Request $request)
-    {
-        $query = Plan::query();
-
-        // Apply multi-field filter
-        if ($request->filled('country')) {
-            $query->where('country', $request->country);
-        }
-        if ($request->filled('plan')) {
-            $query->where('plan', $request->plan);
-        }
-        if ($request->filled('source')) {
-            $query->where('source', $request->source);
-        }
-
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->make(true);
-    }
-
-    private function getFilteredData(Request $request, $paginate = false)
-    {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'plan',
-            'source',
-            'created_at',
-        ];
-
-        $query = Plan::query();
-
-        // Filter
-        if ($request->filled('filter_field') && $request->filled('filter_value')) {
-            $field = $request->filter_field;
-            $value = $request->filter_value;
-
-            if ($field === 'software' && strtolower($value) === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
-            } elseif (in_array($field, $allowedFields)) {
-                $query->where($field, $value);
-            }
-        }
-
-        // Global search
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
-
-        return $paginate
-            ? $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString()
-            : $query->orderBy('created_at', 'desc')->get();
-    }
-
-    public function create()
-    {
-        return view('content.pages.business_management.plan.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'software' => 'required|string|max:50',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:100',
-            'phone' => 'required|string|max:20',
-            'company_name' => 'required|string|max:100',
-            'address' => 'required|string',
-            'area' => 'required|string|max:100',
-            'city' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
-            'post_code' => 'required|string|max:25',
-            'plan' => 'required|string',
-            'source' => 'required|string|max:100',
-        ]);
-
-        Plan::create($request->all());
-
-        return redirect()->route('plans.index')->with('success', 'Customer Plan added successfully!');
-    }
-
-
 
     public function exportPdf(Request $request)
     {
-        $customers = $this->getFilteredData($request);
+        $plans = $this->applyFilters($request)->orderBy('created_at', 'desc')->get();
 
-        $pdf = Pdf::loadView('pages.plan_management.pdf.customer', compact('customers'));
+        $pdf = Pdf::loadView('content.pages.business_management.plan.pdf.plan', compact('plans'));
 
-        return $pdf->download('customers_plan_report.pdf');
+        return $pdf->stream('plans_report.pdf');
     }
 
     public function exportExcel(Request $request)
     {
-        $contacts = $this->getFilteredData($request);
+        $contacts = $this->applyFilters($request)->orderBy('created_at', 'desc')->get();
 
-        $filename = 'customers_plans_filtered_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'plans_filtered_' . now()->format('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -204,6 +101,73 @@ class PlanController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * 🔹 Reusable Filter Logic
+     */
+    private function applyFilters(Request $request)
+    {
+        $query = Plan::query();
+
+        // Dashboard style filter
+        if ($request->filled('filter_field') && $request->filled('filter_value')) {
+            $field = $request->filter_field;
+            $value = $request->filter_value;
+
+            if ($field === 'software' && strtolower($value) === 'other') {
+                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+
+        // Normal filters
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
+        }
+        if ($request->filled('plan')) {
+            $query->where('plan', $request->plan);
+        }
+        if ($request->filled('software')) {
+            if (strtolower($request->software) === 'other') {
+                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
+            } else {
+                $query->where('software', $request->software);
+            }
+        }
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        return $query;
+    }
+
+    public function create()
+    {
+        return view('content.pages.business_management.plan.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'software' => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|string|max:20',
+            'company_name' => 'required|string|max:100',
+            'address' => 'required|string',
+            'area' => 'required|string|max:100',
+            'city' => 'required|string|max:100',
+            'country' => 'required|string|max:100',
+            'post_code' => 'required|string|max:25',
+            'plan' => 'required|string',
+            'source' => 'required|string|max:100',
+        ]);
+
+        Plan::create($request->all());
+
+        return redirect()->route('plans.index')->with('success', 'Customer Plan added successfully!');
     }
 
     /**

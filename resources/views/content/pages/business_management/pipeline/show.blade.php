@@ -3,48 +3,53 @@
 @section('title', 'View Pipeline')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Pipeline Details</h3>
-        <a href="{{ route('pipelines.edit', $pipeline->id) }}" class="btn  btn-primary">
-            <i class="fas fa-edit"></i> Edit
-        </a>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th>ID</th>
-                    <td>{{ $pipeline->id }}</td>
-                </tr>
-                <tr>
-                    <th>Pipeline Name</th>
-                    <td>{{ ucfirst($pipeline->name) }}</td>
-                </tr>
-                <tr>
-                    <th>Total Deal Value</th>
-                    <td>{{ number_format($pipeline->total_deal_value, 2) }} Tk</td>
-                </tr>
-                <tr>
-                    <th>No of Deals</th>
-                    <td>{{ $pipeline->no_of_deals }}</td>
-                </tr>
-                <tr>
-                    <th>Stage</th>
-                    <td>{{ ucfirst(str_replace('_', ' ', $pipeline->stage)) ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>
-                        <span {{ $pipeline->status == 'Active' ? 'badge-success' : 'badge-secondary' }}>
-                            {{ $pipeline->status }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Created Date</th>
-                    <td>{{ $pipeline->created_at->format('d M Y') }}</td>
-                </tr>
-            </table>
+        <div class="d-flex gap-2">
+            <a href="{{ route('pipelines.edit', $pipeline->id) }}" class="btn btn-primary d-flex align-items-center gap-2">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{{ route('pipelines.index') }}" class="btn btn-secondary d-flex align-items-center gap-2">
+                <i class="bx bx-arrow-back"></i> Back
+            </a>
         </div>
     </div>
-@stop
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-3">
+                {{-- Pipeline Name --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Pipeline Name</label>
+                    <input type="text" class="form-control" value="{{ ucfirst($pipeline->name) }}" readonly>
+                </div>
+
+                {{-- Total Deal Value --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Total Deal Value</label>
+                    <input type="text" class="form-control"
+                        value="{{ number_format($pipeline->total_deal_value, 2) }} Tk" readonly>
+                </div>
+
+                {{-- Number of Deals --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Number of Deals</label>
+                    <input type="text" class="form-control" value="{{ $pipeline->no_of_deals }}" readonly>
+                </div>
+
+                {{-- Stage --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Stage</label>
+                    <input type="text" class="form-control"
+                        value="{{ ucfirst(str_replace('_', ' ', $pipeline->stage)) ?? '-' }}" readonly>
+                </div>
+
+                {{-- Status --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Status</label>
+                    <input type="text" class="form-control" value="{{ $pipeline->status }}" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

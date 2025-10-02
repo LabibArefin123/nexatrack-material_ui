@@ -81,20 +81,6 @@
                     <a href="#" class="btn btn-outline-secondary">Manage</a>
                 </div>
             </div>
-
-
-            <!-- Authorized URLs -->
-            {{-- <div class="col-md-4 col-sm-6">
-                <div class="card shadow-sm setting-card h-100 text-center p-4">
-                    <div class="setting-icon mb-3">
-                        <i class="ri-links-line fs-1 text-warning"></i>
-                    </div>
-                    <h5 class="mb-2">Authorized URLs</h5>
-                    <p class="text-muted small">View only URLs allowed for your role</p>
-                    <a href="{{ route('settings.urls') }}" class="btn  btn-outline-warning">View URLs</a>
-                </div>
-            </div> --}}
-
         </div>
     </div>
 @endsection

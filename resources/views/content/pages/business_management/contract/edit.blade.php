@@ -35,14 +35,17 @@
                     {{-- Subject --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
-                        <input type="text" name="subject" class="form-control"
-                            value="{{ old('subject', $contract->subject) }}" required>
+                        <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror"
+                            value="{{ old('subject', $contract->subject) }}">
+                        @error('subject')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Client --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Client</label>
-                        <select name="client_id" class="form-control">
+                        <label class="form-label fw-bold">Client <span class="text-danger">*</span></label>
+                        <select name="client_id" class="form-control @error('client_id') is-invalid @enderror">
                             <option value="">Select Client</option>
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}"
@@ -51,12 +54,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('client_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Status --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Contract Type</label>
-                        <select name="type" class="form-control">
+                        <label class="form-label fw-bold">Contract Type <span class="text-danger">*</span></label>
+                        <select name="type" class="form-control @error('type') is-invalid @enderror">
                             <option value="contracts_under_seal"
                                 {{ old('type', $contract->status) == 'contracts_under_seal' ? 'selected' : '' }}>
                                 Contracts Under Seal</option>
@@ -71,25 +77,38 @@
                                 {{ old('type', $contract->status) == 'voidable_contracts' ? 'selected' : '' }}>Voidable
                                 Contracts</option>
                         </select>
+                        @error('type')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Contract Value --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Contract Value</label>
-                        <input type="number" name="value" class="form-control"
+                        <label class="form-label fw-bold">Contract Value <span class="text-danger">*</span></label>
+                        <input type="number" name="value" class="form-control @error('value') is-invalid @enderror"
                             value="{{ old('value', $contract->value) }}" placeholder="Enter contract value">
+                        @error('value')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Dates --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" name="start_date" class="form-control"
+                        <label class="form-label fw-bold">Start Date <span class="text-danger">*</span></label>
+                        <input type="date" name="start_date"
+                            class="form-control @error('start_date') is-invalid @enderror"
                             value="{{ old('start_date', $contract->start_date) }}">
+                        @error('start_date')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
-                        <input type="date" name="end_date" class="form-control"
+                        <label class="form-label fw-bold">End Date <span class="text-danger">*</span></label>
+                        <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @enderror"
                             value="{{ old('end_date', $contract->end_date) }}">
+                        @error('end_date')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Attachment --}}
@@ -110,12 +129,15 @@
 
                     {{-- Description --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Description</label>
-                        <textarea name="description" class="form-control" rows="4">{{ old('description', $contract->description) }}</textarea>
+                        <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description', $contract->description) }}</textarea>
+                        @error('description')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="col-12 text-end mt-2">
-                        <button type="submit" class="btn btn-success">Update contract</button>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </div>
             </form>

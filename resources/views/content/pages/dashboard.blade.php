@@ -155,11 +155,11 @@
 
         {{-- TimeTrack Plan Users --}}
         <div class="col-md-6 col-lg-3">
-            <div onclick="window.location='{{ route('plans.index', ['filter_field' => 'software', 'filter_value' => 'Timetrack']) }}'"
+            <div onclick="window.location='{{ route('plans.index', ['filter_field' => 'software', 'filter_value' => 'Timetracks']) }}'"
                 class="small-box bg-orange">
                 <div class="inner">
                     <h3>{{ $totalTimetracksPlanUsers }}</h3>
-                    <p>TimeTrack Plan Users</p>
+                    <p>TimeTracks Plan Users</p>
                 </div>
                 <div class="icon"><i class="fas fa-calendar-check"></i></div>
             </div>

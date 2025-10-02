@@ -89,7 +89,7 @@
                     <tbody id="deal-body">
                         @foreach ($deals as $index => $deal)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $deal->name }}</td>
                                 <td>{{ ucfirst(str_replace('_', ' ', $deal->deal_stage)) }}</td>
                                 <td>{{ number_format($deal->amount, 2) }}</td>
@@ -143,6 +143,9 @@
 
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('deals.show', $deal->id) }}" class="btn  btn-warning me-1">
+                                            <i class="fas fa-edit">Show</i>
+                                        </a>
                                         <a href="{{ route('deals.edit', $deal->id) }}" class="btn  btn-primary me-1">
                                             <i class="fas fa-edit">Edit</i>
                                         </a>

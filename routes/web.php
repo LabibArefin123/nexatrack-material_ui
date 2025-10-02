@@ -156,7 +156,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('organizations', OrganizationController::class);
 
     //Customer
-    Route::get('customers/filter', [CustomerController::class, 'filter'])->name('customers.filter');
     Route::get('customers/export/pdf', [CustomerController::class, 'exportPdf'])->name('customers.export.pdf');
     Route::get('customers/export/excel', [CustomerController::class, 'exportExcel'])->name('customers.export.excel');
     Route::get('/customer-memo/{id}', [CustomerController::class, 'memo'])->name('customer_memos.memo');
@@ -169,7 +168,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('customers', CustomerController::class);
 
     //Plan
-    Route::get('plans/filter', [PlanController::class, 'filter'])->name('plans.filter');
     Route::get('plans/export/pdf', [PlanController::class, 'exportPdf'])->name('plans.export.pdf');
     Route::get('plans/export/excel', [PlanController::class, 'exportExcel'])->name('plans.export.excel');
     Route::get('/plan-memo/{id}', [PlanController::class, 'memo'])->name('plan_memos.memo');
@@ -219,6 +217,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('reports/lead/pdf', [ReportController::class, 'leadReportPDF'])->name('reports.lead.pdf');
 
 
+    //Setting Menu
     Route::get('/setting_menu', [SettingController::class, 'index'])->name('settings.index');
     Route::get('/setting_theme', [SettingController::class, 'theme'])->name('settings.theme');
     Route::post('/setting_theme/update', [SettingController::class, 'updateTheme'])->name('settings.theme.update');

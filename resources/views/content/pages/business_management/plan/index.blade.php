@@ -7,28 +7,34 @@
         $query = request()->getQueryString();
     @endphp
 
-    <!-- Action Buttons -->
-    <div class="d-flex flex-wrap gap-2 my-3">
-        <a href="{{ route('plans.export.pdf') . '?' . $query }}" class="btn btn-outline-danger ">
-            <i class="fas fa-file-pdf"></i> Export PDF
-        </a>
-        <a href="{{ route('plans.export.excel') . '?' . $query }}" class="btn btn-outline-success ">
-            <i class="fas fa-file-excel"></i> Export Excel
-        </a>
-        <a href="{{ route('plans.create') }}" class="btn btn-primary ">
-            <i class="fas fa-plus-circle"></i> Add New Plan
-        </a>
-        @if (auth()->user()->hasRole(['superadmin', 'admin']))
-            <button type="button" id="delete-selected" class="btn btn-danger ">
-                <i class="fas fa-trash-alt"></i> Delete Selected
-            </button>
-        @endif
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Left side -->
+        <h3 class="mb-0">Plans List</h3>
+
+        <!-- Right side buttons -->
+        <div class="d-flex gap-2">
+            <a href="{{ route('plans.create') }}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add New Plan
+            </a>
+            <a href="{{ route('plans.export.pdf') . '?' . $query }}" class="btn btn-outline-danger">
+                <i class="fas fa-file-pdf"></i> Export PDF
+            </a>
+            <a href="{{ route('plans.export.excel') . '?' . $query }}" class="btn btn-outline-success">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </a>
+
+            @if (auth()->user()->hasRole(['superadmin', 'admin']))
+                <button type="button" id="delete-selected" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Delete Selected
+                </button>
+            @endif
+        </div>
     </div>
 
     <div class="card mb-3">
         <div class="card-body">
             <form method="GET" action="{{ route('plans.index') }}" class="row g-2 align-items-end mb-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label fw-bold">Filter By Country</label>
                     <select name="country" class="form-select">
                         <option value="">-- All Countries --</option>
@@ -39,7 +45,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label fw-bold">Filter By Plan</label>
                     <select name="plan" class="form-select">
                         <option value="">-- All Plans --</option>
@@ -50,7 +56,18 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Filter By Software</label>
+                    <select name="software" class="form-select">
+                        <option value="">-- All Softwares --</option>
+                        @foreach ($softwares as $software)
+                            <option value="{{ $software }}" {{ request('software') == $software ? 'selected' : '' }}>
+                                {{ $software }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2">
                     <label class="form-label fw-bold">Filter By Source</label>
                     <select name="source" class="form-select">
                         <option value="">-- All Sources --</option>
@@ -61,8 +78,9 @@
                     </select>
                 </div>
 
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-success w-100">Apply Filter</button>
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-success">Apply Filter</button>
+                    <a href="{{ route('plans.index') }}" class="btn btn-secondary">Reset</a>
                 </div>
             </form>
         </div>

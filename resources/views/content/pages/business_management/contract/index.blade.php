@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Contracts List</h3>
-        <a href="{{ route('contracts.create') }}" class="btn  btn-success">Add New Contract</a>
+        <a href="{{ route('contracts.create') }}" class="btn  btn-success">+ Add New Contract</a>
     </div>
 
     {{-- Filter Form --}}
@@ -72,18 +72,20 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th>SL</th>
                             <th>Subject</th>
                             <th>Customer</th>
                             <th>Contract Type</th>
                             <th>Value</th>
-                            <th>Start</th>
-                            <th>End</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($contracts as $contract)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $contract->subject }}</td>
                                 <td>{{ $contract->customer->name ?? '-' }}</td>
                                 <td>{{ $contract->type_name }}</td>

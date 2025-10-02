@@ -31,7 +31,7 @@ class PipelineController extends Controller
             $query->whereDate('created_at', '<=', $request->end_date);
         }
 
-        $pipelines = $query->orderBy('created_at', 'asc')->paginate(15)->withQueryString();
+        $pipelines = $query->latest()->paginate(15)->withQueryString();
 
         // Pass options for filters
         $names = Pipeline::select('name')->distinct()->pluck('name');

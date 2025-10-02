@@ -11,7 +11,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
-use App\Exports\FilteredCustomersExport;
 
 class CustomerController extends Controller
 {
@@ -20,152 +19,144 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'note',
-            'source',
-            'created_at'
-        ];
-
         $highlightId = session('highlight');
 
-        $query = Customer::query();
+        // Base query with filters
+        $query = $this->applyFilters($request);
 
         // Highlight updated customer on top
         if ($highlightId) {
             $query->orderByRaw("id = ? DESC", [$highlightId]);
         }
 
-        // Apply field filter
-        if ($request->filled('filter_field') && $request->filled('filter_value')) {
-            $field = $request->filter_field;
-            $value = trim($request->filter_value);
-            if (in_array($field, $allowedFields)) {
-                if ($field === 'software' && strtolower($value) === 'other') {
-                    $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
-                } else {
-                    $query->where($field, $value);
-                }
-            }
-        }
-
-        // Global search
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
-
-        // After filters, keep highlight at top
-        if ($highlightId) {
-            $query->orderByRaw("id = ? DESC", [$highlightId]);
-        }
-
-        // Always order latest created at
+        // Always order latest
         $query->orderBy('created_at', 'desc');
 
-        // DataTables AJAX
-        if ($request->ajax()) {
-            return DataTables::of($query)
-                ->editColumn('created_at', fn($row) => $row->created_at ? $row->created_at->format('d M Y, h:i A') : '')
-                ->addColumn('actions', function ($row) {
-                    $editUrl = route('customers.edit', $row->id);
-                    $deleteUrl = route('customers.destroy', $row->id);
-                    $memoUrl = route('customer_memos.memo', $row->id);
-
-                    $buttons = '<a href="' . $editUrl . '" class="btn  btn-primary">Edit</a> ';
-                    if (auth()->user()->hasRole('superadmin')) {
-                        $buttons .= '<form action="' . $deleteUrl . '" method="POST" style="display:inline;">
-                        ' . csrf_field() . method_field('DELETE') . '
-                        <button type="submit" class="btn  btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
-                    </form> ';
-                    }
-                    $buttons .= '<a href="' . $memoUrl . '" class="btn  btn-primary"><i class="fas fa-sticky-note"></i></a>';
-                    return $buttons;
-                })
-                ->rawColumns(['actions'])
-                ->make(true);
-        }
-
-        // Page load
+        // Pagination
         $allContacts = $query->paginate(10)->withQueryString();
-        return view('content.pages.community_management.customer.index', compact('allContacts'));
+
+        // Unique values for dropdown filters
+        $countries = Customer::whereNotNull('country')->distinct()->pluck('country');
+        $softwares = Customer::whereNotNull('software')->distinct()->pluck('software');
+        $sources   = Customer::whereNotNull('source')->distinct()->pluck('source');
+
+        return view(
+            'content.pages.community_management.customer.index',
+            compact('allContacts', 'countries', 'softwares', 'sources')
+        );
     }
 
-    protected function getFilteredData(Request $request)
+    public function exportPdf(Request $request)
     {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'note',
-            'source',
-            'created_at',
+        $customers = $this->applyFilters($request)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView(
+            'content.pages.community_management.customer.pdf.customer',
+            compact('customers')
+        );
+
+        return $pdf->stream('customer_report_' . now()->format('Ymd_His') . '.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $contacts = $this->applyFilters($request)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $filename = 'customers_filtered_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
+        $columns = [
+            'Software',
+            'Name',
+            'Email',
+            'Phone',
+            'Company',
+            'Address',
+            'Area',
+            'City',
+            'Country',
+            'Post Code',
+            'Source',
+            'Created At',
+        ];
+
+        $callback = function () use ($contacts, $columns) {
+            $file = fopen('php://output', 'w');
+            fputs($file, chr(0xEF) . chr(0xBB) . chr(0xBF)); // UTF-8 BOM for Excel
+
+            // Header row
+            fputcsv($file, $columns);
+
+            foreach ($contacts as $contact) {
+                fputcsv($file, [
+                    $contact->software,
+                    $contact->name,
+                    $contact->email,
+                    $contact->phone,
+                    $contact->company_name,
+                    $contact->address,
+                    $contact->area,
+                    $contact->city,
+                    $contact->country,
+                    $contact->post_code,
+                    $contact->source,
+                    optional($contact->created_at)->format('d M Y, h:i A'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * 🔹 Reusable Filter Logic
+     */
+    private function applyFilters(Request $request)
+    {
         $query = Customer::query();
 
-        /**
-         * Global Search
-         */
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
+        // Dashboard style filter
+        if ($request->filled('filter_field') && $request->filled('filter_value')) {
+            $field = $request->filter_field;
+            $value = $request->filter_value;
 
-        /**
-         * Field Filter with 'other' logic
-         */
-        $field = $request->query('filter_field');
-        $value = $request->query('filter_value');
-        if ($field && $value && in_array($field, $allowedFields)) {
-            if ($field === 'software' && $value === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
+            if ($field === 'software' && strtolower($value) === 'other') {
+                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
             } else {
                 $query->where($field, $value);
             }
         }
 
-        /**
-         * Sorting
-         */
-        $sortColumn = $request->query('sort_by', 'created_at');
-        $sortDirection = strtolower($request->query('sort_dir', 'desc'));
-        if (in_array($sortColumn, $allowedFields) && in_array($sortDirection, ['asc', 'desc'])) {
-            $query->orderBy($sortColumn, $sortDirection);
-        } else {
-            $query->latest();
+        // Normal filters
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
         }
 
-        return $query->get(); // For export/reports
+        if ($request->filled('software')) {
+            if (strtolower($request->software) === 'other') {
+                $query->whereNotIn('software', ['Bidtrack', 'Timetracks']);
+            } else {
+                $query->where('software', $request->software);
+            }
+        }
+
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
+        }
+
+        return $query;
     }
+
 
     public function create()
     {
@@ -194,141 +185,6 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', 'Customer added successfully!');
     }
 
-    public function filter(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = Customer::query();
-
-            // Apply dynamic field filter
-            if ($request->filled('filter_field') && $request->filled('filter_value')) {
-                $field = $request->filter_field;
-                $value = $request->filter_value;
-
-                // Sanitize field to prevent SQL injection (must be a known field)
-                $allowedFields = ['area', 'city', 'country', 'source', 'software'];
-                if (in_array($field, $allowedFields)) {
-                    $query->where($field, 'like', '%' . $value . '%');
-                }
-            }
-
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-        return view('content.pages.community_management.customer.index');
-    }
-
-    public function exportPdf(Request $request)
-    {
-        $allowedFields = [
-            'software',
-            'name',
-            'email',
-            'phone',
-            'company_name',
-            'address',
-            'area',
-            'city',
-            'country',
-            'post_code',
-            'note',
-            'source',
-            'created_at',
-        ];
-
-        $query = Customer::query();
-
-        // Get filter params
-        $field = $request->query('filter_field');
-        $value = $request->query('filter_value');
-
-        if ($field && $value && in_array($field, $allowedFields)) {
-            if ($field === 'software' && $value === 'other') {
-                $query->whereNotIn('software', ['Bidtrack', 'Timetrack']);
-            } else {
-                $query->where($field, $value);
-            }
-        }
-
-        // Apply global search if present
-        if ($request->filled('q')) {
-            $search = $request->q;
-            $query->where(function ($q) use ($search, $allowedFields) {
-                foreach ($allowedFields as $field) {
-                    if ($field !== 'created_at') {
-                        $q->orWhere($field, 'LIKE', "%{$search}%");
-                    }
-                }
-            });
-        }
-
-        // Get filtered customers
-        $customers = $query->get();
-
-        // Generate PDF
-        $pdf = Pdf::loadView('content.pages.community_management.customer.pdf.customer', compact('customers'));
-
-        return $pdf->stream('customers_report.pdf');
-    }
-
-
-    public function exportExcel(Request $request)
-    {
-        $contacts = $this->getFilteredData($request);
-
-        $filename = 'customers_filtered_' . now()->format('Ymd_His') . '.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
-
-        $columns = [
-            'Software',
-            'Name',
-            'Email',
-            'Phone',
-            'Company',
-            'Address',
-            'Area',
-            'City',
-            'Country',
-            'Post Code',
-            'Note',
-            'Source',
-            'Created At',
-        ];
-
-        $callback = function () use ($contacts, $columns) {
-            $file = fopen('php://output', 'w');
-            fputs($file, chr(0xEF) . chr(0xBB) . chr(0xBF)); // UTF-8 BOM for Excel
-
-            fputcsv($file, $columns);
-
-            foreach ($contacts as $contact) {
-                fputcsv($file, [
-                    $contact->software,
-                    $contact->name,
-                    $contact->email,
-                    $contact->phone,
-                    $contact->company_name,
-                    $contact->address,
-                    $contact->area,
-                    $contact->city,
-                    $contact->country,
-                    $contact->post_code,
-                    $contact->note,
-                    $contact->source,
-                    $contact->created_at?->format('d M Y, h:i A'),
-                ]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
-    }
 
     /**
      * Display the specified resource.

@@ -3,137 +3,174 @@
 @section('title', 'Customer List')
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-6">
-                <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
-                    <h5 class="mb-0">Customer List</h5>
-                    <div class="btn-group">
+    @php
+        $query = request()->getQueryString();
+    @endphp
 
-                        <a href="{{ route('customers.export.pdf') }}" class="btn btn-danger ">
-                            <i class="ri-file-pdf-2-line me-1"></i> PDF
-                        </a>
-                        <a href="{{ route('customers.export.excel') }}" class="btn btn-success ">
-                            <i class="ri-file-excel-2-line me-1"></i> Excel
-                        </a>
-                        <a href="{{ route('customers.create') }}" class="btn btn-primary ">
-                            <i class="ri-user-add-line me-1"></i> Add Customer
-                        </a>
-                        @hasanyrole('admin|superadmin')
-                            <button id="delete-selected" class="btn  btn-danger">
-                                <i class="ri-delete-bin-line me-1"></i> Delete Selected
-                            </button>
-                        @endhasanyrole
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Customer List</h3>
+        <div class="btn-group">
 
-                    </div>
+            <a href="{{ route('customers.export.pdf') . '?' . $query }}" class="btn btn-danger ">
+                <i class="ri-file-pdf-2-line me-1"></i> PDF
+            </a>
+            <a href="{{ route('customers.export.excel') . '?' . $query }}" class="btn btn-success ">
+                <i class="ri-file-excel-2-line me-1"></i> Excel
+            </a>
+            <a href="{{ route('customers.create') }}" class="btn btn-primary ">
+                <i class="ri-user-add-line me-1"></i> Add Customer
+            </a>
+            @hasanyrole('admin|superadmin')
+                <button id="delete-selected" class="btn  btn-danger">
+                    <i class="ri-delete-bin-line me-1"></i> Delete Selected
+                </button>
+            @endhasanyrole
+
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="GET" action="{{ route('customers.index') }}" class="row g-2 align-items-end mb-3">
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Filter By Software</label>
+                    <select name="software" class="form-select">
+                        <option value="">-- All Softwares --</option>
+                        @foreach ($softwares as $software)
+                            <option value="{{ $software }}" {{ request('software') == $software ? 'selected' : '' }}>
+                                {{ $software }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="card-body">
-                    <!-- Search & Filter -->
-                    <div class="row g-2 mb-3">
-                        <div class="col-md-10">
-                            <input type="text" id="search" class="form-control" placeholder="Search customers...">
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary w-100" type="button" id="toggleFilter">Filter</button>
-                        </div>
-                    </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Filter By Country</label>
+                    <select name="country" class="form-select">
+                        <option value="">-- All Countries --</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ $country }}" {{ request('country') == $country ? 'selected' : '' }}>
+                                {{ $country }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                    <div id="inlineFilterBox" class="card mt-3 shadow border-0 d-none">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select id="filter_field" class="form-control">
-                                        <option value="">-- Select Field --</option>
-                                        <option value="area">Area</option>
-                                        <option value="city">City</option>
-                                        <option value="country">Country</option>
-                                        <option value="source">Source</option>
-                                        <option value="software">Software</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" id="filter_value" class="form-control"
-                                        placeholder="Filter value...">
-                                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Filter By Source</label>
+                    <select name="source" class="form-select">
+                        <option value="">-- All Sources --</option>
+                        @foreach ($sources as $source)
+                            <option value="{{ $source }}" {{ request('source') == $source ? 'selected' : '' }}>
+                                {{ $source }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-success">Apply Filter</button>
+                    <a href="{{ route('plans.index') }}" class="btn btn-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card mb-6">
+
+            <div class="card-body">
+                <div id="inlineFilterBox" class="card mt-3 shadow border-0 d-none">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="filter_field" class="form-control">
+                                    <option value="">-- Select Field --</option>
+                                    <option value="area">Area</option>
+                                    <option value="city">City</option>
+                                    <option value="country">Country</option>
+                                    <option value="source">Source</option>
+                                    <option value="software">Software</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" id="filter_value" class="form-control" placeholder="Filter value...">
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Table -->
-                    <div class="table-responsive mt-3">
-                        <table id="customers-table" class="table table-bordered table-hover text-nowrap mb-0">
-                            <thead>
-                                <tr>
-                                    @if (auth()->user()->hasAnyRole(['admin', 'superadmin']))
-                                        <th>
-                                            <input type="checkbox" id="select-all">
-                                        </th>
-                                    @endif
-                                    <th>SL</th>
-                                    <th>Software</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th class="text-center">Company Name</th>
-                                    <th class="text-center">Area</th>
-                                    <th>City</th>
-                                    <th class="text-center">Country</th>
-                                    <th class="text-center">Source</th>
-                                    <th>Actions</th>
+                <!-- Table -->
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-hover text-nowrap mb-0">
+                        <thead>
+                            <tr>
+                                @if (auth()->user()->hasAnyRole(['admin', 'superadmin']))
+                                    <th>
+                                        <input type="checkbox" id="select-all">
+                                    </th>
+                                @endif
+                                <th>SL</th>
+                                <th>Software</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th class="text-center">Company Name</th>
+                                <th class="text-center">Area</th>
+                                <th>City</th>
+                                <th class="text-center">Country</th>
+                                <th class="text-center">Source</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        @php
+                            // base colors (4 ta)
+                            $highlightColors = ['table-danger', 'table-warning', 'table-info', 'table-success'];
+                        @endphp
+
+                        <tbody id="customer-body">
+                            @foreach ($allContacts as $i => $customer)
+                                @php
+                                    $highlightClass = '';
+                                    if ($customer->memos->count() > 0 && !$customer->is_read) {
+                                        // customer id diye fixed color select
+                                        $highlightClass = $highlightColors[$customer->id % count($highlightColors)];
+                                    }
+                                @endphp
+                                <tr data-id="{{ $customer->id }}" class="{{ $highlightClass }}">
+                                    <td><input type="checkbox" class="select-customer" value="{{ $customer->id }}">
+                                    </td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="text-center">{{ $customer->software }}</td>
+                                    <td>{{ implode(' ', array_slice(explode(' ', $customer->name), 0, 2)) }}</td>
+                                    <td>{{ $customer->email }}</td>
+                                    <td>{{ $customer->phone }}</td>
+                                    <td class="text-center">{{ $customer->company_name }}</td>
+                                    <td class="text-center">
+                                        {{ implode(' ', array_slice(explode(' ', $customer->area), 0, 2)) }}</td>
+                                    <td>{{ $customer->city }}</td>
+                                    <td class="text-center">{{ $customer->country }}</td>
+                                    <td class="text-center">{{ $customer->source }}</td>
+                                    <td>
+                                        <a href="{{ route('customers.edit', $customer->id) }}"
+                                            class="btn  btn-warning">Edit</a>
+                                        @if (auth()->user()->hasRole('superadmin'))
+                                            <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn  btn-danger"
+                                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('customer_memos.memo', $customer->id) }}"
+                                            class="btn  btn-primary memo-btn">
+                                            <i class="fas fa-sticky-note"></i> Memo
+                                        </a>
+                                    </td>
                                 </tr>
-                            </thead>
-                            @php
-                                // base colors (4 ta)
-                                $highlightColors = ['table-danger', 'table-warning', 'table-info', 'table-success'];
-                            @endphp
+                            @endforeach
+                        </tbody>
 
-                            <tbody id="customer-body">
-                                @foreach ($allContacts as $i => $customer)
-                                    @php
-                                        $highlightClass = '';
-                                        if ($customer->memos->count() > 0 && !$customer->is_read) {
-                                            // customer id diye fixed color select
-                                            $highlightClass = $highlightColors[$customer->id % count($highlightColors)];
-                                        }
-                                    @endphp
-                                    <tr data-id="{{ $customer->id }}" class="{{ $highlightClass }}">
-                                        <td><input type="checkbox" class="select-customer" value="{{ $customer->id }}"></td>
-                                        <td>{{ $i + 1 }}</td>
-                                        <td class="text-center">{{ $customer->software }}</td>
-                                        <td>{{ implode(' ', array_slice(explode(' ', $customer->name), 0, 2)) }}</td>
-                                        <td>{{ $customer->email }}</td>
-                                        <td>{{ $customer->phone }}</td>
-                                        <td class="text-center">{{ $customer->company_name }}</td>
-                                        <td class="text-center">
-                                            {{ implode(' ', array_slice(explode(' ', $customer->area), 0, 2)) }}</td>
-                                        <td>{{ $customer->city }}</td>
-                                        <td class="text-center">{{ $customer->country }}</td>
-                                        <td class="text-center">{{ $customer->source }}</td>
-                                        <td>
-                                            <a href="{{ route('customers.edit', $customer->id) }}"
-                                                class="btn  btn-warning">Edit</a>
-                                            @if (auth()->user()->hasRole('superadmin'))
-                                                <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf @method('DELETE')
-                                                    <button type="submit" class="btn  btn-danger"
-                                                        onclick="return confirm('Are you sure?')">Delete</button>
-                                                </form>
-                                            @endif
-                                            <a href="{{ route('customer_memos.memo', $customer->id) }}"
-                                                class="btn  btn-primary memo-btn">
-                                                <i class="fas fa-sticky-note"></i> Memo
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-
-                        </table>
-                        <div class="d-flex justify-content-end mt-3">
-                            {{ $allContacts->links('pagination::bootstrap-5') }}
-                        </div>
+                    </table>
+                    <div class="d-flex justify-content-end mt-3">
+                        {{ $allContacts->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
@@ -142,7 +179,6 @@
 @endsection
 
 @section('js')
-    {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             // Toggle filter
@@ -188,44 +224,6 @@
                 });
             });
 
-            // Live search & filter
-            function fetchCustomers() {
-                var search = $('#search').val();
-                var field = $('#filter_field').val();
-                var value = $('#filter_value').val();
-                $.ajax({
-                    url: "{{ route('customers.index') }}",
-                    type: "GET",
-                    data: {
-                        q: search,
-                        filter_field: field,
-                        filter_value: value
-                    },
-                    success: function(res) {
-                        var tbody = '';
-                        $.each(res.data, function(i, customer) {
-                            tbody += '<tr>' +
-                                '<td><input type="checkbox" class="select-customer" value="' +
-                                customer.id + '"></td>' +
-                                '<td>' + (i + 1) + '</td>' +
-                                '<td>' + customer.software + '</td>' +
-                                '<td>' + customer.name + '</td>' +
-                                '<td>' + customer.email + '</td>' +
-                                '<td>' + customer.phone + '</td>' +
-                                '<td>' + customer.company_name + '</td>' +
-                                '<td>' + customer.area + '</td>' +
-                                '<td>' + customer.city + '</td>' +
-                                '<td>' + customer.country + '</td>' +
-                                '<td>' + customer.source + '</td>' +
-                                '<td>' + customer.actions + '</td>' +
-                                '</tr>';
-                        });
-                        $('#customer-body').html(tbody);
-                    }
-                });
-            }
-
-            $('#search, #filter_field, #filter_value').on('input change', fetchCustomers);
         });
     </script>
     <script>

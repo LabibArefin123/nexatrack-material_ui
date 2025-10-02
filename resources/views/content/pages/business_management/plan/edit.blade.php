@@ -14,9 +14,9 @@
             Back
         </a>
     </div>
-    <div class="container-fluid">
-        <div class="card shadow">
-            <div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
                 <form action="{{ route('plans.update', $plan->id) }}" method="POST">
                     @csrf
                     @method('PUT')

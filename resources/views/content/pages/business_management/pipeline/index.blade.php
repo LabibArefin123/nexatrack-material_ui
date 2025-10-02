@@ -71,7 +71,7 @@
                 <tbody>
                     @foreach ($pipelines as $pipeline)
                         <tr>
-                            <td>{{ $pipeline->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ ucfirst($pipeline->name) }}</td>
                             <td class="text-center">{{ number_format($pipeline->total_deal_value, 2) }} Tk</td>
                             <td class="text-center">{{ $pipeline->no_of_deals }}</td>
@@ -98,6 +98,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-end mt-3">
+                {{ $pipelines->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 @stop

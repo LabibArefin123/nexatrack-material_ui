@@ -53,18 +53,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($customers as $index => $customer)
+            @foreach ($plans as $index => $plan)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $customer->software }}</td>
-                    <td>{{ $customer->name }}</td>
-                    <td>{{ $customer->company_name }}</td>
-                    <td>{{ $customer->address }}</td>
-                    <td>{{ $customer->area }}</td>
-                    <td>{{ $customer->city }}</td>
-                    <td>{{ $customer->country }}</td>
-                    <td>{{ $customer->email }}</td>
-                    <td>{{ $customer->phone }}</td>
+                    <td>{{ $plan->software }}</td>
+                    <td>{{ $plan->name }}</td>
+                    <td>{{ $plan->company_name }}</td>
+                    <td>{{ $plan->address }}</td>
+                    <td>{{ $plan->area }}</td>
+                    <td>{{ $plan->city }}</td>
+                    <td>{{ $plan->country }}</td>
+                    <td>{{ $plan->email }}</td>
+                    <td>{{ $plan->phone }}</td>
                 </tr>
             @endforeach
         </tbody>
