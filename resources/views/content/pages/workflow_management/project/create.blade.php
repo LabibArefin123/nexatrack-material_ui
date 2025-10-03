@@ -106,7 +106,7 @@
 
                     {{-- Start Date --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label for="start_date">Start Date</label>
+                        <label for="start_date">Start Date <span class="text-danger">*</span></label>
                         <input type="date" name="start_date" id="start_date"
                             class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date') }}">
                         @error('start_date')
@@ -116,7 +116,7 @@
 
                     {{-- End Date --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label for="end_date">End Date</label>
+                        <label for="end_date">End Date <span class="text-danger">*</span></label>
                         <input type="date" name="end_date" id="end_date"
                             class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}">
                         @error('end_date')
@@ -157,7 +157,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success mt-3">Save</button>
+                <div class="form-group col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
             </form>
         </div>
     </div>

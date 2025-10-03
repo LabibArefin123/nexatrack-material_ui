@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Todo List</h1>
-        <a href="{{ route('todos.create') }}" class="btn btn-primary">
+        <a href="{{ route('todos.create') }}" class="btn btn-success">
             + Add Todo
         </a>
     </div>

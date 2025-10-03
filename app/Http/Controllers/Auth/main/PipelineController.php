@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\main;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pipeline;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PipelineController extends Controller
@@ -31,7 +32,20 @@ class PipelineController extends Controller
             $query->whereDate('created_at', '<=', $request->end_date);
         }
 
-        $pipelines = $query->latest()->paginate(15)->withQueryString();
+        $pipelines = $query
+            ->select(
+                DB::raw('MAX(id) as id'),
+                DB::raw('MAX(name) as name'),
+                DB::raw('MAX(total_deal_value) as total_deal_value'),
+                DB::raw('MAX(no_of_deals) as no_of_deals'),
+                DB::raw('MAX(stage) as stage'),
+                DB::raw('MAX(status) as status'),
+                DB::raw('MAX(created_at) as created_at')
+            )
+            ->groupBy('name')
+            ->orderByDesc('created_at')
+            ->paginate(15)
+            ->withQueryString();
 
         // Pass options for filters
         $names = Pipeline::select('name')->distinct()->pluck('name');

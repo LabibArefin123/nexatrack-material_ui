@@ -7,6 +7,7 @@ use App\Models\Pipeline;
 use App\Models\Campaign;
 use App\Models\Plan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -24,7 +25,14 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        $pipelines = Pipeline::all();
+        $pipelines = Pipeline::join(
+            DB::raw('(SELECT MAX(id) as id FROM pipelines GROUP BY name) as sub'),
+            function ($join) {
+                $join->on('pipelines.id', '=', 'sub.id');
+            }
+        )
+            ->orderByDesc('pipelines.created_at')
+            ->get();
         return view('content.pages.marketting_management.campaign.create', compact('pipelines'));
     }
 
@@ -69,9 +77,15 @@ class CampaignController extends Controller
      */
     public function edit(Campaign $campaign)
     {
-        $pipelines = Pipeline::all();
+        $pipelines = Pipeline::join(
+            DB::raw('(SELECT MAX(id) as id FROM pipelines GROUP BY name) as sub'),
+            function ($join) {
+                $join->on('pipelines.id', '=', 'sub.id');
+            }
+        )
+            ->orderByDesc('pipelines.created_at')
+            ->get();
         $plans = Plan::all();
-
         return view('content.pages.marketting_management.campaign.edit', compact('campaign', 'pipelines', 'plans'));
     }
 

@@ -4,9 +4,15 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0">Project Details</h3>
-        <a href="{{ route('projects.edit', $project->id) }}" class="btn  btn-warning">Edit</a>
-
+        <h3>Project Details</h3>
+        <div class="d-flex gap-2">
+            <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-primary d-flex align-items-center gap-2">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{{ route('projects.index') }}" class="btn btn-secondary d-flex align-items-center gap-2">
+                <i class="bx bx-arrow-back"></i> Back
+            </a>
+        </div>
     </div>
 
     <div class="row g-3">

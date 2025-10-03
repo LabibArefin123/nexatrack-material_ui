@@ -24,9 +24,7 @@
             </ul>
         </div>
     @endif
-
-    <div class="card shadow-sm">
-        <div class="card-header">Edit Campaign Information</div>
+    <div class="card shadow">
         <div class="card-body">
             <form action="{{ route('campaigns.update', $campaign->id) }}" method="POST">
                 @csrf
@@ -44,13 +42,15 @@
                         <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
                             <option value="">Select type</option>
                             <option value="public_relations"
-                                {{ old('type', $campaign->type) == 'public_relations' ? 'selected' : '' }}>Public Relations
+                                {{ old('type', $campaign->type) == 'public_relations' ? 'selected' : '' }}>Public
+                                Relations
                             </option>
                             <option value="content_marketting"
                                 {{ old('type', $campaign->type) == 'content_marketting' ? 'selected' : '' }}>Content
                                 Marketing</option>
                             <option value="social_marketing"
-                                {{ old('type', $campaign->type) == 'social_marketing' ? 'selected' : '' }}>Social Marketing
+                                {{ old('type', $campaign->type) == 'social_marketing' ? 'selected' : '' }}>Social
+                                Marketing
                             </option>
                             <option value="brand" {{ old('type', $campaign->type) == 'brand' ? 'selected' : '' }}>Brand
                             </option>
@@ -59,7 +59,8 @@
                             <option value="media" {{ old('type', $campaign->type) == 'media' ? 'selected' : '' }}>Media
                             </option>
                             <option value="rebranding"
-                                {{ old('type', $campaign->type) == 'rebranding' ? 'selected' : '' }}>Rebranding</option>
+                                {{ old('type', $campaign->type) == 'rebranding' ? 'selected' : '' }}>Rebranding
+                            </option>
                             <option value="product_launch"
                                 {{ old('type', $campaign->type) == 'product_launch' ? 'selected' : '' }}>Product Launch
                             </option>
@@ -89,12 +90,14 @@
                             <option value="Standard" {{ old('plan', $campaign->plan) == 'Standard' ? 'selected' : '' }}>
                                 Standard - BDT 10,000 /yr + 20,000 BDT setup cost</option>
                             <option value="Professional"
-                                {{ old('plan', $campaign->plan) == 'Professional' ? 'selected' : '' }}>Professional - BDT
+                                {{ old('plan', $campaign->plan) == 'Professional' ? 'selected' : '' }}>Professional -
+                                BDT
                                 15,000 /yr + 20,000 BDT setup cost</option>
                             <option value="Premium" {{ old('plan', $campaign->plan) == 'Premium' ? 'selected' : '' }}>
                                 Premium - BDT 25,000 /yr + 20,000 BDT setup cost</option>
                             <option value="Premium Plus"
-                                {{ old('plan', $campaign->plan) == 'Premium Plus' ? 'selected' : '' }}>Premium Plus - BDT
+                                {{ old('plan', $campaign->plan) == 'Premium Plus' ? 'selected' : '' }}>Premium Plus -
+                                BDT
                                 50,000 /yr + 20,000 BDT setup cost</option>
                         </select>
                         @error('plan')
@@ -156,7 +159,8 @@
                             <option value="Active" {{ old('status', $campaign->status) == 'Active' ? 'selected' : '' }}>
                                 Active</option>
                             <option value="Inactive"
-                                {{ old('status', $campaign->status) == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+                                {{ old('status', $campaign->status) == 'Inactive' ? 'selected' : '' }}>Inactive
+                            </option>
                         </select>
                     </div>
 
@@ -174,7 +178,11 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-success">Update Campaign</button>
+                <div class="form-group col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </div>
             </form>
         </div>
     </div>

@@ -39,12 +39,20 @@ class ActivityController extends Controller
 
     public function create()
     {
-        $customers = Customer::all();
+        $customers = Customer::orderBy('name', 'asc')->get();
         $users     = User::all();
         $deals     = Deal::orderBy('name', 'asc')->get()->unique('name'); // unique by name
         $contracts = Contract::orderBy('subject', 'asc')->get()->unique('subject');
         $companies = Organization::all();
 
+        // software & country unique values from customers table
+        $softwares = Customer::whereNotNull('software')
+            ->orderBy('software', 'asc')
+            ->pluck('software', 'software'); // ['software' => 'software']
+
+        $countries = Customer::whereNotNull('country')
+            ->orderBy('country', 'asc')
+            ->pluck('country', 'country'); // ['country' => 'country']
 
         $activityTypes = ['call', 'email', 'task', 'meeting'];
         $reminderOptions = ['before_due', 'after_due', 'none'];
@@ -55,6 +63,8 @@ class ActivityController extends Controller
             'deals',
             'contracts',
             'companies',
+            'countries',
+            'softwares',
             'activityTypes',
             'reminderOptions'
         ));
@@ -95,6 +105,13 @@ class ActivityController extends Controller
         $deals     = Deal::all();
         $contracts = Contract::all();
         $companies = Organization::all();
+        $softwares = Customer::whereNotNull('software')
+            ->orderBy('software', 'asc')
+            ->pluck('software', 'software'); // ['software' => 'software']
+
+        $countries = Customer::whereNotNull('country')
+            ->orderBy('country', 'asc')
+            ->pluck('country', 'country'); // ['country' => 'country']
 
         $activityTypes = ['call', 'email', 'task', 'meeting'];
         $reminderOptions = ['before_due', 'after_due', 'none'];
@@ -106,6 +123,8 @@ class ActivityController extends Controller
             'deals',
             'contracts',
             'companies',
+            'softwares',
+            'countries',
             'activityTypes',
             'reminderOptions'
         ));
@@ -123,9 +142,9 @@ class ActivityController extends Controller
             'guests'        => 'nullable|array',
             'customer_id'   => 'nullable|exists:customers,id',
             'owner_id'      => 'nullable|exists:users,id',
-            'deal_id'       => 'nullable|exists:deals,id',
-            'contract_id'   => 'nullable|exists:contracts,id',
-            'company_id'    => 'nullable|exists:organizations,id',
+            'deal_id'       => 'required|exists:deals,id',
+            'contract_id'   => 'required|exists:contracts,id',
+            'company_id'    => 'required|exists:organizations,id',
         ]);
 
         $activity->update($validated);

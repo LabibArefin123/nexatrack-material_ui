@@ -101,13 +101,10 @@
 
                     </div>
 
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-success">
-                            Update
+                    <div class="form-group col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
                         </button>
-                        <a href="{{ route('customers.show', $customer->id) }}" class="btn btn-secondary">
-                            Cancel
-                        </a>
                     </div>
                 </form>
             </div>

@@ -3,7 +3,7 @@
 @section('title', 'Edit Plan')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="m-0 text-dark">Edit Customer Plan</h3>
         <a href="{{ route('plans.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
@@ -127,13 +127,11 @@
 
                     </div>
 
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-success">
-                            Update
+
+                    <div class="form-group col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
                         </button>
-                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary">
-                            Cancel
-                        </a>
                     </div>
                 </form>
             </div>

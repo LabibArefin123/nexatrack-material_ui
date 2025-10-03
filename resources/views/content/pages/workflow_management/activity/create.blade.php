@@ -107,20 +107,52 @@
                     {{-- Guests (Multiple Customers) --}}
                     <div class="form-group col-md-12">
                         <label for="guests">Guests</label>
-                        <select name="guests[]" id="guests" class="form-control @error('guests') is-invalid @enderror"
-                            multiple>
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}"
-                                    {{ collect(old('guests'))->contains($customer->id) ? 'selected' : '' }}>
-                                    {{ $customer->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <small class="text-muted">Hold Ctrl (Windows) / Cmd (Mac) to select multiple guests</small>
-                        @error('guests')
-                            <span class="text-danger small">{{ $message }}</span>
-                        @enderror
+
+                        <div class="row g-2">
+                            <!-- Software Filter -->
+                            <!-- Software Filter -->
+                            <div class="col-md-4">
+                                <select id="filterSoftware" class="form-control">
+                                    <option value="">-- Select Software --</option>
+                                    @foreach ($softwares as $software)
+                                        <option value="{{ $software }}">{{ $software }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Country Filter -->
+                            <div class="col-md-4">
+                                <select id="filterCountry" class="form-control">
+                                    <option value="">-- Select Country --</option>
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country }}">{{ $country }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Customer Filter -->
+                            <div class="col-md-4">
+                                <select id="filterCustomer" class="form-control">
+                                    <option value="">-- Select Customer --</option>
+                                    @foreach ($customers as $customer)
+                                        <option value="{{ $customer->id }}" data-software="{{ $customer->software }}"
+                                            data-country="{{ $customer->country }}" data-name="{{ $customer->name }}"
+                                            data-phone="{{ $customer->phone }}"
+                                            data-software-name="{{ $customer->software }}"
+                                            data-img="{{ $customer->image ? asset('uploads/images/' . $customer->image) : asset('uploads/images/default.jpg') }}">
+                                            {{ $customer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="guests[]" id="selectedGuests">
+
+                        <!-- Guests Grid -->
+                        <div id="guestsGrid" class="row mt-3"></div>
                     </div>
+
 
                     {{-- Description --}}
                     <div class="form-group col-md-12">
@@ -135,7 +167,8 @@
                     {{-- Related Models --}}
                     <div class="form-group col-md-6">
                         <label for="deal_id">Deal</label>
-                        <select name="deal_id" id="deal_id" class="form-control">
+                        <select name="deal_id" id="deal_id"
+                            class="form-control @error('deal_id') is-invalid @enderror">
                             <option value="">-- Select Deal --</option>
                             @foreach ($deals as $deal)
                                 <option value="{{ $deal->id }}" {{ old('deal_id') == $deal->id ? 'selected' : '' }}>
@@ -143,11 +176,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('deal_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="contract_id">Contract</label>
-                        <select name="contract_id" id="contract_id" class="form-control">
+                        <select name="contract_id" id="contract_id"
+                            class="form-control @error('contract_id') is-invalid @enderror">
                             <option value="">-- Select Contract --</option>
                             @foreach ($contracts as $contract)
                                 <option value="{{ $contract->id }}"
@@ -156,11 +193,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('contract_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="company_id">Company</label>
-                        <select name="company_id" id="company_id" class="form-control">
+                        <select name="company_id" id="company_id"
+                            class="form-control @error('company_id') is-invalid @enderror">
                             <option value="">-- Select Company --</option>
                             @foreach ($companies as $company)
                                 <option value="{{ $company->id }}"
@@ -169,14 +210,90 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('company_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Save Activity</button>
+                <div class="form-group col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            let selectedGuests = [];
+
+            // Filter Customers by Software & Country
+            $('#filterSoftware, #filterCountry').on('change', function() {
+                let software = $('#filterSoftware').val();
+                let country = $('#filterCountry').val();
+
+                $('#filterCustomer option').each(function() {
+                    let s = $(this).data('software');
+                    let c = $(this).data('country');
+
+                    if ((!software || s == software) && (!country || c == country) || $(this)
+                        .val() === "") {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Add customer card on selection
+            $('#filterCustomer').on('change', function() {
+                let customer = $(this).find(':selected');
+                let id = customer.val();
+
+                if (id && !selectedGuests.includes(id)) {
+                    selectedGuests.push(id);
+
+                    let name = customer.data('name');
+                    let phone = customer.data('phone');
+                    let software = customer.data('software-name');
+                    let img = customer.data('img');
+
+                    let card = `
+                    <div class="col-md-4 mb-3 guest-card" data-id="${id}">
+                        <div class="card h-100 shadow-sm p-2 position-relative">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-1 removeGuest"></button>
+                            <div class="d-flex align-items-center">
+                                <img src="${img}" class="rounded me-2" width="60" height="60" alt="Customer">
+                                <div>
+                                    <h6 class="mb-1">${name}</h6>
+                                    <small class="text-muted">${software}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    $('#guestsGrid').append(card);
+                    updateHiddenInput();
+                }
+            });
+
+            // Remove guest card
+            $(document).on('click', '.removeGuest', function() {
+                let card = $(this).closest('.guest-card');
+                let id = card.data('id');
+                selectedGuests = selectedGuests.filter(g => g != id);
+                card.remove();
+                updateHiddenInput();
+            });
+
+            // Update hidden input
+            function updateHiddenInput() {
+                $('#selectedGuests').val(selectedGuests.join(','));
+            }
+        });
+    </script>
 @endsection

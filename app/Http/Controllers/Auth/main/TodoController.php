@@ -61,12 +61,12 @@ class TodoController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'priority' => 'required|in:1,2,3',
             'status' => 'required|in:1,2,3,4',
             'due_date' => 'required|date',
-            'category' => 'nullable|string',
-            'assigned_to' => 'nullable|exists:users,id'
+            'category' => 'required|string',
+            'assigned_to' => 'required|exists:users,id'
         ]);
 
         Todo::create($request->all());

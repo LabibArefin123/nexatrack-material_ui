@@ -26,8 +26,8 @@
                     {{-- Title --}}
                     <div class="col-md-6">
                         <label class="form-label">Title <span class="text-danger">*</span></label>
-                        <input type="text" name="title" class="form-control" value="{{ old('title', $todo->title) }}"
-                            required>
+                        <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
+                            value="{{ old('title', $todo->title) }}">
                         @error('title')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -35,42 +35,54 @@
 
                     {{-- Priority --}}
                     <div class="col-md-6">
-                        <label class="form-label">Priority</label>
-                        <select name="priority" class="form-select">
+                        <label class="form-label">Priority <span class="text-danger">*</span></label>
+                        <select name="priority" class="form-select @error('priority') is-invalid @enderror">
                             <option value="1" @selected(old('priority', $todo->priority) == 1)>High</option>
                             <option value="2" @selected(old('priority', $todo->priority) == 2)>Medium</option>
                             <option value="3" @selected(old('priority', $todo->priority) == 3)>Low</option>
                         </select>
+                        @error('priority')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Status --}}
                     <div class="col-md-6">
-                        <label class="form-label">Status</label>
-                        <select name="status" class="form-select">
+                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                        <select name="status" class="form-select @error('status') is-invalid @enderror">
                             <option value="1" @selected(old('status', $todo->status) == 1)>Pending</option>
                             <option value="2" @selected(old('status', $todo->status) == 2)>In Progress</option>
                             <option value="3" @selected(old('status', $todo->status) == 3)>Completed</option>
                             <option value="4" @selected(old('status', $todo->status) == 4)>On Hold</option>
                         </select>
+                        @error('status')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Due Date --}}
                     <div class="col-md-6">
-                        <label class="form-label">Due Date</label>
-                        <input type="date" name="due_date" class="form-control"
+                        <label class="form-label">Due Date <span class="text-danger">*</span></label>
+                        <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror"
                             value="{{ old('due_date', $todo->due_date) }}">
+                        @error('due_date')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Category --}}
                     <div class="col-md-6">
-                        <label class="form-label">Category</label>
-                        <input type="text" name="category" class="form-control"
+                        <label class="form-label">Category <span class="text-danger">*</span></label>
+                        <input type="text" name="category" class="form-control @error('category') is-invalid @enderror"
                             value="{{ old('category', $todo->category) }}">
+                        @error('category')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Assign To --}}
                     <div class="col-md-6">
-                        <label class="form-label">Assign To</label>
+                        <label class="form-label">Assign To <span class="text-danger">*</span></label>
                         <select name="assigned_to" class="form-select">
                             <option value="">Select User</option>
                             @foreach ($users as $user)
@@ -79,19 +91,25 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('assigned_to')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Description --}}
                     <div class="col-12">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Description <span class="text-danger">*</span></label>
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $todo->description) }}</textarea>
+                        @error('description')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                 </div>
 
-                <div class="mt-4">
+                <div class="form-group col-12 mt-4 text-end">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i> Update Todo
+                        <i class="fas fa-save"></i> Update
                     </button>
                 </div>
             </form>

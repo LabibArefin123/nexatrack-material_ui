@@ -85,8 +85,8 @@
                             </td>
                             <td class="created-date text-center" data-date="{{ $pipeline->created_at }}"></td>
                             <td class="text-center">
-                                <a href="{{ route('pipelines.show', $pipeline->id) }}" class="btn btn-info ">View</a>
-                                <a href="{{ route('pipelines.edit', $pipeline->id) }}" class="btn btn-warning ">Edit</a>
+                                <a href="{{ route('pipelines.show', $pipeline->id) }}" class="btn btn-info">View</a>
+                                <a href="{{ route('pipelines.edit', $pipeline->id) }}" class="btn btn-warning">Edit</a>
                                 <form action="{{ route('pipelines.destroy', $pipeline->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf @method('DELETE')

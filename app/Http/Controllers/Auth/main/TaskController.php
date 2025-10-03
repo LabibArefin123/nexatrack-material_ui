@@ -56,20 +56,25 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
             'responsibles' => 'required',
             'start_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:start_date',
+            'tags' => 'required',
+            'priority' => 'required|in:Low,Medium,High',
+            'status' => 'required|in:Pending,In Progress,Completed',
+            'description' => 'required|string',
         ]);
 
         $task = Task::create([
             'title' => $request->title,
             'category' => $request->category,
-            'responsibles' => is_array($request->responsibles) ? $request->responsibles : json_decode($request->responsibles, true),
+            'responsibles' => json_decode($request->responsibles, true),
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'tags' => $request->tags ? (is_array($request->tags) ? $request->tags : json_decode($request->tags, true)) : [],
-            'priority' => $request->priority ?? 'Medium',
-            'status' => $request->status ?? 'Pending',
+            'tags' => json_decode($request->tags, true),
+            'priority' => $request->priority,
+            'status' => $request->status,
             'description' => $request->description,
         ]);
 

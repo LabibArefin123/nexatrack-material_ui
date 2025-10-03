@@ -56,11 +56,11 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
-            'project_photo'  => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'project_photo'  => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
             'client'         => 'required|integer|exists:customers,id',
             'priority'       => 'required|string',
-            'start_date'     => 'nullable|date',
-            'end_date'       => 'nullable|date|after_or_equal:start_date',
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date|after_or_equal:start_date',
             'pipeline_stage' => 'required|string',
             'status'         => 'required|string',
             'icon'           => 'nullable|string',
@@ -132,12 +132,12 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
-            'project_photo'  => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'project_photo'  => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
             'client'         => 'required|string|max:255',
             'client_image'   => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'priority'       => 'required|string',
-            'start_date'     => 'nullable|date',
-            'end_date'       => 'nullable|date|after_or_equal:start_date',
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date|after_or_equal:start_date',
             'pipeline_stage' => 'required|string',
             'status'         => 'required|string',
         ]);

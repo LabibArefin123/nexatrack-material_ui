@@ -117,7 +117,7 @@
 
                     {{-- Start Date --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label for="start_date">Start Date</label>
+                        <label for="start_date">Start Date <span class="text-danger">*</span></label>
                         <input type="date" name="start_date" id="start_date"
                             class="form-control @error('start_date') is-invalid @enderror"
                             value="{{ old('start_date', $project->start_date) }}">
@@ -128,7 +128,7 @@
 
                     {{-- End Date --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label for="end_date">End Date</label>
+                        <label for="end_date">End Date <span class="text-danger">*</span></label>
                         <input type="date" name="end_date" id="end_date"
                             class="form-control @error('end_date') is-invalid @enderror"
                             value="{{ old('end_date', $project->end_date) }}">
@@ -138,10 +138,10 @@
                     </div>
 
                     {{-- Project Image --}}
-                    {{-- Project Image --}}
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="project_photo" class="form-label">Upload Project Image</label>
+                            <label for="project_photo" class="form-label">Upload Project Image <span
+                                    class="text-danger">*</span></label>
                             <input type="file" name="project_photo" id="project_photo"
                                 class="form-control @error('project_photo') is-invalid @enderror" accept="image/*">
                             @error('project_photo')
@@ -176,7 +176,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success mt-3">Update</button>
+                <div class="form-group col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </div>
             </form>
         </div>
     </div>
