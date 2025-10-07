@@ -34,12 +34,12 @@
                     {{-- Subject --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
-                        <input type="text" name="subject" class="form-control" value="{{ old('subject') }}" required>
+                        <input type="text" name="subject" class="form-control" value="{{ old('subject') }}">
                     </div>
 
                     {{-- Client --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Client</label>
+                        <label class="form-label fw-bold">Client <span class="text-danger">*</span></label>
                         <select name="client_id" class="form-control">
                             <option value="">Select Client</option>
                             @foreach ($clients as $client)
@@ -52,7 +52,7 @@
 
                     {{-- Project --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Project</label>
+                        <label class="form-label fw-bold">Project <span class="text-danger">*</span></label>
                         <select name="project_id" class="form-control">
                             <option value="">Select Project</option>
                             @foreach ($projects as $project)
@@ -66,7 +66,7 @@
 
                     {{-- Deal --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Deal</label>
+                        <label class="form-label fw-bold">Deal <span class="text-danger">*</span></label>
                         <select name="deal_id" class="form-control">
                             <option value="">Select Deal</option>
                             @foreach ($deals as $deal)
@@ -79,7 +79,7 @@
 
                     {{-- Currency --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Currency</label>
+                        <label class="form-label fw-bold">Currency <span class="text-danger">*</span></label>
                         <select name="currency" class="form-control">
                             <option value="">Select Currency</option>
                             <option value="taka" {{ old('currency') == 'taka' ? 'selected' : '' }}>৳</option>
@@ -91,7 +91,7 @@
 
                     {{-- Status --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Status</label>
+                        <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
                         <select name="status" class="form-control">
                             <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
                             <option value="sent" {{ old('status') == 'sent' ? 'selected' : '' }}>Sent</option>
@@ -102,17 +102,17 @@
 
                     {{-- Dates --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Date</label>
+                        <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
                         <input type="date" name="date" class="form-control" value="{{ old('date') }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Open Till</label>
+                        <label class="form-label fw-bold">Open Till Date <span class="text-danger">*</span></label>
                         <input type="date" name="open_till" class="form-control" value="{{ old('open_till') }}">
                     </div>
 
                     {{-- Assigned To --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Assigned To</label>
+                        <label class="form-label fw-bold">Assigned To <span class="text-danger">*</span></label>
                         <div class="d-flex flex-wrap gap-2">
                             @foreach ($users as $user)
                                 <div class="card text-center p-1" style="width: 70px; cursor:pointer;"
@@ -129,7 +129,7 @@
 
                     {{-- Tags --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Tags</label>
+                        <label class="form-label fw-bold">Tags <span class="text-danger">*</span></label>
                         <input type="text" id="tagsInput" class="form-control" placeholder="Enter tag">
                         <div id="tagsContainer" class="mt-2 d-flex flex-wrap gap-1"></div>
                         <input type="hidden" name="tags" id="tagsHidden">
@@ -143,12 +143,12 @@
 
                     {{-- Description --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Description</label>
+                        <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
                         <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
                     </div>
 
                     <div class="col-12 text-end mt-2">
-                        <button type="submit" class="btn btn-success">Save Proposal</button>
+                        <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </div>
             </form>

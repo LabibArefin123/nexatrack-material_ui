@@ -73,7 +73,7 @@
 
                     {{-- Time --}}
                     <div class="form-group col-md-6">
-                        <label for="time">Time</label>
+                        <label for="time">Time <span class="text-danger">*</span></label>
                         <input type="time" name="time" id="time"
                             value="{{ old('time', $activity->time?->format('H:i')) }}"
                             class="form-control @error('time') is-invalid @enderror">
@@ -84,7 +84,7 @@
 
                     {{-- Reminder --}}
                     <div class="form-group col-md-6">
-                        <label for="reminder">Reminder (minutes before)</label>
+                        <label for="reminder">Reminder (minutes before) <span class="text-danger">*</span></label>
                         <input type="number" name="reminder" id="reminder"
                             value="{{ old('reminder', $activity->reminder) }}"
                             class="form-control @error('reminder') is-invalid @enderror" placeholder="e.g. 15">
@@ -180,7 +180,7 @@
 
                     {{-- Description --}}
                     <div class="form-group col-md-12">
-                        <label for="description">Description</label>
+                        <label for="description">Description <span class="text-danger">*</span></label>
                         <textarea name="description" id="description" rows="4"
                             class="form-control @error('description') is-invalid @enderror">{{ old('description', $activity->description) }}</textarea>
                         @error('description')
@@ -190,7 +190,7 @@
 
                     {{-- Related Models --}}
                     <div class="form-group col-md-6">
-                        <label for="deal_id">Deal</label>
+                        <label for="deal_id">Deal <span class="text-danger">*</span></label>
                         <select name="deal_id" id="deal_id" class="form-control">
                             <option value="">-- Select Deal --</option>
                             @foreach ($deals as $deal)
@@ -202,7 +202,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="contract_id">Contract</label>
+                        <label for="contract_id">Contract <span class="text-danger">*</span></label>
                         <select name="contract_id" id="contract_id" class="form-control">
                             <option value="">-- Select Contract --</option>
                             @foreach ($contracts as $contract)
@@ -214,7 +214,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="company_id">Company</label>
+                        <label for="company_id">Company <span class="text-danger">*</span></label>
                         <select name="company_id" id="company_id" class="form-control">
                             <option value="">-- Select Company --</option>
                             @foreach ($companies as $company)
@@ -250,7 +250,7 @@
                     let s = $(this).data('software');
                     let c = $(this).data('country');
                     if ((!software || s == software) && (!country || c == country) || $(this)
-                    .val() === "") {
+                        .val() === "") {
                         $(this).show();
                     } else {
                         $(this).hide();

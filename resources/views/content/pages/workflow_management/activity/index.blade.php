@@ -81,7 +81,7 @@
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
                                         <a href="{{ route('activities.show', $activity->id) }}"
-                                            class="btn btn-sm btn-primary">Show</a>
+                                            class="btn btn-sm btn-secondary">Show</a>
                                         <a href="{{ route('activities.edit', $activity->id) }}"
                                             class="btn btn-sm btn-warning">Edit</a>
                                         <form action="{{ route('activities.destroy', $activity->id) }}" method="POST"

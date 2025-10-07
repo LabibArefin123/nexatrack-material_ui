@@ -36,12 +36,12 @@
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
                         <input type="text" name="subject" class="form-control"
-                            value="{{ old('subject', $proposal->subject) }}" required>
+                            value="{{ old('subject', $proposal->subject) }}">
                     </div>
 
                     {{-- Client --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Client</label>
+                        <label class="form-label fw-bold">Client <span class="text-danger">*</span></label>
                         <select name="client_id" class="form-control">
                             <option value="">Select Client</option>
                             @foreach ($clients as $client)

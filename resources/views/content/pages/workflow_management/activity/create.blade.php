@@ -70,7 +70,7 @@
 
                     {{-- Time --}}
                     <div class="form-group col-md-6">
-                        <label for="time">Time</label>
+                        <label for="time">Time <span class="text-danger">*</span></label>
                         <input type="time" name="time" id="time" value="{{ old('time') }}"
                             class="form-control @error('time') is-invalid @enderror">
                         @error('time')
@@ -156,7 +156,7 @@
 
                     {{-- Description --}}
                     <div class="form-group col-md-12">
-                        <label for="description">Description</label>
+                        <label for="description">Description <span class="text-danger">*</span></label>
                         <textarea name="description" id="description" rows="4"
                             class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                         @error('description')
@@ -166,7 +166,7 @@
 
                     {{-- Related Models --}}
                     <div class="form-group col-md-6">
-                        <label for="deal_id">Deal</label>
+                        <label for="deal_id">Deal <span class="text-danger">*</span></label>
                         <select name="deal_id" id="deal_id"
                             class="form-control @error('deal_id') is-invalid @enderror">
                             <option value="">-- Select Deal --</option>
@@ -182,7 +182,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="contract_id">Contract</label>
+                        <label for="contract_id">Contract <span class="text-danger">*</span></label>
                         <select name="contract_id" id="contract_id"
                             class="form-control @error('contract_id') is-invalid @enderror">
                             <option value="">-- Select Contract --</option>
@@ -199,7 +199,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="company_id">Company</label>
+                        <label for="company_id">Company <span class="text-danger">*</span></label>
                         <select name="company_id" id="company_id"
                             class="form-control @error('company_id') is-invalid @enderror">
                             <option value="">-- Select Company --</option>

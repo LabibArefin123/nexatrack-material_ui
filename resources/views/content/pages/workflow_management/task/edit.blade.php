@@ -119,8 +119,10 @@
                         <textarea name="description" class="form-control" rows="4">{{ old('description', $task->description) }}</textarea>
                     </div>
 
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success">Update Task</button>
+                    <div class="form-group col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
+                        </button>
                     </div>
                 </div>
             </form>
