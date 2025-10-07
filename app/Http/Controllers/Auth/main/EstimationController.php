@@ -9,7 +9,6 @@ use App\Models\Organization;
 use App\Models\Deal;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class EstimationController extends Controller
 {
@@ -66,19 +65,19 @@ class EstimationController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'company_id' => 'nullable|exists:organizations,id',
-            'user_id' => 'nullable|exists:users,id',
-            'project_id' => 'nullable|exists:projects,id',
+            'company_id' => 'required|exists:organizations,id',
+            'user_id' => 'required|exists:users,id',
+            'project_id' => 'required|exists:projects,id',
             'bill_to' => 'required|string|max:255',
             'ship_to' => 'required|string|max:255',
             'estimate_date' => 'required|date',
             'expiry_date' => 'required|date',
-            'amount' => 'nullable|string|max:50',
-            'currency' => 'nullable|string|max:10',
-            'status' => 'nullable|string|max:50',
-            'tags' => 'nullable|json',
+            'amount' => 'required|string|max:50',
+            'currency' => 'required|string|max:10',
+            'status' => 'required|string|max:50',
+            'tags' => 'required|json',
             'attachment' => 'nullable|file|max:51200', // 50 MB
-            'description' => 'nullable|string',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('attachment')) {

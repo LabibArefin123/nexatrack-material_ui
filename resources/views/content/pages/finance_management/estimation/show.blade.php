@@ -19,38 +19,36 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="row g-3">
-
-                {{-- Client --}}
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Client</label>
-                    <p class="form-control-plaintext">{{ $estimation->company->name ?? '-' }}</p>
+                    <p class="form-control">{{ $estimation->company->name ?? '-' }}</p>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Bill To</label>
-                    <p class="form-control-plaintext">{{ $estimation->bill_to }}</p>
+                    <p class="form-control">{{ $estimation->bill_to }}</p>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Ship To</label>
-                    <p class="form-control-plaintext">{{ $estimation->ship_to }}</p>
+                    <p class="form-control">{{ $estimation->ship_to }}</p>
                 </div>
 
                 {{-- Project --}}
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Project</label>
-                    <p class="form-control-plaintext">{{ $estimation->project->name ?? '-' }}</p>
+                    <p class="form-control">{{ $estimation->project->name ?? '-' }}</p>
                 </div>
 
                 {{-- Estimate By --}}
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Estimate By</label>
-                    <p class="form-control-plaintext">{{ $estimation->user->name ?? '-' }}</p>
+                    <p class="form-control">{{ $estimation->user->name ?? '-' }}</p>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Amount</label>
-                    <p class="form-control-plaintext">
+                    <p class="form-control">
                         {{ $estimation->amount }}
                         {{ $estimation->currency === 'taka' ? '৳' : ($estimation->currency === 'rupee' ? '₹' : ($estimation->currency === 'dollar' ? '$' : '£')) }}
                     </p>
@@ -59,14 +57,14 @@
                 {{-- Dates --}}
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Estimate Date</label>
-                    <p class="form-control-plaintext">
+                    <p class="form-control">
                         {{ $estimation->estimate_date ? \Carbon\Carbon::parse($estimation->estimate_date)->format('d M, Y') : '-' }}
                     </p>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Expiry Date</label>
-                    <p class="form-control-plaintext">
+                    <p class="form-control">
                         {{ $estimation->expiry_date ? \Carbon\Carbon::parse($estimation->expiry_date)->format('d M, Y') : '-' }}
                     </p>
                 </div>
@@ -124,7 +122,7 @@
                 {{-- Description --}}
                 <div class="col-md-12">
                     <label class="form-label fw-bold">Description</label>
-                    <p class="form-control-plaintext">{{ $estimation->description ?? '-' }}</p>
+                    <p class="form-control">{{ $estimation->description ?? '-' }}</p>
                 </div>
             </div>
         </div>

@@ -35,14 +35,17 @@
                     {{-- Subject --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
-                        <input type="text" name="subject" class="form-control"
+                        <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror"
                             value="{{ old('subject', $proposal->subject) }}">
+                        @error('subject')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Client --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Client <span class="text-danger">*</span></label>
-                        <select name="client_id" class="form-control">
+                        <select name="client_id" class="form-control @error('client_id') is-invalid @enderror">
                             <option value="">Select Client</option>
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}"
@@ -51,12 +54,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('client_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Project --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Project</label>
-                        <select name="project_id" class="form-control">
+                        <label class="form-label fw-bold">Project <span class="text-danger">*</span></label>
+                        <select name="project_id" class="form-control @error('project_id') is-invalid @enderror">
                             <option value="">Select Project</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}"
@@ -65,12 +71,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('project_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Deal --}}
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Deal</label>
-                        <select name="deal_id" class="form-control">
+                        <label class="form-label fw-bold">Deal <span class="text-danger">*</span></label>
+                        <select name="deal_id" class="form-control @error('deal_id') is-invalid @enderror">
                             <option value="">Select Deal</option>
                             @foreach ($deals as $deal)
                                 <option value="{{ $deal->id }}"
@@ -79,12 +88,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('deal_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Currency --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Currency</label>
-                        <select name="currency" class="form-control">
+                        <label class="form-label fw-bold">Currency <span class="text-danger">*</span></label>
+                        <select name="currency" class="form-control @error('currency') is-invalid @enderror">
                             <option value="">Select Currency</option>
                             <option value="taka" {{ old('currency', $proposal->currency) == 'taka' ? 'selected' : '' }}>৳
                             </option>
@@ -95,12 +107,15 @@
                             <option value="pound" {{ old('currency', $proposal->currency) == 'pound' ? 'selected' : '' }}>
                                 £</option>
                         </select>
+                        @error('currency')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Status --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Status</label>
-                        <select name="status" class="form-control">
+                        <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
+                        <select name="status" class="form-control @error('status') is-invalid @enderror">
                             <option value="draft" {{ old('status', $proposal->status) == 'draft' ? 'selected' : '' }}>
                                 Draft</option>
                             <option value="sent" {{ old('status', $proposal->status) == 'sent' ? 'selected' : '' }}>Sent
@@ -110,46 +125,101 @@
                             <option value="rejected"
                                 {{ old('status', $proposal->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         </select>
+                        @error('status')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Dates --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Date</label>
-                        <input type="date" name="date" class="form-control"
+                        <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
+                        <input type="date" name="date" class="form-control @error('date') is-invalid @enderror"
                             value="{{ old('date', optional($proposal->date)->format('Y-m-d')) }}">
+                        @error('date')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Open Till</label>
-                        <input type="date" name="open_till" class="form-control"
+                        <label class="form-label fw-bold">Open Till Date <span class="text-danger">*</span></label>
+                        <input type="date" name="open_till" class="form-control @error('open_till') is-invalid @enderror"
                             value="{{ old('open_till', optional($proposal->open_till)->format('Y-m-d')) }}">
+                        @error('open_till')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     {{-- Assigned To --}}
-                    <div class="col-md-12">
-                        <label class="form-label fw-bold">Assigned To</label>
-                        <div class="d-flex flex-wrap gap-2">
+                    <div class="col-md-12 mt-3">
+                        <label class="form-label fw-bold">Assigned To <span class="text-danger">*</span></label>
+
+                        @php
+                            $assignedIds = is_array($proposal->assigned_to)
+                                ? $proposal->assigned_to
+                                : explode(',', $proposal->assigned_to ?? '');
+                        @endphp
+
+                        {{-- User grid --}}
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                             @foreach ($users as $user)
-                                <div class="card text-center p-1" style="width:70px; cursor:pointer;"
-                                    onclick="addAssigned({{ $user->id }}, '{{ $user->name }}')">
-                                    <img src="{{ $user->avatar ?? asset('uploads/images/default.jpg') }}"
-                                        class="rounded-circle mb-1" style="width:40px;height:40px;">
-                                    <small>{{ \Illuminate\Support\Str::limit($user->name, 6) }}</small>
+                                @php $isAssigned = in_array($user->id, $assignedIds); @endphp
+                                <div class="col">
+                                    <div class="card h-100 p-2 shadow-sm d-flex align-items-center assigned-card
+                    {{ $isAssigned ? 'border border-primary border-2' : '' }}"
+                                        style="cursor:pointer; transition:all .2s;"
+                                        onclick="toggleAssigned({{ $user->id }}, '{{ $user->name }}', this)">
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <img src="{{ $user->avatar ?? asset('uploads/images/default.jpg') }}"
+                                                alt="Avatar" class="rounded-circle me-3"
+                                                style="width:50px;height:50px;object-fit:cover;">
+                                            <div class="text-start">
+                                                <div class="fw-semibold text-dark" style="font-size:14px;">
+                                                    {{ $user->name }}</div>
+                                                <div class="text-muted" style="font-size:13px;">
+                                                    {{ '@' . ($user->username ?? Str::slug($user->name)) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
-                        <input type="hidden" name="assigned_to" id="assignedInput">
-                        <div id="assignedList" class="mt-2 d-flex flex-wrap gap-1"></div>
+
+                        {{-- Hidden input for IDs --}}
+                        <input type="hidden" name="assigned_to" id="assignedInput"
+                            value="{{ implode(',', $assignedIds) }}">
+
+                        {{-- Selected badges --}}
+                        <div id="assignedList" class="mt-2 d-flex flex-wrap gap-1">
+                            @foreach ($users->whereIn('id', $assignedIds) as $user)
+                                <span class="badge bg-primary d-flex align-items-center gap-1"
+                                    id="badge-{{ $user->id }}">
+                                    {{ $user->name }}
+                                    <button type="button" class="btn-close btn-close-white btn-sm ms-1"
+                                        aria-label="Remove" onclick="removeAssigned({{ $user->id }})"></button>
+                                </span>
+                            @endforeach
+                        </div>
+
+                        @error('assigned_to')
+                            <span class="text-danger small d-block mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
+
                     {{-- Tags --}}
-                    <div class="col-md-12">
-                        <label class="form-label fw-bold">Tags</label>
-                        <input type="text" id="tagsInput" class="form-control" placeholder="Enter tag">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Tags <span class="text-danger">*</span></label>
+                        <input type="text" id="tagsInput" class="form-control @error('tags') is-invalid @enderror"
+                            placeholder="Enter tag">
                         <div id="tagsContainer" class="mt-2 d-flex flex-wrap gap-1"></div>
                         <input type="hidden" name="tags" id="tagsHidden">
+                        @error('tags')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Attachment --}}
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Attachment</label>
                         <input type="file" name="attachment" class="form-control">
 
@@ -167,12 +237,17 @@
 
                     {{-- Description --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Description</label>
-                        <textarea name="description" class="form-control" rows="4">{{ old('description', $proposal->description) }}</textarea>
+                        <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description', $proposal->description) }}</textarea>
+                        @error('description')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <div class="col-12 text-end mt-2">
-                        <button type="submit" class="btn btn-success">Update Proposal</button>
+                    <div class="form-group col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
+                        </button>
                     </div>
                 </div>
             </form>
@@ -182,50 +257,89 @@
 
 @section('js')
     <script>
-        // --- Assigned Users ---
+        // --- ASSIGNED USERS ---
         let assigned = @json($proposal->assigned_to ?? []);
         if (typeof assigned === 'string') {
             try {
                 assigned = JSON.parse(assigned);
             } catch (e) {
-                assigned = [];
+                assigned = assigned ? assigned.split(',') : [];
             }
         }
 
-        function addAssigned(id, name) {
-            if (!assigned.includes(id)) {
+        function toggleAssigned(id, username, card) {
+            id = id.toString();
+            const input = document.getElementById('assignedInput');
+            const list = document.getElementById('assignedList');
+            const index = assigned.indexOf(id);
+
+            if (index !== -1) {
+                // Remove user
+                assigned.splice(index, 1);
+                card.classList.remove('border', 'border-primary', 'border-2');
+                const badge = document.getElementById('badge-' + id);
+                if (badge) badge.remove();
+            } else {
+                // Add user
                 assigned.push(id);
-                renderAssigned();
+                card.classList.add('border', 'border-primary', 'border-2');
+
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-primary d-flex align-items-center gap-1';
+                badge.id = 'badge-' + id;
+                badge.innerHTML = `
+                @${username}
+                <button type="button" class="btn-close btn-close-white btn-sm ms-1"
+                    aria-label="Remove" onclick="removeAssigned(${id})"></button>
+            `;
+                list.appendChild(badge);
             }
+
+            input.value = JSON.stringify(assigned);
         }
 
         function removeAssigned(id) {
-            assigned = assigned.filter(i => i != id);
-            renderAssigned();
+            id = id.toString();
+            const input = document.getElementById('assignedInput');
+            const list = document.getElementById('assignedList');
+            assigned = assigned.filter(v => v !== id);
+            input.value = JSON.stringify(assigned);
+
+            const badge = document.getElementById('badge-' + id);
+            if (badge) badge.remove();
+
+            const card = document.querySelector(`.assigned-card[onclick*="toggleAssigned(${id},"]`);
+            if (card) card.classList.remove('border', 'border-primary', 'border-2');
         }
 
         function renderAssigned() {
             const list = document.getElementById('assignedList');
             list.innerHTML = '';
             assigned.forEach(id => {
-                let userCard = document.createElement('span');
-                let userName = document.querySelector(`.card[onclick*="addAssigned(${id}"] small`)?.innerText ??
-                    'User';
-                userCard.className = 'badge bg-info text-dark d-flex align-items-center gap-1';
-                userCard.innerHTML =
-                    `${userName} <span style="cursor:pointer;" onclick="removeAssigned(${id})">&times;</span>`;
-                list.appendChild(userCard);
+                const card = document.querySelector(`.assigned-card[onclick*="toggleAssigned(${id},"]`);
+                if (card) card.classList.add('border', 'border-primary', 'border-2');
+
+                const username = card?.querySelector('.text-muted')?.innerText?.replace('@', '') ?? 'user';
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-primary d-flex align-items-center gap-1';
+                badge.id = 'badge-' + id;
+                badge.innerHTML = `
+                @${username}
+                <button type="button" class="btn-close btn-close-white btn-sm ms-1"
+                    aria-label="Remove" onclick="removeAssigned(${id})"></button>
+            `;
+                list.appendChild(badge);
             });
             document.getElementById('assignedInput').value = JSON.stringify(assigned);
         }
 
-        // --- Tags ---
+        // --- TAGS ---
         let tags = @json($proposal->tags ?? []);
         if (typeof tags === 'string') {
             try {
                 tags = JSON.parse(tags);
             } catch (e) {
-                tags = [];
+                tags = tags ? tags.split(',') : [];
             }
         }
 
@@ -263,7 +377,8 @@
             }
         });
 
+        // INITIALIZE
         renderAssigned();
         renderTags();
     </script>
-@stop
+@endsection

@@ -61,15 +61,15 @@ class ProposalController extends Controller
             'subject' => 'required|string|max:255',
             'date' => 'required|date',
             'open_till' => 'required|date',
-            'client_id' => 'nullable|exists:customers,id',
-            'project_id' => 'nullable|exists:projects,id',
-            'deal_id' => 'nullable|exists:deals,id',
-            'currency' => 'nullable|string|max:10',
-            'status' => 'nullable|string|max:50',
-            'assigned_to' => 'nullable|json',
-            'attachment' => 'nullable|file|max:51200', // 50 MB
-            'tags' => 'nullable|json',
-            'description' => 'nullable|string',
+            'client_id' => 'required|exists:customers,id',
+            'project_id' => 'required|exists:projects,id',
+            'deal_id' => 'required|exists:deals,id',
+            'currency' => 'required|string|max:10',
+            'status' => 'required|string|max:50',
+            'assigned_to' => 'required|json',
+            'attachment' => 'nullable|file|max:5120', // 50 MB
+            'tags' => 'required|json',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('attachment')) {

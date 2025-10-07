@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Estimated List</h3>
-        <a href="{{ route('estimations.create') }}" class="btn  btn-success">Add New Estimate</a>
+        <a href="{{ route('estimations.create') }}" class="btn btn-primary">+ Add New Estimate</a>
     </div>
 
     <div class="card mb-3 p-3">

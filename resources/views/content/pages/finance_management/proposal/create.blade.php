@@ -25,7 +25,7 @@
         </div>
     @endif
 
-    <div class="card shadow-sm">
+    <div class="card">
         <div class="card-body">
             <form action="{{ route('proposals.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -34,13 +34,17 @@
                     {{-- Subject --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Subject <span class="text-danger">*</span></label>
-                        <input type="text" name="subject" class="form-control" value="{{ old('subject') }}">
+                        <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror"
+                            value="{{ old('subject') }}">
+                        @error('subject')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Client --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Client <span class="text-danger">*</span></label>
-                        <select name="client_id" class="form-control">
+                        <select name="client_id" class="form-control @error('client_id') is-invalid @enderror">
                             <option value="">Select Client</option>
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : '' }}>
@@ -48,12 +52,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('client_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Project --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Project <span class="text-danger">*</span></label>
-                        <select name="project_id" class="form-control">
+                        <select name="project_id" class="form-control @error('project_id') is-invalid @enderror">
                             <option value="">Select Project</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}"
@@ -62,12 +69,15 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('project_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Deal --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Deal <span class="text-danger">*</span></label>
-                        <select name="deal_id" class="form-control">
+                        <select name="deal_id" class="form-control @error('deal_id') is-invalid @enderror">
                             <option value="">Select Deal</option>
                             @foreach ($deals as $deal)
                                 <option value="{{ $deal->id }}" {{ old('deal_id') == $deal->id ? 'selected' : '' }}>
@@ -75,68 +85,111 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('deal_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Currency --}}
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Currency <span class="text-danger">*</span></label>
-                        <select name="currency" class="form-control">
+                        <select name="currency" class="form-control @error('currency') is-invalid @enderror">
                             <option value="">Select Currency</option>
                             <option value="taka" {{ old('currency') == 'taka' ? 'selected' : '' }}>৳</option>
                             <option value="rupee" {{ old('currency') == 'rupee' ? 'selected' : '' }}>₹</option>
                             <option value="dollar" {{ old('currency') == 'dollar' ? 'selected' : '' }}>$</option>
                             <option value="pound" {{ old('currency') == 'pound' ? 'selected' : '' }}>£</option>
                         </select>
+                        @error('currency')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Status --}}
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
-                        <select name="status" class="form-control">
+                        <select name="status" class="form-control @error('status') is-invalid @enderror">
+                            <option value="">Select Status</option>
                             <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
                             <option value="sent" {{ old('status') == 'sent' ? 'selected' : '' }}>Sent</option>
                             <option value="accepted" {{ old('status') == 'accepted' ? 'selected' : '' }}>Accepted</option>
                             <option value="rejected" {{ old('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         </select>
+                        @error('status')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    {{-- Dates --}}
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
-                        <input type="date" name="date" class="form-control" value="{{ old('date') }}">
+                        <input type="date" name="date" class="form-control @error('date') is-invalid @enderror"
+                            value="{{ old('date') }}">
+                        @error('date')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Open Till Date <span class="text-danger">*</span></label>
-                        <input type="date" name="open_till" class="form-control" value="{{ old('open_till') }}">
+                        <input type="date" name="open_till" class="form-control @error('open_till') is-invalid @enderror"
+                            value="{{ old('open_till') }}">
+                        @error('open_till')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Assigned To --}}
-                    <div class="col-md-12">
+                    <div class="col-md-12 mt-3">
                         <label class="form-label fw-bold">Assigned To <span class="text-danger">*</span></label>
-                        <div class="d-flex flex-wrap gap-2">
+
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                             @foreach ($users as $user)
-                                <div class="card text-center p-1" style="width: 70px; cursor:pointer;"
-                                    onclick="addAssigned({{ $user->id }}, '{{ $user->name }}')">
-                                    <img src="{{ $user->avatar ?? asset('uploads/images/default.jpg') }}"
-                                        class="rounded-circle mb-1" style="width:40px;height:40px;">
-                                    <small>{{ \Illuminate\Support\Str::limit($user->name, 6) }}</small>
+                                <div class="col">
+                                    <div class="card h-100 p-2 shadow-sm d-flex align-items-center"
+                                        style="cursor:pointer;"
+                                        onclick="addAssigned({{ $user->id }}, '{{ $user->name }}')">
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <img src="{{ $user->avatar ?? asset('uploads/images/default.jpg') }}"
+                                                alt="Avatar" class="rounded-circle me-3"
+                                                style="width: 50px; height: 50px; object-fit: cover;">
+
+                                            <div class="text-start">
+                                                <div class="fw-semibold text-dark" style="font-size: 14px;">
+                                                    {{ $user->name }}
+                                                </div>
+                                                <div class="text-muted" style="font-size: 13px;">
+                                                    {{ '@' . ($user->username ?? Str::slug($user->name)) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
+
                         <input type="hidden" name="assigned_to" id="assignedInput">
                         <div id="assignedList" class="mt-2 d-flex flex-wrap gap-1"></div>
+
+                        @error('assigned_to')
+                            <span class="text-danger small d-block mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Tags --}}
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Tags <span class="text-danger">*</span></label>
-                        <input type="text" id="tagsInput" class="form-control" placeholder="Enter tag">
+                        <input type="text" id="tagsInput" class="form-control @error('tags') is-invalid @enderror"
+                            placeholder="Enter tag">
                         <div id="tagsContainer" class="mt-2 d-flex flex-wrap gap-1"></div>
                         <input type="hidden" name="tags" id="tagsHidden">
+                        @error('tags')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     {{-- Attachment --}}
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Attachment</label>
                         <input type="file" name="attachment" class="form-control">
                     </div>
@@ -144,11 +197,16 @@
                     {{-- Description --}}
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
-                        <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description') }}</textarea>
+                        @error('description')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <div class="col-12 text-end mt-2">
-                        <button type="submit" class="btn btn-success">Save</button>
+                    <div class="form-group col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save
+                        </button>
                     </div>
                 </div>
             </form>
