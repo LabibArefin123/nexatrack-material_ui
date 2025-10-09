@@ -166,7 +166,8 @@
                     {{-- Tags --}}
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Tags <span class="text-danger">*</span></label>
-                        <input type="text" id="tagsInput" class="form-control" placeholder="Enter tag">
+                        <input type="text" id="tagsInput" class="form-control @error('tags') is-invalid @enderror"
+                            placeholder="Enter tag">
                         <div id="tagsContainer" class="mt-2 d-flex flex-wrap gap-1"></div>
                         <input type="hidden" name="tags" id="tagsHidden">
                         @error('tags')

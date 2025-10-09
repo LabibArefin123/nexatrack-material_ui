@@ -3,9 +3,8 @@
 @section('title', 'Organizations')
 
 @section('content')
-
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="m-0">Organizations</h3>
+        <h3 class="m-0">Organizations List</h3>
         <div class="d-flex gap-2">
             <a href="{{ route('organizations.create') }}" class="btn btn-success " title="Add Organization">
                 <i class="bi bi-plus-lg">Create</i>

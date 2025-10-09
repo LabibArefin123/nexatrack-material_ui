@@ -32,7 +32,7 @@ class OrganizationController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:organizations,name',
-            'image' => 'nullable|file|max:5120',
+            'image' => 'required|file|max:5120',
             'icon'  => 'nullable|string',
         ]);
 
@@ -96,7 +96,7 @@ class OrganizationController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:organizations,name,' . $organization->id,
-            'image' => 'nullable|file|max:5120',
+            'image' => 'required|file|max:5120',
             'icon'  => 'nullable|string',
         ]);
 

@@ -2,20 +2,6 @@
 
 @section('title', 'Edit Organization')
 
-@section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-0">Edit organization Image</h1>
-        <a href="{{ route('organizations.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            Back
-        </a>
-    </div>
-@stop
-
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -28,6 +14,19 @@
         </div>
     @endif
 
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Edit Organization</h3>
+        <a href="{{ route('organizations.index') }}" class="btn  btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left"
+                viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
+
     <div class="card shadow-lg">
         <div class="card-body">
             <form action="{{ route('organizations.update', $organization->id) }}" method="POST"
@@ -38,7 +37,8 @@
                 <div class="row g-3">
                     <!-- Title -->
                     <div class="col-md-6">
-                        <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                        <label for="title" class="form-label">Organization name <span
+                                class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" value="{{ old('name', $organization->name) }}"
                             class="form-control @error('name') is-invalid @enderror" placeholder="Image name">
                         @error('name')
