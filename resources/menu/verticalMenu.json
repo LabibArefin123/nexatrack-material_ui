@@ -11,54 +11,16 @@
       ],
       "submenu": [
         {
-          "url": "https://demos.themeselection.com/materio-bootstrap-html-laravel-admin-template/demo-1/dashboard/crm",
-          "name": "CRM",
-          "slug": "dashboard-crm",
-          "target": "_blank",
-          "badge": [
-            "label-primary fs-tiny",
-            "Pro"
-          ]
-        },
-        {
           "url": "/mydashboard",
-          "name": "My Dashboard",
+          "name": "Dashboard",
           "slug": "my-dashboard-analytics"
         },
         {
-          "url": "/dashboard",
+          "url": "analytics",
           "name": "Analytics",
-          "slug": "dashboard-analytics"
-        },
-        {
-          "url": "https://demos.themeselection.com/materio-bootstrap-html-laravel-admin-template/demo-1/app/ecommerce/dashboard",
-          "name": "eCommerce",
-          "slug": "app-ecommerce-dashboard",
-          "target": "_blank",
-          "badge": [
-            "label-primary fs-tiny",
-            "Pro"
-          ]
-        },
-        {
-          "url": "https://demos.themeselection.com/materio-bootstrap-html-laravel-admin-template/demo-1/app/logistics/dashboard",
-          "name": "Logistics",
-          "slug": "app-logistics-dashboard",
-          "target": "_blank",
-          "badge": [
-            "label-primary fs-tiny",
-            "Pro"
-          ]
-        },
-        {
-          "url": "https://demos.themeselection.com/materio-bootstrap-html-laravel-admin-template/demo-1/app/academy/dashboard",
-          "name": "Academy",
-          "slug": "app-academy-dashboard",
-          "target": "_blank",
-          "badge": [
-            "label-primary fs-tiny",
-            "Pro"
-          ]
+          "slug": "my_analyics",
+          "permission": "analytics.index",
+          "active": "analytics"
         }
       ]
     },
@@ -258,13 +220,6 @@
               ]
             }
           ]
-        },
-        {
-          "url": "analytics",
-          "name": "My Analytics",
-          "slug": "my_analyics",
-          "permission": "analytics.index",
-          "active": "analytics"
         },
         {
           "name": "Report",

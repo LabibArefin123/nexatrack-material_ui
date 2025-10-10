@@ -5,7 +5,16 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">Contracts List</h3>
-        <a href="{{ route('contracts.create') }}" class="btn  btn-success">+ Add New Contract</a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('contracts.create') }}" class="btn btn-success" title="Add Contract">+ Add New Contract
+            </a>
+            <button id="gridViewBtn" class="btn btn-outline-primary" title="Grid View">
+                <i class="bi bi-grid-3x2-gap"></i> Grid View
+            </button>
+            <button id="listViewBtn" class="btn btn-secondary" title="List View">
+                <i class="bi bi-list"></i> List View
+            </button>
+        </div>
     </div>
 
     {{-- Filter Form --}}
@@ -56,12 +65,6 @@
                 </div>
             </form>
         </div>
-    </div>
-
-    {{-- View Switch --}}
-    <div class="d-flex justify-content-end mb-2">
-        <button class="btn btn-outline-secondary  me-2" id="listViewBtn">List View</button>
-        <button class="btn btn-outline-secondary " id="gridViewBtn">Grid View</button>
     </div>
 
     {{-- List/Grid Container --}}
