@@ -1,9 +1,12 @@
 @php
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Str;
+    use Carbon\Carbon;
+
     $containerNav = $containerNav ?? 'container-fluid';
     $navbarDetached = $navbarDetached ?? '';
-
+    $totalNotifications = $totalNotifications ?? []; // ✅ Prevent undefined variable
 @endphp
 
 <!-- Navbar -->
@@ -31,40 +34,32 @@
         </a>
     </div>
     <style>
-        /* Custom brand wrapper */
         .custom-brand {
             display: flex;
             align-items: center;
         }
 
-        /* Brand link */
         .custom-brand-link {
             display: flex;
             align-items: center;
             text-decoration: none;
         }
 
-        /* Logo style */
         .custom-logo-img {
             height: 40px;
             width: auto;
             border-radius: 6px;
-            /* চাইলে rounded */
         }
 
-        /* Text style */
         .custom-brand-text {
             font-size: 20px;
             font-weight: 600;
             color: #ff6600;
-            /* তোমার theme অনুযায়ী */
             text-transform: uppercase;
-            /* চাইলে সব বড় হরফে */
         }
     </style>
 @endif
 
-<!-- ! Not required for layout-without-menu -->
 @if (!isset($navbarHideToggle))
     <div
         class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ? ' d-xl-none ' : '' }}">
@@ -84,6 +79,7 @@
         </div>
     </div>
     <!-- /Search -->
+
     <ul class="navbar-nav flex-row align-items-center ms-auto">
 
         <!-- Fullscreen -->
@@ -96,12 +92,16 @@
 
         <!-- 🔔 Notifications -->
         <li class="nav-item dropdown me-2">
+            @php
+                $notificationCount = is_array($totalNotifications) ? count($totalNotifications) : 0;
+            @endphp
+
             <a class="btn btn-light btn-icon rounded-circle position-relative" href="javascript:void(0);"
                 id="notificationDropdown" data-bs-toggle="dropdown" title="Notifications">
                 <i class="ri-notification-3-line ri-20px"></i>
-                @if (!empty($totalNotifications) && count($totalNotifications) > 0)
+                @if ($notificationCount > 0)
                     <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ count($totalNotifications) }}</span>
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ $notificationCount }}</span>
                 @endif
             </a>
 
@@ -113,17 +113,11 @@
                 </li>
 
                 @php
-                    use Illuminate\Support\Str;
-                    use Carbon\Carbon;
-
-                    // ✅ Sort by newest first
-                    $sortedNotifications = collect($totalNotifications ?? [])->sortByDesc(function ($note) {
-                        return $note['type'] === 'deal'
-                            ? Carbon::parse($note['end_date'])
-                            : Carbon::parse($note['due_date']);
+                    $sortedNotifications = collect($totalNotifications)->sortByDesc(function ($note) {
+                        $dateField = $note['type'] === 'deal' ? 'end_date' : 'due_date';
+                        return isset($note[$dateField]) ? Carbon::parse($note[$dateField]) : now();
                     });
 
-                    // ✅ Show only 8 latest
                     $latestNotifications = $sortedNotifications->take(8);
                 @endphp
 
@@ -131,32 +125,35 @@
                     @php
                         $icon = 'fa-info-circle';
                         $iconColor = 'text-secondary';
-                        $friendlyText = '';
+                        $friendlyText = 'New update available';
+                        $redirectUrl = route('deals.index');
 
-                        if ($note['type'] === 'deal') {
+                        if (($note['type'] ?? '') === 'deal') {
                             $icon = 'fa-handshake';
                             $iconColor = 'text-warning';
-                            $friendlyText = 'Deal Reminder: ' . Str::limit($note['message'], 50);
-                        } elseif ($note['type'] === 'invoice') {
+                            $friendlyText = 'Deal Reminder: ' . Str::limit($note['message'] ?? 'No details', 50);
+                            $redirectUrl = route('deals.index');
+                        } elseif (($note['type'] ?? '') === 'invoice') {
                             $icons = [
                                 'unpaid' => ['fa-exclamation-circle', 'text-danger', 'Invoice pending payment'],
                                 'partially paid' => ['fa-hourglass-half', 'text-warning', 'Invoice partially paid'],
                                 'overdue' => ['fa-times-circle', 'text-danger', 'Invoice overdue!'],
                             ];
+
                             [$icon, $iconColor, $prefix] = $icons[$note['status']] ?? [
                                 'fa-question-circle',
                                 'text-secondary',
                                 'Invoice update',
                             ];
-                            $friendlyText = $prefix . ': ' . Str::limit($note['message'], 50);
+
+                            $friendlyText = $prefix . ': ' . Str::limit($note['message'] ?? 'No details', 50);
+                            $redirectUrl = route('invoices.index');
                         }
 
-                        $timeAgo =
-                            $note['type'] === 'deal'
-                                ? Carbon::parse($note['end_date'])->diffForHumans()
-                                : Carbon::parse($note['due_date'])->diffForHumans();
-
-                        $redirectUrl = $note['type'] === 'invoice' ? route('invoices.index') : route('deals.index');
+                        $timeField = ($note['type'] ?? '') === 'deal' ? 'end_date' : 'due_date';
+                        $timeAgo = isset($note[$timeField])
+                            ? Carbon::parse($note[$timeField])->diffForHumans()
+                            : 'just now';
                     @endphp
 
                     <li>
@@ -179,7 +176,6 @@
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>
-
                 <li>
                     <a class="dropdown-item text-center text-primary fw-semibold"
                         href="{{ route('user_profile_show') }}">
@@ -202,8 +198,7 @@
             }
         </style>
 
-
-        <!-- User -->
+        <!-- 👤 User -->
         <li class="nav-item dropdown">
             <a class="btn btn-light btn-icon rounded-circle" href="javascript:void(0);" data-bs-toggle="dropdown"
                 title="User Menu">
@@ -261,20 +256,16 @@
         </li>
     </ul>
 
-
     {{-- JS for fullscreen --}}
     <script>
         document.getElementById("fullscreen-toggle").addEventListener("click", function() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         });
     </script>
-
 </div>
 
 @if (!isset($navbarDetached))
