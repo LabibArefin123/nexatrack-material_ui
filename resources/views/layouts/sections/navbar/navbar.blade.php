@@ -94,46 +94,114 @@
             </a>
         </li>
 
-        <!-- Notifications -->
+        <!-- 🔔 Notifications -->
         <li class="nav-item dropdown me-2">
             <a class="btn btn-light btn-icon rounded-circle position-relative" href="javascript:void(0);"
                 id="notificationDropdown" data-bs-toggle="dropdown" title="Notifications">
                 <i class="ri-notification-3-line ri-20px"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    3
-                </span>
+                @if (!empty($totalNotifications) && count($totalNotifications) > 0)
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ count($totalNotifications) }}</span>
+                @endif
             </a>
-            <ul class="dropdown-menu dropdown-menu-end mt-3 py-2" aria-labelledby="notificationDropdown"
-                style="width: 300px;">
+
+            <ul class="dropdown-menu dropdown-menu-end mt-3 py-2 shadow-lg" aria-labelledby="notificationDropdown"
+                style="width: 330px; max-height: 430px; overflow-y: auto;">
                 <li class="px-3 py-2 border-bottom">
-                    <h6 class="mb-0">Notifications</h6>
+                    <h6 class="mb-0 fw-bold text-dark">Recent Updates</h6>
+                    <small class="text-muted">Here’s what’s new for you</small>
                 </li>
-                <li>
-                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                        <i class="ri-message-3-line me-2 text-primary"></i>
-                        <span>New message from John</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                        <i class="ri-user-follow-line me-2 text-success"></i>
-                        <span>Anna started following you</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                        <i class="ri-calendar-event-line me-2 text-warning"></i>
-                        <span>Meeting at 3 PM</span>
-                    </a>
-                </li>
+
+                @php
+                    use Illuminate\Support\Str;
+                    use Carbon\Carbon;
+
+                    // ✅ Sort by newest first
+                    $sortedNotifications = collect($totalNotifications ?? [])->sortByDesc(function ($note) {
+                        return $note['type'] === 'deal'
+                            ? Carbon::parse($note['end_date'])
+                            : Carbon::parse($note['due_date']);
+                    });
+
+                    // ✅ Show only 8 latest
+                    $latestNotifications = $sortedNotifications->take(8);
+                @endphp
+
+                @forelse ($latestNotifications as $note)
+                    @php
+                        $icon = 'fa-info-circle';
+                        $iconColor = 'text-secondary';
+                        $friendlyText = '';
+
+                        if ($note['type'] === 'deal') {
+                            $icon = 'fa-handshake';
+                            $iconColor = 'text-warning';
+                            $friendlyText = 'Deal Reminder: ' . Str::limit($note['message'], 50);
+                        } elseif ($note['type'] === 'invoice') {
+                            $icons = [
+                                'unpaid' => ['fa-exclamation-circle', 'text-danger', 'Invoice pending payment'],
+                                'partially paid' => ['fa-hourglass-half', 'text-warning', 'Invoice partially paid'],
+                                'overdue' => ['fa-times-circle', 'text-danger', 'Invoice overdue!'],
+                            ];
+                            [$icon, $iconColor, $prefix] = $icons[$note['status']] ?? [
+                                'fa-question-circle',
+                                'text-secondary',
+                                'Invoice update',
+                            ];
+                            $friendlyText = $prefix . ': ' . Str::limit($note['message'], 50);
+                        }
+
+                        $timeAgo =
+                            $note['type'] === 'deal'
+                                ? Carbon::parse($note['end_date'])->diffForHumans()
+                                : Carbon::parse($note['due_date'])->diffForHumans();
+
+                        $redirectUrl = $note['type'] === 'invoice' ? route('invoices.index') : route('deals.index');
+                    @endphp
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-start py-2 notification-item"
+                            href="{{ $redirectUrl }}" style="white-space: normal;">
+                            <i class="fas {{ $icon }} me-3 {{ $iconColor }}" style="margin-top: 3px;"></i>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold text-dark">{{ $friendlyText }}</div>
+                                <small class="text-muted">{{ $timeAgo }}</small>
+                            </div>
+                        </a>
+                    </li>
+                @empty
+                    <li class="text-center py-3 text-muted">
+                        <i class="ri-notification-off-line ri-20px mb-1"></i><br>
+                        You're all caught up — no new notifications 🎉
+                    </li>
+                @endforelse
+
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>
+
                 <li>
-                    <a class="dropdown-item text-center text-primary" href="#">View All Notifications</a>
+                    <a class="dropdown-item text-center text-primary fw-semibold"
+                        href="{{ route('user_profile_show') }}">
+                        See all notifications
+                    </a>
                 </li>
             </ul>
         </li>
+
+        {{-- 🔸 Hover effect --}}
+        <style>
+            .notification-item:hover {
+                background-color: #ff9900 !important;
+                color: #fff !important;
+                transition: 0.2s ease;
+            }
+
+            .notification-item:hover small {
+                color: #fff !important;
+            }
+        </style>
+
 
         <!-- User -->
         <li class="nav-item dropdown">

@@ -24,8 +24,7 @@ class DashboardController extends Controller
         $otherUsers = Customer::whereNotIn('software', ['Bidtrack', 'Timetracks'])->count();
 
         // 🟢 Get notification alerts
-        $notifications = $this->notificationAlert();
-        $invoiceNotifications = $this->invoiceNotificationAlert();
+        $totalNotifications = $this->totalNotification();
 
         return view('content.pages.dashboard', compact(
             'totalBidTrackUsers',
@@ -36,28 +35,27 @@ class DashboardController extends Controller
             'otherPlanUsers',
             'totalUsers',
             'totalPlanUsers',
-            'notifications',
-            'invoiceNotifications'
+            'totalNotifications'
         ));
     }
 
     /**
      * 🔔 Private function to generate upcoming deal expiry notifications
      */
-    private function notificationAlert()
+    private function totalNotification()
     {
-        $today = Carbon::today();
-        $targetDays = [30, 15, 7, 3, 2, 1];
-
+        $today = \Carbon\Carbon::today();
         $notifications = [];
 
-        foreach ($targetDays as $days) {
+        // 🎯 Deal Notifications
+        $targetDaysDeal = [30, 15, 7, 3, 2, 1];
+        foreach ($targetDaysDeal as $days) {
             $targetDate = $today->copy()->addDays($days);
-
             $deals = Deal::whereDate('end_date', $targetDate)->get();
 
             foreach ($deals as $deal) {
                 $notifications[] = [
+                    'type' => 'deal',
                     'message' => "Deal '{$deal->name}' (Source: {$deal->source}) ends in {$days} day(s).",
                     'days' => $days,
                     'source' => $deal->source,
@@ -66,33 +64,27 @@ class DashboardController extends Controller
             }
         }
 
-        return $notifications;
-    }
+        // 💰 Invoice Notifications
+        $targetDaysInvoice = [3, 2, 1];
+        $invoices = Invoice::whereIn('status', ['unpaid', 'partially paid', 'overdue'])
+            ->whereIn(\DB::raw('DATE(due_date)'), array_map(fn($d) => $today->copy()->addDays($d)->format('Y-m-d'), $targetDaysInvoice))
+            ->get();
 
-    private function invoiceNotificationAlert()
-    {
-        $today = \Carbon\Carbon::today();
-        $targetDays = [3, 2, 1]; // 🔔 Only 3, 2, and 1 days before due date
-
-        $notifications = [];
-
-        foreach ($targetDays as $days) {
-            $targetDate = $today->copy()->addDays($days);
-
-            // 🎯 Target invoices with due dates in 3/2/1 days and not fully paid
-            $invoices = Invoice::whereIn('status', ['unpaid', 'partially paid', 'overdue'])
-                ->whereDate('due_date', $targetDate)
-                ->get();
-
-            foreach ($invoices as $invoice) {
-                $notifications[] = [
-                    'message' => "Invoice #{$invoice->invoice_id} for {$invoice->client->name} is due in {$days} day(s). Please tell the client to pay for it urgently.",
-                    'days' => $days,
-                    'status' => $invoice->status,
-                    'due_date' => $invoice->due_date,
-                ];
-            }
+        foreach ($invoices as $invoice) {
+            $daysLeft = $today->diffInDays(\Carbon\Carbon::parse($invoice->due_date), false);
+            $notifications[] = [
+                'type' => 'invoice',
+                'message' => "Invoice #{$invoice->invoice_id} for {$invoice->client->name} is due in {$daysLeft} day(s).",
+                'days' => $daysLeft,
+                'status' => $invoice->status,
+                'due_date' => $invoice->due_date,
+            ];
         }
+
+        // 🔢 Sort so invoices appear first, then deals
+        usort($notifications, function ($a, $b) {
+            return strcmp($a['type'], $b['type']);
+        });
 
         return $notifications;
     }
