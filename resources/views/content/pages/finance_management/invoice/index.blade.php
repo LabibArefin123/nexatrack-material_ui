@@ -61,18 +61,18 @@
     <!-- Invoice Table -->
     <div class="card shadow-sm">
         <div class="card-body table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
+            <table class="table table-hover table-bordered">
+                <thead>
                     <tr>
                         <th>SL</th>
                         <th>Invoice ID</th>
                         <th>Client</th>
                         <th>Project</th>
-                        <th>Due Date</th>
-                        <th>Amount</th>
-                        <th>Paid Amount</th>
+                        <th class="text-center">Due Date</th>
+                        <th class="text-center">Amount</th>
+                        <th class="text-center">Paid Amount</th>
                         <th>Transaction ID</th>
-                        <th>Status</th>
+                        <th class="text-center">Status</th>
                         <th width="180">Action</th>
                     </tr>
                 </thead>
@@ -81,7 +81,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td class="fw-bold">#{{ $invoice->invoice_id }}</td>
-                            <td style="width: 40%">
+                            <td style="min-width: 280px; max-width: 350px;">
                                 <div class="d-flex align-items-center gap-2">
                                     @php
                                         $clientName = $invoice->client->name ?? null;
@@ -89,28 +89,32 @@
                                         $imageWidth = 40;
                                         $imageHeight = 40;
                                         $imageClass = 'img-thumbnail'; // default frame class
-                                        $textStyle = ''; // default text style
 
                                         if ($clientName === 'TOTALOFFTEC') {
                                             $clientImage =
                                                 'uploads/images/organization/01_09_2025_140557organization.png';
-                                            $imageWidth = 30;
-                                            $imageHeight = 20;
+                                            $imageWidth = 40;
+                                            $imageHeight = 25;
                                         } elseif ($clientName === 'Creative Tape Industries Ltd') {
                                             $clientImage =
                                                 'uploads/images/organization/01_09_2025_143807organization.png';
-                                            $imageWidth = 30;
-                                            $imageHeight = 20;
+                                            $imageWidth = 40;
+                                            $imageHeight = 25;
                                         }
+
+                                        $shortClientName = collect(explode(' ', $clientName))->take(2)->implode(' ');
                                     @endphp
 
                                     <img src="{{ asset($clientImage) }}" class="{{ $imageClass }}"
                                         width="{{ $imageWidth }}" height="{{ $imageHeight }}" alt="client"
-                                        style="object-fit: cover;">
-                                    <span>{{ $clientName ?? 'N/A' }}</span>
+                                        style="object-fit: contain; border-radius: 6px;">
+
+                                    <span class="fw-semibold text-truncate"
+                                        style="max-width: 220px; display: inline-block;">
+                                        {{ $shortClientName ?? 'N/A' }}
+                                    </span>
                                 </div>
                             </td>
-
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <img src="{{ $invoice->project_image ? asset('uploads/images/projects/' . $invoice->project_image) : 'uploads/images/default.jpg' }}"
@@ -118,11 +122,18 @@
                                     <span>{{ $invoice->project->name ?? 'N/A' }}</span>
                                 </div>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}</td>
-                            <td>{{ number_format($invoice->amount, 0, '.', ',') }} Tk</td>
-                            <td>{{ number_format($invoice->paid_amount, 0, '.', ',') }} Tk</td>
+                            <td style="min-width: 150px; max-width: 175px;" class="text-center">
+                                {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}</td>
+
+                            <td style="min-width: 150px; max-width: 200px;" class="text-center">
+                                {{ number_format($invoice->amount, 0, '.', ',') }} Tk
+                            </td>
+
+                            <td style="min-width: 150px; max-width: 200px;" class="text-center">
+                                {{ number_format($invoice->paid_amount, 0, '.', ',') }} Tk
+                            </td>
                             <td class="fw-bold">#{{ $invoice->transaction_id }}</td>
-                            <td>
+                            <td class="text-center">
                                 @php
                                     $statusClass = match (strtolower($invoice->status)) {
                                         'paid' => 'success',

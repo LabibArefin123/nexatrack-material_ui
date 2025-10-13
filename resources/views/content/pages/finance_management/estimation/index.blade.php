@@ -61,13 +61,13 @@
                     <tr>
                         <th>SL</th>
                         <th>Name</th>
-                        <th>Amount</th>
-                        <th>Project</th>
-                        <th>Estimation By</th>
-                        <th>Estimate Date</th>
-                        <th>Expiry Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center">Amount (Currency)</th>
+                        <th class="text-center">Project</th>
+                        <th class="text-center">Estimation By</th>
+                        <th class="text-center">Estimate Date</th>
+                        <th class="text-center">Expiry Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,12 +75,25 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $estimate->company->name ?? '' }}</td>
-                            <td>{{ $estimate->amount ?? ('-')($estimate->currency) }}</td>
-                            <td>{{ $estimate->project->name ?? '' }}</td>
-                            <td>{{ $estimate->user->name ?? '' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($estimate->estimate_date)->format('d M Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($estimate->expiry_date)->format('d M Y') }}</td>
-                            <td>{{ ucfirst($estimate->status ?? '-') }}</td>
+                            <td class="text-center">
+                                @php
+                                    $symbols = [
+                                        'taka' => '৳',
+                                        'rupee' => '₹',
+                                        'dollar' => '$',
+                                        'pound' => '£',
+                                    ];
+                                    $symbol = $symbols[$estimate->currency] ?? '';
+                                @endphp
+                                {{ $estimate->amount ? $estimate->amount . ' (' . $symbol . ')' : '-' }}
+                            </td>
+                            <td class="text-center">{{ $estimate->project->name ?? '' }}</td>
+                            <td class="text-center">{{ $estimate->user->name ?? '' }}</td>
+                            <td class="text-center">{{ \Carbon\Carbon::parse($estimate->estimate_date)->format('d M Y') }}
+                            </td>
+                            <td class="text-center">{{ \Carbon\Carbon::parse($estimate->expiry_date)->format('d M Y') }}
+                            </td>
+                            <td class="text-center">{{ ucfirst($estimate->status ?? '-') }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">
                                     <a href="{{ route('estimations.edit', $estimate->id) }}"
